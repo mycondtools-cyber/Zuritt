@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "aeronord": {
+      "type": "http",
+      "url": "https://aircondic.grok.me/mcp",
+      "headers": {
+        "Authorization": "Bearer ${AERONORD_MCP_TOKEN}"
+      }
+    }
+  }
+}
