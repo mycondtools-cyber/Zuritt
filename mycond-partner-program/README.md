@@ -9,6 +9,7 @@
 | `Mycond_Partnerska_prohrama.pdf` | Щоб надіслати або роздрукувати (16:9) |
 | `Mycond_Partnerska_prohrama.pptx` | Щоб вставити в PowerPoint / Google Slides. Кожен слайд — картинка, текст слайда є в нотатках доповідача |
 | `Mycond_Partnerska_prohrama.html` | Живий показ у браузері: стрілки ← →, клавіша `F` або кнопка ⤢ — повний екран, на телефоні свайп |
+| `Mycond_Tekst_lektora.docx` | Текст для лектора до кожного слайда (Word) |
 | `slides-png/` | Окремі слайди 1920×1080 для вставки в будь-який редактор |
 | `source/` | Вихідники: `src.html` + фото, шрифти, скрипти збирання |
 
@@ -36,4 +37,5 @@ cd source
 node render.js          # PNG у png/ + deck.pdf
 python3 build_html.py   # автономний HTML
 python3 pptx_build.py   # PPTX
+node speech.js          # текст лектора (потрібен npm-пакет docx)
 ```
