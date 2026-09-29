@@ -10,6 +10,7 @@
 | `Mycond_Partnerska_prohrama.pptx` | Щоб вставити в PowerPoint / Google Slides. Кожен слайд — картинка, текст слайда є в нотатках доповідача |
 | `Mycond_Partnerska_prohrama.html` | Живий показ у браузері: стрілки ← →, клавіша `F` або кнопка ⤢ — повний екран, на телефоні свайп |
 | `Mycond_Tekst_lektora.docx` | Текст для лектора до кожного слайда (Word) |
+| `Navchannia_instaliatoriv_z_partnerskoiu_prohramoiu.pdf` | Уся презентація «Навчання інсталяторів» (202 стор.) з новим розділом, виправленнями та новими слайдами |
 | `slides-png/` | Окремі слайди 1920×1080 для вставки в будь-який редактор |
 | `source/` | Вихідники: `src.html` + фото, шрифти, скрипти збирання |
 
@@ -38,4 +39,6 @@ node render.js          # PNG у png/ + deck.pdf
 python3 build_html.py   # автономний HTML
 python3 pptx_build.py   # PPTX
 node speech.js          # текст лектора (потрібен npm-пакет docx)
+node render_x.js        # нові слайди для загальної презентації → extra.pdf
+python3 assemble.py full.pdf   # збирає загальний PDF з оригіналу + розділу + нових слайдів
 ```
