@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mycond — Партнерська програма</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{--g:#5BAE48;--g2:#4A9A39;--gl:#EAF5E6;--ink:#141414;--mute:#5E6660;--line:#E9ECE8;--wm:#F1F2F0}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#1b1c1b}
+body{font-family:Inter,Arial,sans-serif;color:var(--ink)}
+.deck{display:flex;flex-direction:column;align-items:center;gap:28px;padding:28px 0}
+.slide{width:1920px;height:1080px;position:relative;overflow:hidden;background:#fff;flex:none}
+.h{font-family:Montserrat,Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.5px;line-height:1.02}
+.tag{position:absolute;left:141px;top:97px;background:var(--g);color:#fff;font:700 34px/1 Montserrat,Arial;padding:17px 28px;z-index:5}
+.logo{position:absolute;right:100px;top:70px;width:128px;height:128px;background:var(--g);border:4px solid #fff;outline:1px solid rgba(0,0,0,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5}
+.logo img{width:88px;margin-top:4px}
+.logo b{font:700 15px/1 Georgia,serif;color:#fff;letter-spacing:.5px;margin-top:4px}
+.wm{position:absolute;inset:0;pointer-events:none;z-index:0}
+.content{position:absolute;inset:0;z-index:2}
+.pn{position:absolute;right:100px;bottom:54px;font:600 20px Inter;color:#B5BAB4;z-index:5}
+.green{background:var(--g)}
+.green .logo{border-color:#fff}
+.sub{font:500 30px/1.45 Inter;color:var(--mute)}
+.chip{display:inline-block;background:var(--gl);color:var(--g2);font:700 22px/1 Montserrat;padding:12px 18px;border-radius:40px}
+.card{background:#fff;border:2px solid var(--line);border-radius:28px}
+ul.ticks{list-style:none}
+ul.ticks li{position:relative;padding-left:54px;font:500 30px/1.35 Inter;margin:0 0 22px}
+ul.ticks li:before{content:"";position:absolute;left:0;top:4px;width:34px;height:34px;border-radius:50%;background:var(--g) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/22px no-repeat}
+.shot{border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.phone{position:absolute;width:420px;height:860px;border-radius:64px;background:#0d0d0d;padding:16px;box-shadow:0 40px 90px rgba(0,0,0,.35)}
+.phone .scr{width:100%;height:100%;border-radius:50px;overflow:hidden;position:relative;background:#fff}
+.phone .notch{position:absolute;left:50%;top:26px;transform:translateX(-50%);width:130px;height:34px;border-radius:20px;background:#0d0d0d;z-index:3}
+.browser{position:absolute;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.22)}
+.browser .bar{height:44px;background:#EEF0ED;display:flex;align-items:center;gap:9px;padding:0 18px}
+.browser .bar i{width:13px;height:13px;border-radius:50%;background:#D4D7D3;display:block}
+.browser .bar span{margin-left:16px;background:#fff;border-radius:8px;padding:6px 16px;font:500 15px Inter;color:#7a807a;flex:1}
+@media print{html,body{background:#fff}.deck{padding:0;gap:0}.slide{page-break-after:always;break-after:page}}
+@page{size:1920px 1080px;margin:0}
+/* viewer */
+body.view .deck{padding:0;gap:0}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- ============ 1. TITLE ============ -->
+<section class="slide green" id="s1">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M900 360 L625 150 L352 352 L352 836 L900 836" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:470px;top:390px;font-size:88px;color:#111">ПРОДАЄМО<br>РАЗОМ<br>З ВАМИ</div>
+    <div style="position:absolute;left:474px;top:680px;font:600 32px/1.4 Montserrat;color:#fff">Партнерська програма Mycond<br>для монтажників</div>
+    <img src="assets/hp_product.png" style="position:absolute;right:60px;bottom:90px;width:760px;filter:drop-shadow(0 40px 60px rgba(0,0,0,.35))">
+    <div style="position:absolute;right:110px;top:260px;background:#111;color:#fff;font:800 28px/1 Montserrat;padding:18px 26px;border-radius:50px">АКЦІЯ ДО 01.03.2027</div>
+  </div>
+</section>
+
+<!-- ============ 2. MANIFEST ============ -->
+<section class="slide" id="s2">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M1060 1100 L1060 390 L1515 140 L1990 400" fill="none" stroke="var(--wm)" stroke-width="42" stroke-linejoin="round"/></svg>
+  <div class="tag">Наш підхід</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:200px;font-size:60px;width:1500px">Ми не просто продаємо вам обладнання —<br><span style="color:var(--g)">ми допомагаємо його продати</span></div>
+    <div class="sub" style="position:absolute;left:140px;top:420px;width:1100px">Тепловий насос Mycond — це не лише техніка. Разом з ним ви отримуєте інструменти, які приводять клієнтів і допомагають закривати угоди.</div>
+    <div style="position:absolute;left:140px;top:600px;display:grid;grid-template-columns:repeat(4,390px);gap:26px">
+      <div class="card" style="padding:34px 32px;height:330px">
+        <div style="font-size:54px">🌐</div>
+        <div class="h" style="font-size:31px;margin:20px 0 14px">Сайт і лендінг</div>
+        <div style="font:500 23px/1.45 Inter;color:var(--mute)">Ваше онлайн-представництво з калькулятором підбору</div>
+      </div>
+      <div class="card" style="padding:34px 32px;height:330px">
+        <div style="font-size:54px">🎯</div>
+        <div class="h" style="font-size:31px;margin:20px 0 14px">Клієнти</div>
+        <div style="font:500 23px/1.45 Inter;color:var(--mute)">Ліди з вашого регіону — в подарунок і під замовлення</div>
+      </div>
+      <div class="card" style="padding:34px 32px;height:330px">
+        <div style="font-size:54px">📈</div>
+        <div class="h" style="font-size:31px;margin:20px 0 14px">Реклама</div>
+        <div style="font:500 23px/1.45 Inter;color:var(--mute)">Налаштування реклами на ваш лендінг чи сайт</div>
+      </div>
+      <div class="card" style="padding:34px 32px;height:330px;background:var(--g);border-color:var(--g)">
+        <div style="font-size:54px">🤖</div>
+        <div class="h" style="font-size:31px;margin:20px 0 14px;color:#fff">AI-консультант</div>
+        <div style="font:500 23px/1.45 Inter;color:#fff">Бот Mycond відповідає клієнтам і вам 24/7</div>
+      </div>
+    </div>
+    <div style="position:absolute;left:140px;bottom:60px;font:700 26px Montserrat;color:var(--ink)">Ви монтуєте — <span style="color:var(--g)">ми приводимо клієнтів.</span></div>
+  </div>
+</section>
+
+<!-- ============ 3. LADDER ============ -->
+<section class="slide" id="s3">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M1060 1100 L1060 390 L1515 140 L1990 400" fill="none" stroke="var(--wm)" stroke-width="42" stroke-linejoin="round"/></svg>
+  <div class="tag">Бонуси партнерам</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:72px">Купуйте більше —<br><span style="color:var(--g)">отримуйте більше</span></div>
+    <div style="position:absolute;left:140px;top:380px;font:500 28px/1.4 Inter;color:var(--mute);width:760px">Купуєте теплові насоси Mycond до <b style="color:var(--ink)">01.03.2027</b> — отримуєте цифрові інструменти для продажу <b style="color:var(--g2)">безкоштовно</b>.</div>
+    <div style="position:absolute;left:140px;top:520px;font:600 22px/1.4 Inter;color:var(--mute);width:700px;border-left:6px solid var(--g);padding-left:20px">Кількість теплових насосів рахується сумарно за весь період акції</div>
+    <!-- steps -->
+    <div style="position:absolute;left:880px;bottom:0;display:flex;align-items:flex-end;gap:22px">
+      <div style="width:300px;height:470px;background:#DDEFD7;border-radius:28px 28px 0 0;padding:34px 30px;position:relative">
+        <div class="h" style="font-size:96px;color:var(--g2)">1<span style="font-size:36px"> ТН</span></div>
+        <div class="h" style="font-size:30px;margin:22px 0 14px">Лендінг</div>
+        <div style="font:500 22px/1.45 Inter;color:#3d463c">Калькулятор підбору, форма заявки, заявки — у ваш Telegram</div>
+      </div>
+      <div style="width:300px;height:630px;background:#9BD08C;border-radius:28px 28px 0 0;padding:34px 30px">
+        <div class="h" style="font-size:96px;color:#1f4d16">2<span style="font-size:36px"> ТН</span></div>
+        <div class="h" style="font-size:30px;margin:22px 0 14px">Фірмовий сайт</div>
+        <div style="font:500 22px/1.45 Inter;color:#1f3a1a">Від 5 до 10 сторінок під ваш бренд</div>
+      </div>
+      <div style="width:320px;height:800px;background:var(--g);border-radius:28px 28px 0 0;padding:34px 30px;color:#fff;position:relative">
+        <div style="position:absolute;top:-30px;right:24px;background:#111;color:#fff;font:800 20px Montserrat;padding:12px 18px;border-radius:30px">МАКСИМУМ</div>
+        <div class="h" style="font-size:96px">5<span style="font-size:36px"> ТН</span></div>
+        <div class="h" style="font-size:30px;margin:22px 0 14px">ERP-система</div>
+        <div style="font:500 22px/1.45 Inter">Облік об'єктів і керування монтажними бригадами</div>
+      </div>
+    </div>
+    <div class="h" style="position:absolute;left:140px;bottom:70px;font-size:64px;color:var(--g);letter-spacing:2px">БЕЗКОШТОВНО</div>
+  </div>
+</section>
+
+<!-- ============ 4. LANDING ============ -->
+<section class="slide" id="s4">
+  <div class="tag">Рівень 1 · Лендінг</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:66px;width:760px">Лендінг, який<br><span style="color:var(--g)">продає за вас</span></div>
+    <ul class="ticks" style="position:absolute;left:140px;top:420px;width:720px">
+      <li>Сучасний продаючий лендінг з вашими контактами</li>
+      <li>Калькулятор підбору моделі під будинок клієнта</li>
+      <li>Форма заявки на прорахунок</li>
+      <li>Заявки миттєво надходять у ваш Telegram</li>
+    </ul>
+    <div style="position:absolute;left:140px;bottom:70px;display:flex;align-items:center;gap:24px">
+      <img src="assets/qr_landing.png" style="width:130px;height:130px;border:2px solid var(--line);border-radius:14px;padding:6px">
+      <div><div style="font:700 22px Montserrat">Подивіться приклад</div><div style="font:500 19px Inter;color:var(--mute);margin-top:6px">mycondtools-cyber.github.io/mycond-mini-apps/beeeco</div></div>
+    </div>
+    <div class="browser" style="left:900px;top:250px;width:900px;height:606px">
+      <div class="bar"><i></i><i></i><i></i><span>ваш-бренд.com.ua</span></div>
+      <img src="assets/land_desk.jpg" style="width:100%;display:block">
+    </div>
+    <div class="browser" style="left:1060px;top:600px;width:640px;height:420px;box-shadow:0 30px 80px rgba(0,0,0,.4)">
+      <div class="bar"><i></i><i></i><i></i><span>Калькулятор підбору</span></div>
+      <img src="assets/land_calc.jpg" style="width:118%;display:block;margin-left:-11%;margin-top:-4%">
+    </div>
+    <div class="phone" style="left:1620px;top:330px;width:260px;height:540px;border-radius:44px;padding:10px">
+      <div class="scr" style="border-radius:36px"><img src="assets/land_mob.jpg" style="width:100%"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. LEAD FLOW + TELEGRAM ============ -->
+<section class="slide" id="s5">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M1060 1100 L1060 390 L1515 140 L1990 400" fill="none" stroke="var(--wm)" stroke-width="42" stroke-linejoin="round"/></svg>
+  <div class="tag">Шлях заявки</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:66px">Жодна заявка<br><span style="color:var(--g)">не загубиться</span></div>
+    <div style="position:absolute;left:140px;top:430px;width:1100px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px 18px">
+        <div class="card" style="padding:28px"><div class="chip">01</div><div class="h" style="font-size:28px;margin:18px 0 8px">Клієнт шукає</div><div style="font:500 21px/1.4 Inter;color:var(--mute)">Переходить на ваш лендінг з реклами чи пошуку</div></div>
+        <div class="card" style="padding:28px"><div class="chip">02</div><div class="h" style="font-size:28px;margin:18px 0 8px">Рахує сам</div><div style="font:500 21px/1.4 Inter;color:var(--mute)">Калькулятор підбирає модель під його будинок</div></div>
+        <div class="card" style="padding:28px"><div class="chip">03</div><div class="h" style="font-size:28px;margin:18px 0 8px">Лишає заявку</div><div style="font:500 21px/1.4 Inter;color:var(--mute)">Ім'я, телефон, місто і вже підібрана модель</div></div>
+        <div class="card" style="padding:28px;border-color:var(--g)"><div class="chip" style="background:var(--g);color:#fff">04</div><div class="h" style="font-size:28px;margin:18px 0 8px">Telegram</div><div style="font:500 21px/1.4 Inter;color:var(--mute)">Сповіщення приходить вам за секунди</div></div>
+        <div class="card" style="padding:28px"><div class="chip">05</div><div class="h" style="font-size:28px;margin:18px 0 8px">Ви дзвоните</div><div style="font:500 21px/1.4 Inter;color:var(--mute)">Клієнт «теплий» — він уже знає, що хоче</div></div>
+        <div class="card" style="padding:28px;background:var(--g);border-color:var(--g)"><div class="chip" style="background:#fff">06</div><div class="h" style="font-size:28px;margin:18px 0 8px;color:#fff">Монтаж</div><div style="font:500 21px/1.4 Inter;color:#fff">Договір, монтаж і задоволений клієнт</div></div>
+      </div>
+    </div>
+    <!-- phone telegram -->
+    <div class="phone" style="left:1300px;top:232px;height:830px">
+      <div class="notch"></div>
+      <div class="scr" style="background:#DCE7D3">
+        <div style="background:#fff;padding:78px 26px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid #e3e3e3">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center"><img src="assets/logo_tree.png" style="width:34px"></div>
+          <div><div style="font:700 20px Inter">Заявки з сайту</div><div style="font:500 15px Inter;color:#4a9ad4">бот</div></div>
+        </div>
+        <div style="padding:22px 18px">
+          <div style="background:#fff;border-radius:18px 18px 18px 6px;padding:18px 20px;font:500 17px/1.55 Inter;box-shadow:0 2px 3px rgba(0,0,0,.08)">
+            <div style="font:700 19px Inter;margin-bottom:8px">🔔 Нова заявка!</div>
+            👤 <b>Олександр</b><br>📞 +380 67 ••• •• 12<br>📍 Бровари<br>🏠 Будинок 150 м², тепла підлога<br>✅ Модель: <b>BeeEco MHCM 12 SU3A</b><br>🌐 Джерело: лендінг
+            <div style="text-align:right;font:500 13px Inter;color:#9aa;margin-top:4px">09:41</div>
+          </div>
+          <div style="background:#fff;border-radius:18px 18px 18px 6px;padding:18px 20px;font:500 17px/1.55 Inter;box-shadow:0 2px 3px rgba(0,0,0,.08);margin-top:14px">
+            <div style="font:700 19px Inter;margin-bottom:8px">🔔 Нова заявка!</div>
+            👤 <b>Ірина</b><br>📞 +380 50 ••• •• 47<br>📍 Ірпінь<br>🏠 Будинок 210 м², радіатори<br>✅ Модель: <b>BeeEco MHCM 18 SU3A</b>
+            <div style="text-align:right;font:500 13px Inter;color:#9aa;margin-top:4px">11:02</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. WEBSITE ============ -->
+<section class="slide" id="s6" style="background:#F6F7F5">
+  <div class="tag">Рівень 2 · Фірмовий сайт</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:64px;width:720px">Виглядайте як<br><span style="color:var(--g)">велика компанія</span></div>
+    <div class="sub" style="position:absolute;left:140px;top:360px;width:640px;font-size:26px">Повноцінний сайт вашої монтажної компанії на 5–10 сторінок — під ваш бренд, з каталогом Mycond і вашими об'єктами.</div>
+    <div style="position:absolute;left:140px;top:560px;display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;width:660px">
+      <div class="chip">Головна</div><div class="chip">Послуги і монтаж</div>
+      <div class="chip">Каталог Mycond</div><div class="chip">Наші об'єкти</div>
+      <div class="chip">Калькулятор</div><div class="chip">Відгуки</div>
+      <div class="chip">Про компанію</div><div class="chip">Контакти</div>
+    </div>
+    <div style="position:absolute;left:140px;bottom:70px;font:600 22px/1.5 Inter;color:var(--mute);width:660px">Адаптивний дизайн · форми заявок з Telegram · базове SEO</div>
+    <!-- main browser -->
+    <div class="browser" style="left:880px;top:200px;width:940px;height:600px">
+      <div class="bar"><i></i><i></i><i></i><span>teplo-montazh.com.ua</span></div>
+      <div style="position:relative;height:556px;background:url(assets/house_autumn.jpg) center 62%/cover">
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,20,10,.85) 0%,rgba(10,20,10,.5) 55%,rgba(10,20,10,0) 100%)"></div>
+        <div style="position:absolute;left:0;right:0;top:0;display:flex;align-items:center;padding:22px 34px;gap:26px;color:#fff;font:600 15px Inter">
+          <div style="font:900 22px Montserrat;margin-right:auto">ТЕПЛО<span style="color:var(--g)">МОНТАЖ</span></div>
+          <span>Послуги</span><span>Теплові насоси</span><span>Об'єкти</span><span>Контакти</span>
+          <span style="background:var(--g);padding:10px 18px;border-radius:30px">Прорахунок</span>
+        </div>
+        <div style="position:absolute;left:34px;top:130px;color:#fff;width:520px">
+          <div style="font:600 15px Inter;color:#9fd98f;letter-spacing:2px">ОФІЦІЙНИЙ ПАРТНЕР MYCOND</div>
+          <div style="font:900 50px/1.05 Montserrat;margin:14px 0 18px">Теплові насоси під ключ у вашому місті</div>
+          <div style="font:500 18px/1.5 Inter;opacity:.9">Підбір, монтаж, пусконалагодження та сервіс. Гарантія на обладнання та роботи.</div>
+          <div style="display:flex;gap:12px;margin-top:26px"><span style="background:var(--g);padding:14px 22px;border-radius:30px;font:700 16px Inter">Розрахувати вартість</span><span style="border:2px solid #fff;padding:12px 22px;border-radius:30px;font:700 16px Inter">Наші об'єкти</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="browser" style="left:960px;top:760px;width:430px;height:280px">
+      <div class="bar" style="height:34px"><i></i><i></i><i></i><span style="font-size:12px;padding:3px 10px">/katalog</span></div>
+      <div style="padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div style="background:#F3F4F2;border-radius:12px;padding:8px;text-align:center"><img src="assets/hp_product.png" style="width:100%"><div style="font:800 12px Montserrat;margin-top:4px">BeeEco</div><div style="font:500 11px Inter;color:#777">6–18 кВт</div></div>
+        <div style="background:#F3F4F2;border-radius:12px;padding:8px;text-align:center"><img src="assets/hp_product.png" style="width:100%"><div style="font:800 12px Montserrat;margin-top:4px">BeeThermic</div><div style="font:500 11px Inter;color:#777">6–24 кВт</div></div>
+        <div style="background:#F3F4F2;border-radius:12px;padding:8px;text-align:center"><img src="assets/hp_product.png" style="width:100%"><div style="font:800 12px Montserrat;margin-top:4px">BeeHeat</div><div style="font:500 11px Inter;color:#777">6–16 кВт</div></div>
+      </div>
+    </div>
+    <div class="browser" style="left:1420px;top:740px;width:430px;height:300px">
+      <div class="bar" style="height:34px"><i></i><i></i><i></i><span style="font-size:12px;padding:3px 10px">/obiekty</span></div>
+      <div style="padding:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="height:220px;border-radius:10px;background:url(assets/house_brick.jpg) center/cover"></div>
+        <div style="height:220px;border-radius:10px;background:url(assets/house_modern.jpg) center/cover"></div>
+        <div style="height:220px;border-radius:10px;background:url(assets/house_white.jpg) center/cover"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. ERP ============ -->
+<section class="slide" id="s7">
+  <div class="tag">Рівень 3 · ERP-система</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:62px;width:640px">Керуйте<br>бізнесом,<br><span style="color:var(--g)">а не хаосом</span></div>
+    <ul class="ticks" style="position:absolute;left:140px;top:470px;width:600px">
+      <li style="font-size:26px">Усі об'єкти та їхні статуси в одному місці</li>
+      <li style="font-size:26px">Призначення бригад і графік монтажів</li>
+      <li style="font-size:26px">Історія клієнта, обладнання, сервісу</li>
+      <li style="font-size:26px">Заявки з сайту — одразу в систему</li>
+      <li style="font-size:26px">Працює з телефона на об'єкті</li>
+    </ul>
+    <!-- ERP mockup -->
+    <div class="browser" style="left:800px;top:250px;width:1040px;height:640px;border-radius:20px">
+      <div class="bar"><i></i><i></i><i></i><span>erp · Мої об'єкти</span></div>
+      <div style="display:flex;height:596px">
+        <div style="width:190px;background:#16261a;color:#cfe3c9;padding:22px 16px;font:600 15px Inter">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:30px"><div style="width:34px;height:34px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center"><img src="assets/logo_tree.png" style="width:24px"></div><b style="color:#fff">ERP</b></div>
+          <div style="background:rgba(91,174,72,.25);color:#fff;padding:11px 12px;border-radius:10px;margin-bottom:6px">▦ Об'єкти</div>
+          <div style="padding:11px 12px">👷 Бригади</div><div style="padding:11px 12px">📅 Календар</div><div style="padding:11px 12px">📥 Заявки</div><div style="padding:11px 12px">👥 Клієнти</div><div style="padding:11px 12px">🔧 Сервіс</div><div style="padding:11px 12px">📦 Склад</div><div style="padding:11px 12px">📊 Звіти</div>
+        </div>
+        <div style="flex:1;background:#F5F6F4;padding:22px">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+            <div style="background:#fff;border-radius:14px;padding:16px"><div style="font:500 13px Inter;color:#888">Об'єкти в роботі</div><div style="font:800 34px Montserrat">14</div></div>
+            <div style="background:#fff;border-radius:14px;padding:16px"><div style="font:500 13px Inter;color:#888">Монтажі цього тижня</div><div style="font:800 34px Montserrat">6</div></div>
+            <div style="background:#fff;border-radius:14px;padding:16px"><div style="font:500 13px Inter;color:#888">Нові заявки</div><div style="font:800 34px Montserrat;color:var(--g)">+9</div></div>
+            <div style="background:#fff;border-radius:14px;padding:16px"><div style="font:500 13px Inter;color:#888">Сервісні виїзди</div><div style="font:800 34px Montserrat">3</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px">
+            <div><div style="font:700 14px Inter;color:#666;margin-bottom:10px">ЗАМІР · 3</div>
+              <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border-left:5px solid #F2B84B"><div style="font:700 14px Inter">Бровари, Лісова 12</div><div style="font:500 12px Inter;color:#888;margin-top:4px">150 м² · BeeEco 12</div><div style="font:600 12px Inter;color:#555;margin-top:8px">📅 02.10 · Бригада 1</div></div>
+              <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border-left:5px solid #F2B84B"><div style="font:700 14px Inter">Ірпінь, Садова 4</div><div style="font:500 12px Inter;color:#888;margin-top:4px">210 м² · BeeEco 18</div><div style="font:600 12px Inter;color:#555;margin-top:8px">📅 03.10 · Бригада 2</div></div>
+            </div>
+            <div><div style="font:700 14px Inter;color:#666;margin-bottom:10px">МОНТАЖ · 4</div>
+              <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border-left:5px solid #4B8FF2"><div style="font:700 14px Inter">Вишневе, Миру 8</div><div style="font:500 12px Inter;color:#888;margin-top:4px">120 м² · BeeThermic 10</div><div style="height:6px;background:#eee;border-radius:3px;margin-top:10px"><div style="width:65%;height:100%;background:#4B8FF2;border-radius:3px"></div></div></div>
+              <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border-left:5px solid #4B8FF2"><div style="font:700 14px Inter">Буча, Вокзальна 20</div><div style="font:500 12px Inter;color:#888;margin-top:4px">180 м² · BeeSmart 15</div><div style="height:6px;background:#eee;border-radius:3px;margin-top:10px"><div style="width:30%;height:100%;background:#4B8FF2;border-radius:3px"></div></div></div>
+            </div>
+            <div><div style="font:700 14px Inter;color:#666;margin-bottom:10px">ПУСКОНАЛАДКА · 2</div>
+              <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border-left:5px solid #9B6BF2"><div style="font:700 14px Inter">Обухів, Київська 3</div><div style="font:500 12px Inter;color:#888;margin-top:4px">95 м² · BeeEco 6</div><div style="font:600 12px Inter;color:#555;margin-top:8px">👷 Бригада 3</div></div>
+            </div>
+            <div><div style="font:700 14px Inter;color:#666;margin-bottom:10px">ЗДАНО · 5</div>
+              <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border-left:5px solid var(--g)"><div style="font:700 14px Inter">Київ, Осокорки</div><div style="font:500 12px Inter;color:#888;margin-top:4px">240 м² · BeeThermic 24</div><div style="font:700 12px Inter;color:var(--g);margin-top:8px">✓ Акт підписано</div></div>
+              <div style="background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border-left:5px solid var(--g)"><div style="font:700 14px Inter">Фастів, Сонячна 1</div><div style="font:500 12px Inter;color:#888;margin-top:4px">130 м² · BeeHeat 12</div><div style="font:700 12px Inter;color:var(--g);margin-top:8px">✓ Акт підписано</div></div>
+            </div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:16px;margin-top:6px">
+            <div style="font:700 14px Inter;color:#666;margin-bottom:12px">ЗАВАНТАЖЕННЯ БРИГАД · ЖОВТЕНЬ</div>
+            <div style="display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;font:600 13px Inter">
+              <span>Бригада 1</span><div style="height:16px;background:#eee;border-radius:8px"><div style="width:82%;height:100%;background:var(--g);border-radius:8px"></div></div>
+              <span>Бригада 2</span><div style="height:16px;background:#eee;border-radius:8px"><div style="width:64%;height:100%;background:var(--g);border-radius:8px"></div></div>
+              <span>Бригада 3</span><div style="height:16px;background:#eee;border-radius:8px"><div style="width:45%;height:100%;background:var(--g);border-radius:8px"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. DIVIDER ============ -->
+<section class="slide green" id="s8">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M900 360 L625 150 L352 352 L352 836 L900 836" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:470px;top:410px;font-size:80px;color:#111">КЛІЄНТИ ДЛЯ<br>ВАШОГО<br>БІЗНЕСУ</div>
+    <div style="position:absolute;left:474px;top:690px;font:600 32px/1.4 Montserrat;color:#fff">Ліди, реклама та заявки<br>у вашому регіоні</div>
+    <div style="position:absolute;right:0;top:0;width:560px;height:1080px;background:url(assets/house_brick.jpg) center/cover"></div>
+    <div style="position:absolute;right:0;top:0;width:560px;height:1080px;background:linear-gradient(90deg,var(--g) 0%,rgba(91,174,72,0) 35%)"></div>
+  </div>
+</section>
+
+<!-- ============ 9. FREE LEADS ============ -->
+<section class="slide" id="s9">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M1060 1100 L1060 390 L1515 140 L1990 400" fill="none" stroke="var(--wm)" stroke-width="42" stroke-linejoin="round"/></svg>
+  <div class="tag">Ліди у подарунок</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div style="position:absolute;left:120px;top:150px;font:900 520px/1 Montserrat;color:var(--g);letter-spacing:-20px">5</div>
+    <div class="h" style="position:absolute;left:520px;top:250px;font-size:66px;width:760px">потенційних<br>клієнтів<br><span style="color:var(--g)">безкоштовно</span></div>
+    <div class="sub" style="position:absolute;left:140px;top:720px;width:1040px;font-size:30px">За покупку <b style="color:var(--ink)">кожного теплового насоса</b> Mycond компанія забезпечує 5 лідів — реальних людей з вашого регіону, які цікавляться тепловим насосом.</div>
+    <div style="position:absolute;left:140px;top:900px;display:flex;gap:18px">
+      <div class="chip" style="font-size:24px">⏱ 1–5 тижнів</div>
+      <div class="chip" style="font-size:24px">📍 Ваш регіон</div>
+      <div class="chip" style="font-size:24px">📲 Одразу у Telegram</div>
+    </div>
+    <div style="position:absolute;left:1290px;top:250px;width:520px">
+      <div style="font:700 18px Inter;color:var(--mute);margin-bottom:14px;letter-spacing:1px">ТАК ВИГЛЯДАЄ ЛІД</div>
+      <div class="card" style="padding:24px 26px;margin-bottom:16px;box-shadow:0 18px 40px rgba(0,0,0,.08)"><div style="display:flex;justify-content:space-between;font:700 22px Inter">Андрій К.<span class="chip" style="font-size:15px;padding:7px 12px">НОВИЙ</span></div><div style="font:500 19px/1.6 Inter;color:var(--mute);margin-top:8px">📍 Вінниця · будинок 140 м²<br>🔥 Зараз: газовий котел</div></div>
+      <div class="card" style="padding:24px 26px;margin-bottom:16px;box-shadow:0 18px 40px rgba(0,0,0,.08);margin-left:40px"><div style="display:flex;justify-content:space-between;font:700 22px Inter">Олена М.<span class="chip" style="font-size:15px;padding:7px 12px">НОВИЙ</span></div><div style="font:500 19px/1.6 Inter;color:var(--mute);margin-top:8px">📍 Хмельницький · 180 м²<br>🏗 Новобудова, тепла підлога</div></div>
+      <div class="card" style="padding:24px 26px;box-shadow:0 18px 40px rgba(0,0,0,.08)"><div style="display:flex;justify-content:space-between;font:700 22px Inter">Сергій П.<span class="chip" style="font-size:15px;padding:7px 12px">НОВИЙ</span></div><div style="font:500 19px/1.6 Inter;color:var(--mute);margin-top:8px">📍 Житомир · 110 м²<br>⚡ Є СЕС, хоче автономність</div></div>
+      <div style="font:500 16px Inter;color:#A5ABA4;margin-top:14px">* Приклад. Строк залежить від регіону та сезону.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. ADS & PAID LEADS ============ -->
+<section class="slide" id="s10">
+  <div class="tag">Реклама та ліди під замовлення</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:64px">Хочете більше клієнтів?<br><span style="color:var(--g)">Масштабуйте з нами</span></div>
+    <div style="position:absolute;left:140px;top:430px;display:grid;grid-template-columns:780px 780px;gap:40px">
+      <div class="card" style="padding:44px 46px;height:430px">
+        <div style="font-size:60px">📈</div>
+        <div class="h" style="font-size:40px;margin:22px 0 18px">Налаштування реклами</div>
+        <div style="font:500 26px/1.5 Inter;color:var(--mute)">Запускаємо рекламу на лендінг чи сайт, які ми для вас розробили. Цільова аудиторія — власники будинків у вашому регіоні.</div>
+        <div style="margin-top:26px;display:flex;gap:12px"><span class="chip">Google</span><span class="chip">Facebook / Instagram</span></div>
+      </div>
+      <div class="card" style="padding:44px 46px;height:430px;background:#111;border-color:#111;color:#fff">
+        <div style="font-size:60px">🎯</div>
+        <div class="h" style="font-size:40px;margin:22px 0 18px">Ліди під замовлення</div>
+        <div style="font:500 26px/1.5 Inter;color:#c9cec8">Замовте потрібну кількість заявок у своєму регіоні — ви платите лише за контакт.</div>
+        <div style="margin-top:30px;display:flex;align-items:baseline;gap:14px"><span style="font:900 72px Montserrat;color:var(--g)">300–600</span><span style="font:700 30px Montserrat">грн / лід</span></div>
+        <div style="font:500 19px Inter;color:#9aa19a;margin-top:6px">Ціна залежить від регіону та сезону</div>
+      </div>
+    </div>
+    <div style="position:absolute;left:140px;bottom:60px;right:140px;background:var(--gl);border-radius:22px;padding:26px 36px;display:flex;align-items:center;gap:30px">
+      <div style="font:900 30px Montserrat;color:var(--g2);white-space:nowrap">ПОРАХУЙТЕ</div>
+      <div style="font:600 25px/1.45 Inter;color:#23331f">Один укладений договір на монтаж теплового насоса окупає десятки лідів. Реклама — це не витрата, а інвестиція у завантаження ваших бригад.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. CONTENT & SEO ============ -->
+<section class="slide" id="s10b">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M1060 1100 L1060 390 L1515 140 L1990 400" fill="none" stroke="var(--wm)" stroke-width="42" stroke-linejoin="round"/></svg>
+  <div class="tag">Статті та SEO</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:60px;width:900px">Клієнти з Google —<br><span style="color:var(--g)">без оплати за клік</span></div>
+    <div class="sub" style="position:absolute;left:140px;top:350px;width:780px;font-size:25px">Ваш сайт з'являється в пошуку, коли люди у вашому місті шукають тепловий насос.</div>
+    <!-- articles -->
+    <div style="position:absolute;left:140px;top:470px;width:780px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-size:40px">✍️</div><div class="h" style="font-size:30px">Написання та публікація статей</div></div>
+      <div style="font:500 21px/1.4 Inter;color:var(--mute);margin:10px 0 16px 58px">Експертні статті на вашому сайті: пишемо, оформлюємо, публікуємо</div>
+      <div style="margin-left:58px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:var(--gl);border-radius:14px;padding:12px 18px;font:600 20px Inter;color:#23331f">📄 Тепловий насос чи газовий котел: що вигідніше?</div>
+        <div style="background:var(--gl);border-radius:14px;padding:12px 18px;font:600 20px Inter;color:#23331f">📄 Як підібрати тепловий насос для будинку 150 м²</div>
+        <div style="background:var(--gl);border-radius:14px;padding:12px 18px;font:600 20px Inter;color:#23331f">📄 Тепловий насос + СЕС: автономне опалення</div>
+      </div>
+    </div>
+    <!-- seo -->
+    <div style="position:absolute;left:140px;top:790px;width:780px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-size:40px">🔎</div><div class="h" style="font-size:30px">Базова SEO-стратегія</div></div>
+      <div style="margin:18px 0 0 58px;display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;font:600 20px/1.3 Inter">
+        <div>✅ Ключові запити під ваше місто</div>
+        <div>✅ Оптимізація сторінок сайту</div>
+        <div>✅ Профіль у Google Картах</div>
+        <div>✅ Підключення Search Console</div>
+      </div>
+    </div>
+    <!-- SERP mockup -->
+    <div class="browser" style="left:990px;top:270px;width:840px;height:620px">
+      <div class="bar"><i></i><i></i><i></i><span>google.com</span></div>
+      <div style="padding:24px 30px;font-family:Arial,sans-serif">
+        <div style="display:flex;align-items:center;gap:18px">
+          <div style="font:700 30px Arial"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></div>
+          <div style="flex:1;border:1px solid #dfe1e5;border-radius:24px;padding:12px 20px;font:18px Arial;color:#202124;box-shadow:0 1px 6px rgba(32,33,36,.18)">тепловий насос бровари ціна <span style="float:right">🔍</span></div>
+        </div>
+        <div style="margin-top:24px;border:3px solid var(--g);border-radius:14px;padding:16px 18px;position:relative">
+          <div style="position:absolute;top:-16px;right:16px;background:var(--g);color:#fff;font:700 14px Montserrat;padding:6px 12px;border-radius:20px">ВАШ САЙТ · №1</div>
+          <div style="font:14px Arial;color:#202124">teplo-montazh.com.ua › statti</div>
+          <div style="font:21px/1.3 Arial;color:#1a0dab;margin:4px 0">Тепловий насос чи газовий котел: що вигідніше у 2026 році</div>
+          <div style="font:15px/1.5 Arial;color:#4d5156">Порівнюємо витрати на опалення будинку 150 м² у Броварах. Розрахунок для BeeEco 12 кВт…</div>
+        </div>
+        <div style="margin-top:16px;border:2px solid #DDEFD7;border-radius:14px;padding:16px 18px">
+          <div style="font:14px Arial;color:#202124">teplo-montazh.com.ua › montazh</div>
+          <div style="font:21px/1.3 Arial;color:#1a0dab;margin:4px 0">Монтаж теплових насосів у Броварах під ключ</div>
+          <div style="font:15px/1.5 Arial;color:#4d5156">Офіційний партнер Mycond. Підбір, монтаж, сервіс. Безкоштовний прорахунок…</div>
+        </div>
+        <div style="margin-top:16px;border:1px solid #e3e3e3;border-radius:14px;overflow:hidden;display:flex">
+          <div style="width:220px;background:#E8EFE4;position:relative"><div style="position:absolute;left:96px;top:44px;font-size:34px">📍</div><div style="position:absolute;inset:0;background:repeating-linear-gradient(35deg,transparent 0 26px,rgba(255,255,255,.7) 26px 30px)"></div></div>
+          <div style="padding:16px 18px"><div style="font:bold 19px Arial;color:#202124">ТеплоМонтаж</div><div style="font:15px Arial;color:#70757a;margin-top:4px"><span style="color:#e7711b">4,9 ★★★★★</span> (38) · Монтаж опалення</div><div style="font:15px Arial;color:#70757a;margin-top:4px">Бровари · Відчинено до 19:00</div></div>
+        </div>
+        <div style="margin-top:18px;opacity:.35"><div style="height:12px;width:40%;background:#ccc;border-radius:6px"></div><div style="height:16px;width:80%;background:#b8c4e8;border-radius:6px;margin-top:10px"></div><div style="height:12px;width:92%;background:#ddd;border-radius:6px;margin-top:10px"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. AI BOT ============ -->
+<section class="slide" id="s11">
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M1060 1100 L1060 390 L1515 140 L1990 400" fill="none" stroke="var(--wm)" stroke-width="42" stroke-linejoin="round"/></svg>
+  <div class="tag">AI-консультант Mycond</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:64px;width:860px">Консультант,<br>який <span style="color:var(--g)">ніколи не спить</span></div>
+    <div class="sub" style="position:absolute;left:140px;top:360px;width:820px;font-size:27px">Бот Mycond відповідає вашим клієнтам на сайті та в Telegram — навіть коли ви на об'єкті.</div>
+    <ul class="ticks" style="position:absolute;left:140px;top:500px;width:820px">
+      <li style="font-size:27px">Відповідає на питання про обладнання 24/7</li>
+      <li style="font-size:27px">Допомагає підібрати модель під будинок</li>
+      <li style="font-size:27px">Технічна документація та інструкції під рукою</li>
+      <li style="font-size:27px">Помічник і для монтажника на об'єкті</li>
+    </ul>
+    <div style="position:absolute;left:140px;bottom:70px;display:flex;align-items:center;gap:24px">
+      <img src="assets/qr_bot.png" style="width:140px;height:140px;border:2px solid var(--line);border-radius:14px;padding:6px">
+      <div><div style="font:900 34px Montserrat;color:var(--g)">@mycond_library_bot</div><div style="font:500 20px Inter;color:var(--mute);margin-top:6px">Скануйте і спробуйте прямо зараз</div></div>
+    </div>
+    <div class="phone" style="left:1180px;top:150px;width:440px;height:880px">
+      <div class="notch"></div>
+      <div class="scr" style="background:#E6EEE0">
+        <div style="background:#fff;padding:78px 26px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid #e3e3e3">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center"><img src="assets/logo_tree.png" style="width:34px"></div>
+          <div><div style="font:700 20px Inter">Mycond Assistant</div><div style="font:500 15px Inter;color:#4a9ad4">@mycond_library_bot</div></div>
+        </div>
+        <div style="padding:20px 16px;display:flex;flex-direction:column;gap:12px;font:500 17px/1.5 Inter">
+          <div style="align-self:flex-end;background:#D7F5C8;border-radius:18px 18px 6px 18px;padding:14px 16px;max-width:82%">Яку модель взяти на будинок 150 м² під Києвом?</div>
+          <div style="background:#fff;border-radius:18px 18px 18px 6px;padding:14px 16px;max-width:90%">Для 150 м² з нормальним утепленням тепловтрати ≈ 10,5 кВт при −22 °C.<br><br>Рекомендую <b>BeeEco MHCM 12 SU3A</b> — 12,2 кВт, R290, подача до +75 °C 👍</div>
+          <div style="align-self:flex-end;background:#D7F5C8;border-radius:18px 18px 6px 18px;padding:14px 16px;max-width:82%">А схема підключення є?</div>
+          <div style="background:#fff;border-radius:18px 18px 18px 6px;padding:14px 16px;max-width:90%">Так, ось технічний посібник:
+            <div style="display:flex;align-items:center;gap:12px;background:#F1F5EE;border-radius:12px;padding:10px 12px;margin-top:8px"><div style="width:40px;height:40px;background:var(--g);border-radius:8px;color:#fff;font:800 12px Montserrat;display:flex;align-items:center;justify-content:center">PDF</div><div><b style="font-size:15px">BeeEco_manual.pdf</b><div style="font-size:13px;color:#888">Технічний посібник</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <img src="assets/controller.png" style="position:absolute;left:1650px;top:660px;width:220px;border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,.3)">
+  </div>
+</section>
+
+<!-- ============ 12. HOW TO GET ============ -->
+<section class="slide" id="s12">
+  <div class="tag">Як стати партнером</div>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:140px;top:190px;font-size:66px">4 кроки до<br><span style="color:var(--g)">нових клієнтів</span></div>
+    <div style="position:absolute;left:140px;top:470px;right:140px;display:grid;grid-template-columns:repeat(4,1fr);gap:26px">
+      <div class="card" style="padding:36px 32px;height:420px;position:relative"><div style="font:900 90px Montserrat;color:var(--g);line-height:1">1</div><div class="h" style="font-size:30px;margin:24px 0 14px">Купуєте ТН Mycond</div><div style="font:500 22px/1.5 Inter;color:var(--mute)">Будь-яку модель: BeeSmart, BeeHeat, BeeEco, BeeThermic, MBasic</div></div>
+      <div class="card" style="padding:36px 32px;height:420px"><div style="font:900 90px Montserrat;color:var(--g);line-height:1">2</div><div class="h" style="font-size:30px;margin:24px 0 14px">Надсилаєте дані</div><div style="font:500 22px/1.5 Inter;color:var(--mute)">Логотип, назву компанії, контакти, регіон роботи та фото ваших об'єктів</div></div>
+      <div class="card" style="padding:36px 32px;height:420px"><div style="font:900 90px Montserrat;color:var(--g);line-height:1">3</div><div class="h" style="font-size:30px;margin:24px 0 14px">Ми запускаємо</div><div style="font:500 22px/1.5 Inter;color:var(--mute)">Лендінг, сайт або ERP, підключаємо заявки до вашого Telegram</div></div>
+      <div class="card" style="padding:36px 32px;height:420px;background:var(--g);border-color:var(--g);color:#fff"><div style="font:900 90px Montserrat;line-height:1">4</div><div class="h" style="font-size:30px;margin:24px 0 14px">Отримуєте клієнтів</div><div style="font:500 22px/1.5 Inter">Ліди в подарунок, заявки з сайту — і нові монтажі</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. CTA ============ -->
+<section class="slide green" id="s13">
+  <div style="position:absolute;right:0;top:0;width:700px;height:1080px;background:url(assets/cascade.jpg) 30% center/cover"></div>
+  <div style="position:absolute;right:0;top:0;width:700px;height:1080px;background:linear-gradient(90deg,var(--g) 0%,rgba(91,174,72,0) 40%)"></div>
+  <svg class="wm" viewBox="0 0 1920 1080"><path d="M900 360 L625 150 L352 352 L352 836 L900 836" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="logo"><img src="assets/logo_tree.png"><b>MYCOND</b></div>
+  <div class="content">
+    <div class="h" style="position:absolute;left:440px;top:400px;font-size:74px;color:#111">ВИ МОНТУЄТЕ —<br>МИ ПРИВОДИМО<br><span style="color:#fff">КЛІЄНТІВ</span></div>
+    <div style="position:absolute;left:444px;top:690px;background:#111;color:#fff;font:800 30px/1 Montserrat;padding:20px 30px;border-radius:50px">Акція діє до 01.03.2027</div>
+    <div style="position:absolute;left:140px;bottom:50px;display:flex;gap:36px;align-items:center">
+      <div style="display:flex;gap:16px;align-items:center"><img src="assets/qr_landing.png" style="width:110px;background:#fff;padding:6px;border-radius:10px"><div style="font:700 20px/1.35 Montserrat;color:#fff">Приклад<br>лендінгу</div></div>
+      <div style="display:flex;gap:16px;align-items:center"><img src="assets/qr_bot.png" style="width:110px;background:#fff;padding:6px;border-radius:10px"><div style="font:700 20px/1.35 Montserrat;color:#fff">AI-бот<br>Mycond</div></div>
+      <div style="display:flex;gap:16px;align-items:center"><img src="assets/qr_site.png" style="width:110px;background:#fff;padding:6px;border-radius:10px"><div style="font:700 20px/1.35 Montserrat;color:#fff">mycond.ua</div></div>
+    </div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
