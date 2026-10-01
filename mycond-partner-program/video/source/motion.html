@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#ECEAE6;overflow:hidden}
+body{font-family:Inter,Arial,sans-serif;color:#111}
+#frame{position:relative;overflow:hidden;background:#ECEAE6}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#shape{position:absolute;overflow:hidden}
+.c{position:absolute;left:50%;top:50%}
+#cursor{position:absolute;left:0;top:0;width:44px;height:44px;transform-origin:6px 4px;z-index:50}
+.h{font-family:Montserrat,Arial,sans-serif;font-weight:800}
+.tab{position:absolute;top:0;height:112px;display:flex;align-items:center;justify-content:center;font:700 25px Montserrat;color:#55595A}
+.row{display:flex;align-items:center}
+</style></head>
+<body>
+<div id="frame">
+ <div id="world">
+  <div id="shape">
+   <!-- C0 button -->
+   <div class="c" id="c0" style="width:560px;height:120px;margin:-60px 0 0 -280px;display:flex;align-items:center;justify-content:center;gap:16px;color:#fff;font:700 31px Montserrat">Записатися на навчання
+     <svg width="30" height="30" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+   <!-- C1 loader -->
+   <div class="c" id="c1" style="width:120px;height:120px;margin:-60px 0 0 -60px"><svg id="spin" width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="26" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><path d="M60 34 a26 26 0 0 1 26 26" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/></svg></div>
+   <!-- C2 check -->
+   <div class="c" id="c2" style="width:120px;height:120px;margin:-60px 0 0 -60px"><svg width="120" height="120" viewBox="0 0 120 120"><path id="chk" d="M38 62 l15 15 l30 -32" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="70" stroke-dashoffset="70"/></svg></div>
+   <!-- C3 island -->
+   <div class="c row" id="c3" style="width:640px;height:104px;margin:-52px 0 0 -320px;padding:0 36px;gap:18px;color:#fff">
+     <div id="dot" style="width:18px;height:18px;border-radius:50%;background:#5BAE48"></div>
+     <div style="font:700 27px Montserrat;flex:1">Навчання інсталяторів</div>
+     <div style="font:600 22px Inter;color:#9DA19E">Mycond</div></div>
+   <!-- C4 card -->
+   <div class="c" id="c4" style="width:720px;height:820px;margin:-410px 0 0 -360px;padding:44px 48px">
+     <div class="row" style="justify-content:space-between"><div><div style="font:600 20px Inter;color:#5BAE48;letter-spacing:2px">МОНОБЛОК · R290</div><div class="h" style="font-size:54px;margin-top:6px">BeeEco</div></div><div class="h" style="font-size:54px">12<span style="font-size:28px;color:#8A8F8B"> кВт</span></div></div>
+     <img src="assets/hp_product.png" style="width:470px;display:block;margin:26px auto 0">
+     <div class="row" style="gap:12px;margin-top:30px;font:600 21px Inter;color:#55595A"><span style="background:#F1F2EF;padding:10px 16px;border-radius:30px">до +75 °C</span><span style="background:#F1F2EF;padding:10px 16px;border-radius:30px">COP 4,75</span><span style="background:#F1F2EF;padding:10px 16px;border-radius:30px">до −25 °C</span></div>
+     <div class="row" style="position:absolute;left:48px;right:48px;bottom:44px;justify-content:space-between;border-top:2px solid #EEF0EC;padding-top:28px">
+       <div style="font:700 26px Montserrat">Погодозалежний режим</div>
+       <div id="tg" style="position:relative;width:100px;height:56px;border-radius:28px;background:#D9DCD7"><div id="tgk" style="position:absolute;top:6px;height:44px;border-radius:22px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)"></div></div>
+     </div></div>
+   <!-- C5 slider -->
+   <div class="c" id="c5" style="width:860px;height:340px;margin:-170px 0 0 -430px;padding:44px 50px">
+     <div class="row" style="justify-content:space-between;align-items:flex-end">
+       <div><div style="font:600 22px Inter;color:#8A8F8B">Температура подачі</div><div class="h" style="font-size:76px;margin-top:4px"><span id="tv">35</span><span style="font-size:40px"> °C</span></div></div>
+       <div style="text-align:right"><div style="font:600 22px Inter;color:#8A8F8B" id="copl">COP при A7</div><div class="h" style="font-size:52px;color:#5BAE48" id="copv">4,75</div></div></div>
+     <div style="position:absolute;left:50px;right:50px;top:242px;height:14px">
+       <div id="trk" style="position:absolute;left:0;top:0;height:14px;border-radius:7px;background:#E6E8E4;width:760px"></div>
+       <div id="fill" style="position:absolute;left:0;top:0;height:14px;border-radius:7px;background:#111"></div>
+       <div id="knob" style="position:absolute;top:-17px;width:48px;height:48px;border-radius:24px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25)"></div></div>
+     <div class="row" style="position:absolute;left:50px;right:50px;top:282px;justify-content:space-between;font:600 19px Inter;color:#9DA19E"><span>25 °C</span><span>макс. +75 °C</span></div></div>
+   <!-- C6 tabs -->
+   <div class="c" id="c6" style="width:920px;height:112px;margin:-56px 0 0 -460px">
+     <div id="ind" style="position:absolute;top:12px;height:88px;border-radius:44px;background:#111"></div>
+     <div class="tab" id="tb0" style="left:10px;width:180px">BeeSmart</div><div class="tab" id="tb1" style="left:190px;width:170px">BeeHeat</div><div class="tab" id="tb2" style="left:360px;width:170px">BeeEco</div><div class="tab" id="tb3" style="left:530px;width:210px">BeeThermic</div><div class="tab" id="tb4" style="left:740px;width:170px">MBasic</div></div>
+   <!-- C7 chart -->
+   <div class="c" id="c7" style="width:880px;height:660px;margin:-330px 0 0 -440px;padding:44px 50px">
+     <div style="font:600 20px Inter;color:#5BAE48;letter-spacing:2px">BEEECO 12 КВТ · W35</div>
+     <div class="h" style="font-size:44px;margin-top:6px">COP і зовнішня температура</div>
+     <svg width="780" height="440" viewBox="0 0 780 440" style="position:absolute;left:50px;top:180px;overflow:visible">
+       <g stroke="#EEF0EC" stroke-width="2"><line x1="40" y1="70" x2="780" y2="70"/><line x1="40" y1="150" x2="780" y2="150"/><line x1="40" y1="230" x2="780" y2="230"/><line x1="40" y1="310" x2="780" y2="310"/></g>
+       <g font-family="Inter" font-size="18" fill="#9DA19E" font-weight="600"><text x="0" y="76">6</text><text x="0" y="156">5</text><text x="0" y="236">4</text><text x="0" y="316">3</text><text x="40" y="400">−25 °C</text><text x="380" y="400">0 °C</text><text x="700" y="400">+25 °C</text></g>
+       <path id="curve" fill="none" stroke="#111" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+       <g id="tip"><line id="tipl" stroke="#5BAE48" stroke-width="2" stroke-dasharray="6 6"/><circle id="tipd" r="12" fill="#5BAE48" stroke="#fff" stroke-width="4"/>
+         <g id="tipb"><rect x="-120" y="-108" width="240" height="78" rx="18" fill="#111"/><text x="0" y="-77" text-anchor="middle" font-family="Inter" font-size="19" font-weight="600" fill="#9DA19E">при −7 °C</text><text x="0" y="-46" text-anchor="middle" font-family="Montserrat" font-size="26" font-weight="800" fill="#fff">COP 3,54</text></g></g>
+     </svg></div>
+   <!-- C8 checklist -->
+   <div class="c" id="c8" style="width:760px;height:560px;margin:-280px 0 0 -380px;padding:46px 50px">
+     <div style="font:600 20px Inter;color:#5BAE48;letter-spacing:2px">ПЕРЕД ЗАПУСКОМ</div>
+     <div class="h" style="font-size:46px;margin:6px 0 30px">Чек-лист</div>
+     <div class="row ci" style="gap:24px;height:104px;border-top:2px solid #EEF0EC"><div class="cb" style="width:52px;height:52px;border-radius:14px;border:4px solid #D9DCD7;position:relative"><svg width="44" height="44" viewBox="0 0 44 44" style="position:absolute;left:0;top:0"><path class="cbp" d="M11 23 l7 7 l15 -16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div><div style="font:600 28px Inter">Блок піднятий на 40–50 см</div></div>
+     <div class="row ci" style="gap:24px;height:104px;border-top:2px solid #EEF0EC"><div class="cb" style="width:52px;height:52px;border-radius:14px;border:4px solid #D9DCD7;position:relative"><svg width="44" height="44" viewBox="0 0 44 44" style="position:absolute;left:0;top:0"><path class="cbp" d="M11 23 l7 7 l15 -16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div><div style="font:600 28px Inter">Усі датчики підключені</div></div>
+     <div class="row ci" style="gap:24px;height:104px;border-top:2px solid #EEF0EC"><div class="cb" style="width:52px;height:52px;border-radius:14px;border:4px solid #D9DCD7;position:relative"><svg width="44" height="44" viewBox="0 0 44 44" style="position:absolute;left:0;top:0"><path class="cbp" d="M11 23 l7 7 l15 -16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div><div style="font:600 28px Inter">Крива опалення налаштована</div></div></div>
+   <!-- C9 command palette -->
+   <div class="c" id="c9" style="width:720px;height:124px;top:0;margin:0 0 0 -360px">
+     <div class="row" style="height:124px;padding:0 36px;gap:20px">
+       <svg width="34" height="34" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="#111" stroke-width="2.4"/><path d="M16.5 16.5L21 21" stroke="#111" stroke-width="2.4" stroke-linecap="round"/></svg>
+       <div style="font:600 32px Inter;flex:1;position:relative;height:40px"><span id="ph" style="position:absolute;left:0;top:0;color:#A6AAA7">Пошук…</span><span id="typed" style="position:absolute;left:0;top:0"></span><span id="caret" style="position:absolute;top:2px;width:3px;height:36px;background:#111"></span></div>
+       <div style="font:700 22px Inter;color:#55595A;background:#F1F2EF;border-radius:12px;padding:8px 14px">⌘K</div></div>
+     <div id="list" style="border-top:2px solid #EEF0EC"></div></div>
+   <!-- C10 toast -->
+   <div class="c row" id="c10" style="width:700px;height:160px;margin:-80px 0 0 -350px;padding:0 34px;gap:24px;color:#fff">
+     <div style="width:84px;height:84px;border-radius:24px;background:#5BAE48;display:flex;align-items:center;justify-content:center"><svg id="bell" width="44" height="44" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z M10 20a2 2 0 0 0 4 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
+     <div style="flex:1"><div style="font:700 30px Montserrat">Нова заявка · Бровари</div><div style="font:500 22px Inter;color:#A6AAA7;margin-top:8px">BeeEco 12 кВт · будинок 150 м²</div></div>
+     <div style="font:600 19px Inter;color:#8A8F8B;align-self:flex-start;margin-top:40px">щойно</div></div>
+   <!-- C11 ladder -->
+   <div class="c" id="c11" style="width:820px;height:660px;margin:-330px 0 0 -410px;padding:46px 50px">
+     <div style="font:600 20px Inter;color:#5BAE48;letter-spacing:2px">ДО 01.03.2027 · БЕЗКОШТОВНО</div>
+     <div class="h" style="font-size:46px;margin-top:6px">Бонуси партнерам</div>
+     <div style="position:absolute;left:50px;right:50px;bottom:46px;height:430px">
+       <div class="bar" style="position:absolute;bottom:80px;left:0;width:220px;border-radius:22px;background:#E6E8E4"></div>
+       <div class="bar" style="position:absolute;bottom:80px;left:250px;width:220px;border-radius:22px;background:#CFD3CD"></div>
+       <div class="bar" style="position:absolute;bottom:80px;left:500px;width:220px;border-radius:22px;background:#5BAE48"></div>
+       <div class="bl" style="position:absolute;left:0;bottom:0;width:220px"><div class="h" style="font-size:30px">1 ТН</div><div style="font:600 21px Inter;color:#55595A">Лендінг</div></div>
+       <div class="bl" style="position:absolute;left:250px;bottom:0;width:220px"><div class="h" style="font-size:30px">2 ТН</div><div style="font:600 21px Inter;color:#55595A">Фірмовий сайт</div></div>
+       <div class="bl" style="position:absolute;left:500px;bottom:0;width:220px"><div class="h" style="font-size:30px">5 ТН</div><div style="font:600 21px Inter;color:#55595A">ERP-система</div></div></div></div>
+   <!-- C12 pill -->
+   <div class="c row" id="c12" style="width:820px;height:124px;margin:-62px 0 0 -410px;justify-content:center;gap:18px;color:#fff">
+     <img src="assets/logo_tree.png" style="width:62px"><div style="font:800 32px Montserrat">Mycond · Продаємо разом з вами</div></div>
+  </div>
+ </div>
+ <svg id="cursor" viewBox="0 0 44 44"><path d="M6 4 L6 34 L14 26 L19.5 38 L25 35.5 L19.5 24 L31 24 Z" fill="#111" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/></svg>
+</div>
+<script>
+const P = new URLSearchParams(location.search);
+const W = 1080, H = +(P.get('h') || 1350);
+const B = 0.5, L = 14;                       // 120 BPM, 7 bars
+const b = n => n * B;
+document.getElementById('frame').style.cssText += `width:${W}px;height:${H}px`;
+const CX = W / 2, CY = H / 2;
+
+/* ---------- springs ---------- */
+function stepf(tau, w = 20, z = 0.82) {
+  if (tau <= 0) return 0;
+  if (z >= 0.999) return 1 - Math.exp(-w * tau) * (1 + w * tau);
+  const wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * tau) * (Math.cos(wd * tau) + (z * w / wd) * Math.sin(wd * tau));
+}
+// keys: [[time, target], ...] first key is the loop-start value; track loops seamlessly
+function track(keys, w = 20, z = 0.82) {
+  const k = keys.slice(); if (k[k.length - 1][1] !== k[0][1]) k.push([L - 0.0001, k[0][1]]);
+  const v0 = k[0][1], d = [];
+  for (let i = 1; i < k.length; i++) d.push([k[i][0], k[i][1] - k[i - 1][1]]);
+  return t => { let v = v0; for (const [ti, dv] of d) { v += dv * stepf(t - ti, w, z) + dv * stepf(t - ti + L, w, z) - dv; } return v + d.reduce((s, x) => s + x[1], 0); };
+}
+// helper: piecewise-held state index -> property, keyed by beats
+const S = [ // [beat, w, h, r, color]
+  [0, 560, 120, 60, '#111111'], [1, 120, 120, 60, '#111111'], [2, 120, 120, 60, '#5BAE48'], [3, 640, 104, 52, '#111111'],
+  [4, 720, 820, 56, '#FFFFFF'], [5.5, 860, 340, 48, '#FFFFFF'], [8.5, 920, 112, 56, '#FFFFFF'], [11, 880, 660, 48, '#FFFFFF'],
+  [14, 760, 560, 48, '#FFFFFF'], [16, 720, 124, 30, '#FFFFFF'], [19, 700, 160, 40, '#111111'], [21, 820, 660, 48, '#FFFFFF'],
+  [24, 820, 124, 62, '#5BAE48'], [27, 560, 120, 60, '#111111']];
+const hex = (c, i) => parseInt(c.substr(1 + 2 * i, 2), 16);
+const tw = track(S.map(s => [b(s[0]), s[1]]));
+// palette height depends on matches
+const LIST = ['Ліди у подарунок · 5 шт.', 'Лендінг з калькулятором', 'Фірмовий сайт', 'ERP-система', 'AI-бот @mycond_library_bot'];
+const TYPE = [[b(17), 'л'], [b(17.25), 'лі'], [b(17.5), 'лід'], [b(17.75), 'ліди']];
+const matches = q => LIST.filter(x => x.toLowerCase().includes(q));
+const hKeys = S.map(s => [b(s[0]), s[2]]);
+const iP = hKeys.findIndex(k => k[0] === b(16));
+hKeys.splice(iP + 1, 0, [b(16.5), 124 + 5 * 74 + 12], ...TYPE.map(([t, q]) => [t + 0.06, 124 + matches(q).length * 74 + 12]));
+const th = track(hKeys);
+const tr = track(S.map(s => [b(s[0]), s[3]]));
+const tc = [0, 1, 2].map(i => track(S.map(s => [b(s[0]), hex(s[4], i)]), 16, 1));
+// camera
+const zoomFor = (w, h) => Math.min(0.80 * W / w, (H > 1500 ? 0.55 : 0.66) * H / h, 1.75);
+const tz = track(S.map(s => [b(s[0]), zoomFor(s[1], s[2])]), 9, 0.9);
+
+/* ---------- content visibility ---------- */
+const WIN = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5.5], [5.5, 8.5], [8.5, 11], [11, 14], [14, 16], [16, 19], [19, 21], [21, 24], [24, 27]];
+const clamp = (v, a, c) => Math.max(a, Math.min(c, v));
+const ease = x => { x = clamp(x, 0, 1); return 1 - Math.pow(1 - x, 3); };
+function vis(t, a, e) { // enter at a, exit at e (seconds)
+  const i = ease((t - a - 0.06) / 0.16), o = 1 - ease((t - e + 0.08) / 0.1);
+  return Math.min(i, o);
+}
+const els = WIN.map((_, i) => document.getElementById('c' + i));
+
+/* ---------- cursor path (world coords, relative to centre) ---------- */
+const CUR = [[0, 330, 300], [b(0.3), 150, 30], [b(2.2), 220, 120], [b(4.2), 262, 338], [b(5.4), -228, 79], [b(6), 76, 79],
+  [b(7), 380, 79], [b(7.5), 470, 79], [b(8.1), 470, 96], [b(8.3), -185, 6], [b(9.3), -15, 6], [b(10.4), 120, 160],
+  [b(12.3), -98, 136], [b(13.9), -304, -64], [b(14.55), -304, 40], [b(15.05), -304, 144], [b(15.8), 200, 260],
+  [b(19.5), 260, 170], [b(20.2), 300, 330], [b(23.3), 200, 6], [b(25.2), 330, 300]];
+const cx = track(CUR.map(k => [k[0], k[1]]), 15, 0.9), cy = track(CUR.map(k => [k[0], k[2]]), 15, 0.9);
+const CLICK = [b(1), b(5), b(6), b(9), b(10), b(14.5), b(15), b(15.5), b(24)];
+const PRESS = [[b(6), b(8)]];
+const pressed = t => PRESS.some(([a, e]) => t >= a && t < e);
+function cursorScale(t) {
+  let s = 1;
+  for (const c of CLICK) { const d = t - c; if (d > -0.06 && d < 0.18) s = Math.min(s, 1 - 0.16 * Math.sin(Math.PI * clamp((d + 0.06) / 0.24, 0, 1))); }
+  if (pressed(t)) s = Math.min(s, 0.86);
+  return s;
+}
+
+/* ---------- per-state details ---------- */
+const togA = track([[0, 6], [b(5), 50]], 26, 0.75), togB = track([[0, 50], [b(5) + 0.05, 94]], 20, 0.8); // knob edges
+const togC = track([[0, 0], [b(5), 1]], 20, 1);
+// slider: value from cursor while pressed; spring back after release
+const TRK0 = -380, TRK = 760;          // track left edge (world, rel. centre) and width
+const valFromX = x => 25 + (x - TRK0) / TRK * 50;
+const relX = cx(b(8)); const relV = valFromX(relX);
+function sliderVal(t) {
+  if (t < b(6)) return 35;
+  if (pressed(t)) return valFromX(cx(t));
+  const k = stepf(t - b(8), 22, 0.85); return relV + (75 - relV) * k;
+}
+const indL = track([[0, 10], [b(9), 190], [b(10), 360]], 24, 0.8), indR = track([[0, 190], [b(9) + 0.06, 360], [b(10) + 0.06, 530]], 18, 0.82);
+const COP = [[-25, 2.27], [-20, 2.61], [-15, 2.97], [-10, 3.3], [-7, 3.54], [-2, 3.98], [2, 4.32], [7, 4.75], [15, 5.46], [25, 6.34]];
+const px = T => 40 + (T + 25) / 50 * 700, py = c => 30 + (6.5 - c) * 80;
+const curveD = 'M' + COP.map(([T, c]) => px(T).toFixed(1) + ' ' + py(c).toFixed(1)).join(' L');
+const curveEl = document.getElementById('curve'); curveEl.setAttribute('d', curveD);
+const CLEN = curveEl.getTotalLength(); curveEl.style.strokeDasharray = CLEN;
+const fmt = v => v.toFixed(2).replace('.', ',');
+
+function seek(t) {
+  t = ((t % L) + L) % L;
+  const w = tw(t), h = th(t), r = tr(t), z = tz(t);
+  const col = `rgb(${tc.map(f => clamp(Math.round(f(t)), 0, 255)).join(',')})`;
+  const sh = document.getElementById('shape');
+  sh.style.cssText = `left:${CX - w / 2}px;top:${CY - h / 2}px;width:${w}px;height:${h}px;border-radius:${r}px;background:${col};box-shadow:0 ${8 + 0.02 * h}px ${30 + 0.04 * h}px rgba(30,30,25,${0.10 + 0.05 * (w > 400)})`;
+  const world = document.getElementById('world');
+  world.style.transform = `translate(${CX}px,${CY}px) scale(${z}) translate(${-CX}px,${-CY}px)`;
+
+  // content cross-fades
+  WIN.forEach(([a, e], i) => {
+    let o = vis(t, b(a), b(e));
+    if (i === 0) o = t < b(1) ? 1 - ease((t - b(1) + 0.08) / 0.1) : ease((t - b(27) - 0.06) / 0.16);
+    const el = els[i];
+    el.style.opacity = o; el.style.filter = o < 0.999 ? `blur(${(1 - o) * 9}px)` : 'none';
+    el.style.visibility = o < 0.002 ? 'hidden' : 'visible';
+  });
+  // C1 loader spin, C2 check, C3 dot pulse
+  document.getElementById('spin').style.transform = `rotate(${(t * 720) % 360}deg)`;
+  document.getElementById('chk').style.strokeDashoffset = 70 * (1 - ease((t - b(2) - 0.08) / 0.28));
+  document.getElementById('dot').style.transform = `scale(${1 + 0.25 * Math.max(0, Math.sin((t - b(3)) * Math.PI * 4))})`;
+  // C4 toggle
+  const a = togA(t), e = togB(t), on = togC(t);
+  document.getElementById('tgk').style.cssText += `;left:${a}px;width:${e - a}px`;
+  document.getElementById('tg').style.background = `rgb(${Math.round(217 + (91 - 217) * on)},${Math.round(220 + (174 - 220) * on)},${Math.round(215 + (72 - 215) * on)})`;
+  // C5 slider
+  const v = sliderVal(t), vc = clamp(v, 25, 75), over = Math.max(0, v - 75);
+  const kx = (vc - 25) / 50 * TRK + over / 50 * TRK * 0.35;
+  document.getElementById('knob').style.left = (kx - 24) + 'px';
+  document.getElementById('fill').style.width = Math.max(14, kx) + 'px';
+  document.getElementById('trk').style.width = (TRK + over / 50 * TRK * 0.35) + 'px';
+  document.getElementById('knob').style.transform = `scale(${pressed(t) ? 1.12 : 1},${1 - Math.min(0.12, over * 0.01)})`;
+  document.getElementById('tv').textContent = Math.round(vc);
+  const copEl = document.getElementById('copv'), copL = document.getElementById('copl');
+  if (Math.round(vc) <= 55) { copL.textContent = 'COP при A7'; copEl.textContent = fmt(4.75 + (clamp(Math.round(vc), 35, 55) - 35) / 20 * (3.15 - 4.75)); copEl.style.color = '#5BAE48'; }
+  else { copL.textContent = 'Режим'; copEl.textContent = 'радіатори'; copEl.style.color = '#111'; }
+  // C6 tabs
+  const L1 = indL(t), R1 = indR(t);
+  document.getElementById('ind').style.cssText += `;left:${L1}px;width:${R1 - L1}px`;
+  const mid = (L1 + R1) / 2;
+  [[10, 190], [190, 360], [360, 530], [530, 740], [740, 910]].forEach(([l, rr], i) => {
+    document.getElementById('tb' + i).style.color = (mid > l && mid < rr) ? '#fff' : '#55595A';
+  });
+  // C7 chart
+  curveEl.style.strokeDashoffset = CLEN * (1 - ease((t - b(11) - 0.15) / 0.9));
+  const tp = ease((t - b(13)) / 0.25), X = px(-7), Y = py(3.54);
+  document.getElementById('tip').style.opacity = tp;
+  document.getElementById('tipd').setAttribute('cx', X); document.getElementById('tipd').setAttribute('cy', Y);
+  const tl = document.getElementById('tipl'); tl.setAttribute('x1', X); tl.setAttribute('x2', X); tl.setAttribute('y1', Y); tl.setAttribute('y2', 372);
+  document.getElementById('tipb').setAttribute('transform', `translate(${X},${Y - 8 * (1 - tp)}) scale(${0.9 + 0.1 * tp})`);
+  // C8 checklist
+  document.querySelectorAll('#c8 .ci').forEach((row, i) => {
+    const k = ease((t - b(14.5 + 0.5 * i)) / 0.15), d = ease((t - b(14.5 + 0.5 * i) - 0.05) / 0.25);
+    const cb = row.querySelector('.cb');
+    cb.style.background = k > 0 ? `rgba(91,174,72,${k})` : 'transparent'; cb.style.borderColor = k > 0.5 ? '#5BAE48' : '#D9DCD7';
+    cb.style.transform = `scale(${1 + 0.12 * Math.sin(Math.PI * clamp((t - b(14.5 + 0.5 * i)) / 0.25, 0, 1))})`;
+    row.querySelector('.cbp').style.strokeDashoffset = 40 * (1 - d);
+  });
+  // C9 palette
+  let q = ''; for (const [tt, s] of TYPE) if (t >= tt) q = s;
+  document.getElementById('typed').textContent = q;
+  document.getElementById('ph').style.opacity = q ? 0 : 1;
+  const tw2 = q ? document.getElementById('typed').offsetWidth : 0;
+  document.getElementById('caret').style.left = (tw2 + 2) + 'px';
+  document.getElementById('caret').style.opacity = (Math.floor(t / 0.25) % 2 === 0 || (t > b(17) && t < b(18.5))) ? 1 : 0;
+  const listOpen = ease((t - b(16.5)) / 0.2);
+  const items = t < b(16.5) ? [] : (q ? matches(q) : LIST);
+  const sel = t >= b(18.5);
+  document.getElementById('list').innerHTML = items.map((x, i) => `<div style="height:74px;display:flex;align-items:center;padding:0 36px;gap:18px;font:600 26px Inter;opacity:${listOpen};${i === 0 && sel ? 'background:#F1F2EF' : ''}"><span style="width:12px;height:12px;border-radius:6px;background:${i === 0 && q ? '#5BAE48' : '#D9DCD7'}"></span>${x}${i === 0 && sel ? '<span style="margin-left:auto;font:700 20px Inter;color:#8A8F8B">↵ Enter</span>' : ''}</div>`).join('');
+  { let a = 0; for (const tb of [b(19.6), b(20), b(20.5)]) { const d = t - tb; if (d > 0 && d < 0.4) a += 18 * Math.exp(-d * 9) * Math.sin(d * 40); }
+    document.getElementById('bell').style.transform = `rotate(${a}deg)`; }
+  // C11 ladder
+  const HB = [150, 240, 340];
+  document.querySelectorAll('#c11 .bar').forEach((el, i) => {
+    const g = stepf(t - b(21.5 + 0.5 * i), 18, 0.8);
+    el.style.height = Math.max(0, HB[i] * g) + 'px';
+  });
+  // cursor (screen coords, constant size)
+  const wx = CX + cx(t), wy = CY + cy(t);
+  const sx = CX + (wx - CX) * z, sy = CY + (wy - CY) * z;
+  document.getElementById('cursor').style.transform = `translate(${sx - 6}px,${sy - 4}px) scale(${cursorScale(t)})`;
+}
+window.seek = seek; window.LOOP = L;
+seek(+(P.get('t') || 0));
+</script>
+</body></html>
