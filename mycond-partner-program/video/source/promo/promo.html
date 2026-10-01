@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#000;overflow:hidden}
+body{font-family:Inter,Arial,sans-serif}
+#f{position:relative;overflow:hidden}
+.L{position:absolute}
+.card{position:absolute;overflow:hidden;background:#fff}
+.card img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 50%}
+.tx{position:absolute;font-family:Montserrat,Arial,sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-1px;line-height:1.02}
+.tx span{display:inline-block;white-space:pre}
+.cap{position:absolute;left:50%;transform:translateX(-50%);text-align:center;font:700 34px/1.3 Inter;color:#fff;padding:14px 26px;border-radius:18px;background:rgba(10,12,11,.72);max-width:920px}
+.chip{position:absolute;font:800 26px Montserrat;padding:14px 22px;border-radius:40px;white-space:nowrap}
+</style></head><body>
+<div id="f"><div id="bg" class="L" style="inset:0"></div><div id="stage" class="L" style="inset:0"></div><div id="wipe" class="L" style="inset:0;pointer-events:none"></div><div id="caps" class="L" style="inset:0;pointer-events:none"></div></div>
+<script>
+const Q = new URLSearchParams(location.search);
+const W = 1080, H = +(Q.get('h') || 1350), SC = Q.get('s') || 'A';
+const TALL = H > 1500;
+const f = document.getElementById('f'); f.style.width = W + 'px'; f.style.height = H + 'px';
+const stage = document.getElementById('stage');
+const G = '#5BAE48', DK = '#0F1211', LT = '#F2F1EE', RED = '#E5484D';
+
+/* ---------- maths ---------- */
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function stepf(tau, w = 16, z = 0.8) {
+  if (tau <= 0) return 0;
+  if (z >= 0.999) return 1 - Math.exp(-w * tau) * (1 + w * tau);
+  const wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * tau) * (Math.cos(wd * tau) + (z * w / wd) * Math.sin(wd * tau));
+}
+const eo = x => { x = clamp(x, 0, 1); return 1 - Math.pow(1 - x, 3); };
+const eio = x => { x = clamp(x, 0, 1); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const lerp = (a, b, k) => a + (b - a) * k;
+const Y = fr => fr * H;                         // vertical position as fraction of frame
+const hex2 = c => [1, 3, 5].map(i => parseInt(c.substr(i, 2), 16));
+const mix = (a, b, k) => { const A = hex2(a), B = hex2(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], k))).join(',')})`; };
+
+/* ---------- layers ---------- */
+const layers = [];
+function el(html, cls = 'L') { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; stage.appendChild(d); return d; }
+
+// kinetic text. '|' = line break, *word* = accent colour
+function text(t0, t1, str, o = {}) {
+  const size = o.size || 84, color = o.color || '#111', acc = o.acc || G;
+  const d = el('', 'tx'); d.style.cssText = `font-size:${size}px;color:${color};width:${o.w || 960}px;left:${o.x != null ? o.x : (W - (o.w || 960)) / 2}px;top:${o.y}px;text-align:${o.align || 'center'};${o.css || ''}`;
+  const words = [];
+  str.split('|').forEach((line, li) => {
+    if (li) d.appendChild(document.createElement('br'));
+    line.split(' ').forEach((wd, wi) => {
+      const a = wd.startsWith('*'); const s = document.createElement('span');
+      s.textContent = wd.replace(/\*/g, '') + ' '; if (a) s.style.color = acc;
+      d.appendChild(s); words.push(s);
+    });
+  });
+  layers.push(t => {
+    const vis = t > t0 - .05 && t < t1 + .4; d.style.display = vis ? 'block' : 'none'; if (!vis) return;
+    const q = eo((t - t1) / .28);
+    words.forEach((s, i) => {
+      const p = stepf(t - t0 - i * (o.stagger || .055), 15, .78), op = clamp(p * 1.4, 0, 1) * (1 - q);
+      s.style.opacity = op; s.style.transform = `translateY(${(1 - p) * 46 - q * 24}px)`;
+      s.style.filter = (op < .99) ? `blur(${(1 - Math.min(p, 1)) * 10 + q * 8}px)` : 'none';
+    });
+  });
+  return d;
+}
+// image card with spring entrance, Ken Burns and blurred exit
+function card(t0, t1, src, o) {
+  const d = el(`<img src="assets/${src}">`, 'card');
+  const w = o.w, h = o.h, r = o.r != null ? o.r : 28;
+  d.style.cssText += `width:${w}px;height:${h}px;border-radius:${r}px;box-shadow:0 30px 70px rgba(0,0,0,${o.sh != null ? o.sh : .28});${o.css || ''}`;
+  const img = d.querySelector('img'); if (o.fit) img.style.objectFit = o.fit; if (o.pos) img.style.objectPosition = o.pos;
+  const kb = o.kb || [1.04, 1.14, 0, 0, 0, 0];
+  layers.push(t => {
+    const vis = t > t0 - .05 && t < t1 + .45; d.style.display = vis ? 'block' : 'none'; if (!vis) return;
+    const p = stepf(t - t0, o.k || 14, .8), q = eo((t - t1) / .32), k = clamp((t - t0) / (t1 - t0 + .4), 0, 1);
+    const ent = o.from || 'up'; let tx = 0, ty = 0, sc = 1;
+    if (ent === 'up') ty = (1 - p) * 140; if (ent === 'down') ty = -(1 - p) * 140;
+    if (ent === 'right') tx = (1 - p) * 260; if (ent === 'left') tx = -(1 - p) * 260;
+    if (ent === 'scale') sc = .8 + .2 * p;
+    const rot = (o.rot || 0) * p + (o.rot0 || 0) * (1 - p);
+    d.style.left = (o.x - w / 2) + 'px'; d.style.top = (o.y - h / 2) + 'px';
+    d.style.opacity = clamp(p * 1.5, 0, 1) * (1 - q);
+    d.style.transform = `translate(${tx + (o.exitX || 0) * q}px,${ty - 30 * q}px) rotate(${rot}deg) scale(${sc * (1 - .06 * q)})`;
+    d.style.filter = q > .001 ? `blur(${q * 12}px)` : 'none';
+    img.style.transform = `translate(${lerp(kb[2], kb[3], k)}px,${lerp(kb[4], kb[5], k)}px) scale(${lerp(kb[0], kb[1], k)})`;
+  });
+  return d;
+}
+// generic element with custom per-frame update (local time passed)
+function custom(t0, t1, html, upd, css = '') {
+  const d = el(html); d.style.cssText += css;
+  layers.push(t => { const vis = t > t0 - .05 && t < t1 + .45; d.style.display = vis ? 'block' : 'none'; if (vis) upd(d, t - t0, t, eo((t - t1) / .3)); });
+  return d;
+}
+const fadeOut = (d, q) => { d.style.opacity = 1 - q; d.style.filter = q > .001 ? `blur(${q * 10}px)` : 'none'; };
+// red ✕ / green ✓ badge on a card
+function badge(t0, t1, x, y, ok) {
+  return custom(t0, t1, `<div style="width:92px;height:92px;border-radius:46px;background:${ok ? G : RED};display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.35)"><svg width="50" height="50" viewBox="0 0 24 24">${ok ? '<path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>' : '<path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>'}</svg></div>`,
+    (d, lt, t, q) => { const p = stepf(lt, 20, .6); d.style.left = (x - 46) + 'px'; d.style.top = (y - 46) + 'px'; d.style.transform = `scale(${p})`; fadeOut(d, q); });
+}
+// background colour timeline
+let BG = [[0, DK]];
+// green circle wipe with brand house outline
+const WIPES = [];
+function wipe(t, color = G, cx = .5, cy = .5) { WIPES.push([t, color, cx, cy]); BG.push([t + .42, color, 0]); }
+const wipeEl = document.getElementById('wipe');
+wipeEl.innerHTML = '<div id="wc" class="L" style="inset:0"></div><svg id="wh" class="L" viewBox="0 0 400 400" style="width:900px;height:900px;left:90px"><path d="M300 150 L200 70 L100 150 L100 330 L300 330" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="900" /></svg>';
+// captions
+let CAPS = [];
+const capEl = document.createElement('div'); capEl.className = 'cap'; document.getElementById('caps').appendChild(capEl);
+// logo badge
+const LOGO = '<div style="width:96px;height:96px;background:#5BAE48;border:4px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center"><img src="assets/logo_tree.png" style="width:64px"><b style="font:700 12px Georgia,serif;color:#fff;margin-top:2px">MYCOND</b></div>';
+
+/* ---------- reusable scenes ---------- */
+function phoneNote(t0, t1, y) {
+  const n1 = custom(t0, t1, `<div style="width:900px;padding:26px 30px;border-radius:34px;background:rgba(40,44,42,.92);display:flex;gap:22px;align-items:center;box-shadow:0 30px 80px rgba(0,0,0,.5)">
+    <div style="width:78px;height:78px;border-radius:20px;background:${G};display:flex;align-items:center;justify-content:center"><svg width="44" height="44" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z" fill="#fff"/></svg></div>
+    <div style="flex:1;color:#fff"><div style="display:flex;justify-content:space-between;font:600 22px Inter;color:#A9AEAB"><span>ПОВІДОМЛЕННЯ · Клієнт, Бровари</span><span>23:04</span></div>
+    <div style="font:700 36px Inter;margin-top:6px">Не гріє!!! Ви коли приїдете? 😡</div></div></div>`,
+    (d, lt, t, q) => { const p = stepf(lt, 14, .7); const sh = 16 * Math.exp(-(lt - .7) * 6) * Math.sin((lt - .7) * 70) * (lt > .7);
+      d.style.left = (90 + sh) + 'px'; d.style.top = (y - 70 - (1 - p) * 220) + 'px'; d.style.opacity = clamp(p * 2, 0, 1); fadeOut(d, q); d.style.opacity = clamp(p * 2, 0, 1) * (1 - q); });
+  const n2 = custom(t0 + 1.4, t1, `<div style="width:860px;padding:22px 28px;border-radius:30px;background:rgba(40,44,42,.85);display:flex;gap:20px;align-items:center">
+    <div style="width:64px;height:64px;border-radius:18px;background:${RED};display:flex;align-items:center;justify-content:center;color:#fff;font:800 30px Montserrat">!</div>
+    <div style="flex:1;color:#fff"><div style="font:600 20px Inter;color:#A9AEAB">Пропущений дзвінок · 3</div><div style="font:700 32px Inter;margin-top:4px">В будинку +14 °C. Діти мерзнуть</div></div></div>`,
+    (d, lt, t, q) => { const p = stepf(lt, 14, .75); d.style.left = '110px'; d.style.top = (y + 120 + (1 - p) * 60) + 'px'; d.style.opacity = clamp(p * 2, 0, 1) * (1 - q); d.style.filter = q > 0 ? `blur(${q * 10}px)` : 'none'; });
+}
+function clockFour(t0, t1, y, dark, onGreen) {
+  const c = dark ? '#fff' : '#111', rc = onGreen ? '#fff' : G, tc = onGreen ? 'rgba(255,255,255,.25)' : (dark ? 'rgba(255,255,255,.12)' : '#E2E4E0');
+  custom(t0, t1, `<svg width="520" height="520" viewBox="0 0 520 520"><circle cx="260" cy="260" r="230" fill="none" stroke="${tc}" stroke-width="22"/><circle class="ring" cx="260" cy="260" r="230" fill="none" stroke="${rc}" stroke-width="22" stroke-linecap="round" stroke-dasharray="1445" stroke-dashoffset="1445" transform="rotate(-90 260 260)"/>
+    <text x="260" y="330" text-anchor="middle" font-family="Montserrat" font-weight="900" font-size="230" fill="${c}">4</text></svg>
+    <div style="text-align:center;font:900 64px Montserrat;color:${c};margin-top:6px;letter-spacing:-1px">ГОДИНИ</div>`,
+    (d, lt, t, q) => { const p = stepf(lt, 14, .72); d.style.left = (W / 2 - 260) + 'px'; d.style.top = (y - 260) + 'px'; d.style.transform = `scale(${.7 + .3 * p})`; d.style.opacity = clamp(p * 2, 0, 1) * (1 - q);
+      d.querySelector('.ring').style.strokeDashoffset = 1445 * (1 - eio((lt - .1) / 1.4) * (1 / 6) * 6 * .999); });
+}
+function certificate(t0, t1, y, stampT) {
+  custom(t0, t1, `<div class="cw" style="width:860px;height:600px;perspective:1600px">
+    <div class="cc" style="position:relative;width:860px;height:600px;border-radius:26px;background:#fff;box-shadow:0 40px 100px rgba(0,0,0,.45);overflow:hidden;transform-origin:50% 60%">
+      <div style="position:absolute;inset:22px;border:3px solid ${G};border-radius:16px"></div>
+      <div style="position:absolute;inset:34px;border:1px solid #CFE6C8;border-radius:10px"></div>
+      <div style="position:absolute;left:0;right:0;top:70px;text-align:center"><div style="font:800 22px Montserrat;letter-spacing:8px;color:${G}">СЕРТИФІКАТ</div>
+        <div style="font:900 52px/1.08 Montserrat;color:#111;margin-top:18px;text-transform:uppercase">Авторизований<br>інсталятор</div>
+        <div style="font:600 24px Inter;color:#6A706C;margin-top:16px">теплових насосів Mycond</div>
+        <div style="width:420px;margin:44px auto 0;border-bottom:2px solid #D6D9D4;font:italic 600 30px Georgia,serif;color:#9AA09C;padding-bottom:8px">Ваше ім'я</div>
+        <div style="display:flex;justify-content:space-between;width:640px;margin:34px auto 0;font:600 18px Inter;color:#9AA09C"><span>Навчальний семінар · 4 години</span><span>2026</span></div></div>
+      <div class="sh" style="position:absolute;top:-40%;width:180px;height:180%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.75),rgba(255,255,255,0));transform:rotate(18deg)"></div>
+    </div>
+    <div class="seal" style="position:absolute;right:46px;bottom:40px;width:170px;height:170px;border-radius:85px;background:${G};display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(0,0,0,.3)">
+      <svg width="170" height="170" viewBox="0 0 170 170" style="position:absolute;left:0;top:0"><defs><path id="cp" d="M85 85 m-62 0 a62 62 0 1 1 124 0 a62 62 0 1 1 -124 0"/></defs><circle cx="85" cy="85" r="76" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="4 6"/><text font-family="Montserrat" font-weight="800" font-size="15" fill="#fff" letter-spacing="3"><textPath href="#cp">MYCOND · AUTHORIZED · MYCOND · AUTHORIZED ·</textPath></text></svg>
+      <img src="assets/logo_tree.png" style="width:74px;position:relative"></div></div>`,
+    (d, lt, t, q) => {
+      const p = stepf(lt, 9, .78); d.style.left = (W / 2 - 430) + 'px'; d.style.top = (y - 300) + 'px';
+      const cc = d.querySelector('.cc'); cc.style.transform = `rotateX(${(1 - p) * 55}deg) translateY(${(1 - p) * 160}px) scale(${.85 + .15 * p})`;
+      d.style.opacity = clamp(p * 1.6, 0, 1) * (1 - q); d.style.filter = q > 0 ? `blur(${q * 10}px)` : 'none';
+      const sp = t - stampT, s = d.querySelector('.seal');
+      s.style.opacity = sp > 0 ? 1 : 0; s.style.transform = `scale(${sp > 0 ? 1 + 1.2 * (1 - stepf(sp, 22, .55)) : 2}) rotate(${-25 * (1 - stepf(sp, 14, .7))}deg)`;
+      d.querySelector('.sh').style.left = (-300 + 1500 * eio((t - stampT - .15) / .9)) + 'px';
+    });
+}
+function endCard(t0, t1) {
+  const top = TALL ? .2 : .13;
+  custom(t0, t1, LOGO, (d, lt, t, q) => { const p = stepf(lt, 14, .75); d.style.left = (W / 2 - 48) + 'px'; d.style.top = Y(top) + 'px'; d.style.transform = `scale(${p})`; });
+  text(t0 + .15, t1, 'Навчальний семінар|для монтажників', { y: Y(top) + 150, size: 66, color: '#111' });
+  custom(t0 + .5, t1, `<div style="display:flex;gap:14px;justify-content:center">${['4 години', 'Практика', 'Сертифікат'].map(s => `<span style="background:#fff;color:#111;font:800 28px Montserrat;padding:14px 24px;border-radius:40px">${s}</span>`).join('')}</div>`,
+    (d, lt) => { const p = stepf(lt, 14, .8); d.style.left = '0'; d.style.width = W + 'px'; d.style.top = (Y(top) + 330) + 'px'; d.style.opacity = clamp(p * 1.5, 0, 1); d.style.transform = `translateY(${(1 - p) * 40}px)`; });
+  custom(t0 + .8, t1, `<div style="display:flex;align-items:center;gap:30px;justify-content:center"><div class="btn" style="background:#111;color:#fff;font:800 36px Montserrat;padding:30px 48px;border-radius:60px">Зареєструватися →</div><div style="background:#fff;padding:12px;border-radius:18px"><img src="assets/qr_site.png" style="width:150px;display:block"></div></div>
+    <div style="text-align:center;font:700 26px Inter;color:#111;margin-top:26px">mycond.ua · деталі у вашого менеджера Mycond</div>`,
+    (d, lt) => { const p = stepf(lt, 14, .8); d.style.left = '0'; d.style.width = W + 'px'; d.style.top = (Y(TALL ? .62 : .64)) + 'px'; d.style.opacity = clamp(p * 1.5, 0, 1); d.style.transform = `translateY(${(1 - p) * 50}px)`;
+      d.querySelector('.btn').style.transform = `scale(${1 + .04 * Math.max(0, Math.sin((lt - .6) * Math.PI * 2))})`; });
+}
+function chip(t0, t1, txt, x, y, o = {}) {
+  return custom(t0, t1, `<div class="chip" style="position:relative;background:${o.bg || '#111'};color:${o.c || '#fff'}">${txt}</div>`,
+    (d, lt, t, q) => { const p = stepf(lt, 16, .75); d.style.left = x + 'px'; d.style.top = y + 'px'; d.style.opacity = clamp(p * 1.5, 0, 1) * (1 - q); d.style.transform = `translateX(${(1 - p) * -40}px)`; });
+}
+function stars(t0, t1, y) {
+  custom(t0, t1, `<div style="display:flex;gap:16px;justify-content:center">${[0, 1, 2, 3, 4].map(i => `<svg class="st" width="96" height="96" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="${G}"/></svg>`).join('')}</div>`,
+    (d, lt, t, q) => { d.style.left = '0'; d.style.width = W + 'px'; d.style.top = y + 'px'; d.style.opacity = 1 - q;
+      d.querySelectorAll('.st').forEach((s, i) => { const p = stepf(lt - i * .1, 20, .55); s.style.transform = `scale(${Math.max(0, p)})`; }); });
+}
+
+/* ---------- scenarios ---------- */
+let DUR = 28;
+if (SC === 'A') {
+  DUR = 28;
+  BG = [[0, DK]];
+  // hook: 90 %
+  const errs = ['promo/err_unit.jpg', 'promo/err_pipes.jpg', 'promo/err_wire.jpg', 'promo/err_freon.jpg'];
+  errs.forEach((s, i) => card(.15 + i * .9, 4.7, s, { x: [300, 790, 280, 800][i], y: Y(TALL ? .62 : .66) + [0, 40, 250, 280][i] - 120, w: 440, h: 330, rot: [-6, 5, 4, -5][i], from: 'up', sh: .5, css: 'filter:saturate(.85)' }));
+  errs.forEach((s, i) => badge(.55 + i * .9, 4.7, [300, 790, 280, 800][i] + 170, Y(TALL ? .62 : .66) + [0, 40, 250, 280][i] - 230, false));
+  custom(.1, 4.6, `<div style="font:900 300px/1 Montserrat;color:#fff;text-align:center;letter-spacing:-8px"><span class="n">0</span><span style="color:${RED}">%</span></div>`,
+    (d, lt, t, q) => { d.style.left = 0; d.style.width = W + 'px'; d.style.top = Y(TALL ? .12 : .06) + 'px'; d.querySelector('.n').textContent = Math.round(90 * eio(lt / 1.2)); const p = stepf(lt, 12, .8); d.style.transform = `scale(${.8 + .2 * p})`; fadeOut(d, q); });
+  text(.9, 4.6, 'звернень до сервісу —|через *неправильний* монтаж', { y: Y(TALL ? .12 : .06) + 320, size: 54, color: '#fff', acc: RED });
+  // the call
+  custom(4.8, 7.9, `<div style="font:900 260px/1 Montserrat;color:rgba(255,255,255,.08);text-align:center">23:04</div>`, (d, lt, t, q) => { d.style.left = 0; d.style.width = W + 'px'; d.style.top = Y(.12) + 'px'; d.style.opacity = eo(lt / .4) * (1 - q); });
+  phoneNote(5.0, 7.9, Y(TALL ? .42 : .4));
+  text(8.0, 8.85, 'Знайомо?', { y: Y(.42), size: 120, color: '#fff' });
+  // turn
+  wipe(8.9);
+  text(9.15, 10.0, 'Можна|інакше.', { y: Y(.36), size: 130, color: '#111', css: 'text-align:center' });
+  wipe(9.95, LT);
+  clockFour(10.1, 12.55, Y(TALL ? .38 : .36), false);
+  text(10.5, 12.55, 'навчального семінару|*Mycond*', { y: Y(TALL ? .38 : .36) + 385, size: 56, color: '#111' });
+  // modules
+  const top = TALL ? Y(.17) : Y(.08);
+  const mod = (t0, t1, n, label) => { chip(t0, t1, n, 60, top, { bg: G }); text(t0 + .05, t1, label, { y: top + 2, x: 175, w: 860, size: 50, color: '#111', align: 'left' }); };
+  mod(12.6, 13.85, '01', 'Знання обладнання');
+  card(12.6, 13.85, 'promo/sch_circuit.jpg', { x: W / 2, y: Y(.52), w: 960, h: 620, fit: 'contain', css: 'background:#fff', kb: [1, 1.08, 0, 0, 0, 0], from: 'scale' });
+  mod(13.9, 15.05, '02', 'Схеми підключень');
+  card(13.9, 15.05, 'promo/sch_conn1.jpg', { x: W / 2, y: Y(.52), w: 980, h: 560, fit: 'cover', kb: [1.05, 1.35, 120, -140, 0, 20], from: 'right' });
+  mod(15.1, 16.6, '03', 'Розбір реальних помилок');
+  ['promo/err_pump.jpg', 'promo/err_valve.jpg', 'promo/err_condensate.jpg'].forEach((s, i) => { card(15.1 + i * .22, 16.6, s, { x: [270, 560, 830][i], y: Y(.5) + [20, -30, 30][i], w: 420, h: 520, rot: [-5, 2, 6][i], from: 'up' }); badge(15.4 + i * .22, 16.6, [270, 560, 830][i] + 150, Y(.5) - 230 + [20, -30, 30][i], false); });
+  mod(16.65, 18.15, '04', 'Інструменти для роботи');
+  card(16.65, 18.15, 'promo/app_report.jpg', { x: 420, y: Y(.5), w: 700, h: 400, fit: 'contain', css: 'background:#fff', from: 'left', rot: -3 });
+  card(16.85, 18.15, 'promo/app_laptop.jpg', { x: 700, y: Y(.5) + 200, w: 560, h: 420, fit: 'cover', from: 'right', rot: 3 });
+  mod(18.2, 20.35, '05', 'Продажі і маркетинг');
+  card(18.2, 20.35, 'promo/our_landing.png', { x: 440, y: Y(.47), w: 760, h: 428, from: 'left', rot: -3 });
+  card(18.45, 20.35, 'promo/our_erp.png', { x: 680, y: Y(.47) + 280, w: 680, h: 382, from: 'right', rot: 3 });
+  // certificate
+  wipe(20.25, DK);
+  text(20.45, 23.5, 'А в кінці —', { y: Y(TALL ? .15 : .08), size: 60, color: '#fff' });
+  certificate(20.6, 23.5, Y(.5), 21.9);
+  // end
+  wipe(23.55);
+  endCard(23.85, DUR + 1);
+  CAPS = [[.6, 4.83, 'Дев’яносто відсотків звернень до сервісу — через неправильний монтаж.'], [4.83, 7.98, 'Дзвінок клієнта об одинадцятій вечора: «Не гріє».'], [7.98, 8.9, 'Знайомо?'], [8.9, 10.09, 'Можна інакше.'],
+    [10.09, 12.64, 'Чотири години навчального семінару Mycond:'], [12.64, 15.08, 'знання обладнання, схеми підключень,'], [15.08, 18.17, 'розбір реальних помилок, інструменти для роботи,'], [18.17, 20.4, 'допомога в продажах і маркетинг.'],
+    [20.4, 23.6, 'А в кінці — сертифікат авторизованого інсталятора.'], [23.6, 24.7, 'Реєструйся!']];
+}
+if (SC === 'B') {
+  DUR = 26;
+  BG = [[0, LT]];
+  card(.0, 2.2, 'promo/mount_iso.jpg', { x: W / 2, y: Y(.58), w: 980, h: 560, fit: 'cover', kb: [1.1, 1.0, 0, 0, 0, 0], from: 'scale', sh: .18 });
+  text(.45, 2.15, 'Ти вже вмієш|*монтувати.*', { y: Y(TALL ? .15 : .08), size: 92, color: '#111' });
+  BG.push([2.2, DK, .2]);
+  text(2.3, 4.55, 'Час стати|експертом,|якого *рекомендують.*', { y: Y(TALL ? .18 : .1), size: 88, color: '#fff' });
+  stars(2.9, 4.55, Y(TALL ? .5 : .52));
+  custom(3.4, 4.55, `<div style="background:#fff;border-radius:28px 28px 28px 6px;padding:24px 30px;font:600 30px/1.35 Inter;color:#111;width:700px;box-shadow:0 20px 50px rgba(0,0,0,.4)">«Рекомендую цього майстра — все зробив по науці, в хаті тепло.»<div style="font:600 20px Inter;color:#8A8F8B;margin-top:10px">Відгук клієнта · ★★★★★</div></div>`,
+    (d, lt, t, q) => { const p = stepf(lt, 14, .75); d.style.left = '190px'; d.style.top = (Y(TALL ? .6 : .64)) + 'px'; d.style.opacity = clamp(p * 2, 0, 1) * (1 - q); d.style.transform = `translateY(${(1 - p) * 50}px)`; });
+  wipe(4.6);
+  clockFour(4.85, 6.55, Y(TALL ? .4 : .38), false, true);
+  text(5.2, 6.55, 'з інженерами *Mycond*', { y: Y(TALL ? .4 : .38) + 385, size: 54, color: '#111', acc: '#fff' });
+  wipe(6.5, LT);
+  const top = TALL ? Y(.15) : Y(.07);
+  text(6.65, 8.05, 'Як працює|*тепловий насос*', { y: top, size: 72, color: '#111' });
+  card(6.65, 8.05, 'promo/sch_elements.jpg', { x: W / 2, y: Y(.58), w: 980, h: 520, fit: 'contain', css: 'background:#fff', kb: [1, 1.1, 0, 0, 0, 0], from: 'up' });
+  text(8.1, 10.1, 'Як підібрати|і *підключити*', { y: top, size: 72, color: '#111' });
+  card(8.1, 9.2, 'promo/chart_range.jpg', { x: W / 2, y: Y(.58), w: 980, h: 560, fit: 'contain', css: 'background:#fff', from: 'right' });
+  card(9.1, 10.1, 'promo/sch_conn2.jpg', { x: W / 2, y: Y(.58), w: 980, h: 560, fit: 'cover', kb: [1.1, 1.3, -60, 80, 0, 0], from: 'right' });
+  BG.push([10.12, DK, .2]);
+  text(10.15, 12.1, 'Які помилки коштують|*найдорожче*', { y: top, size: 70, color: '#fff', acc: RED });
+  ['promo/err_unit.jpg', 'promo/err_wire.jpg', 'promo/err_pipes.jpg', 'promo/err_freon.jpg'].forEach((s, i) => { const x = i % 2 ? 790 : 290, y0 = Y(.47) + (i > 1 ? 330 : 0); card(10.3 + i * .18, 12.1, s, { x, y: y0, w: 460, h: 300, from: 'scale', rot: [-3, 3, 2, -2][i], sh: .5 }); badge(10.55 + i * .18, 12.1, x + 190, y0 - 120, false); });
+  BG.push([12.17, LT, .2]);
+  text(12.2, 14.25, 'Програма підбору|і *бібліотека схем*', { y: top, size: 70, color: '#111' });
+  card(12.25, 14.25, 'promo/app_laptop.jpg', { x: 380, y: Y(.55), w: 620, h: 470, from: 'left', rot: -3 });
+  card(12.55, 14.25, 'promo/sch_3d1.jpg', { x: 720, y: Y(.55) + 160, w: 620, h: 420, fit: 'cover', from: 'right', rot: 3 });
+  text(14.3, 16.2, 'Реальна допомога|в *продажах*', { y: top, size: 70, color: '#111' });
+  card(14.3, 16.2, 'promo/our_landing.png', { x: W / 2, y: Y(.55), w: 940, h: 529, from: 'up' });
+  chip(14.9, 16.2, '🔔 Нова заявка · Бровари', 150, Y(.55) + 230, { bg: '#111' });
+  BG.push([16.26, DK, .2]);
+  certificate(16.3, 20.5, Y(.47), 17.4);
+  text(18.45, 20.5, 'Довіра клієнта|і *нові об’єкти*', { y: Y(.47) + 330, size: 60, color: '#fff' });
+  wipe(20.55);
+  endCard(20.85, DUR + 1);
+  CAPS = [[.6, 2.2, 'Ти вже вмієш монтувати.'], [2.2, 4.64, 'Час стати експертом, якого рекомендують.'], [4.64, 6.58, 'Чотири години з інженерами Mycond:'], [6.58, 8.08, 'як працює тепловий насос,'], [8.08, 10.12, 'як правильно підібрати і підключити,'],
+    [10.12, 12.17, 'які помилки коштують найдорожче.'], [12.17, 14.31, 'Плюс програма підбору, бібліотека схем'], [14.31, 16.26, 'і реальна допомога в продажах.'], [16.26, 18.45, 'Сертифікат авторизованого інсталятора —'], [18.45, 20.54, 'це довіра клієнта і нові об’єкти.'], [20.54, 22.04, 'Записуйся на семінар!']];
+}
+if (SC === 'C') {
+  DUR = 22;
+  BG = [[0, LT]];
+  const top = TALL ? Y(.1) : Y(.05);
+  text(.3, 11.9, 'Чек-лист сильного|*інсталятора*', { y: top, size: 62, color: '#111' });
+  const items = [['Знання серій Mycond', 2.7], ['Схеми і проєктування', 4.45], ['Розбір помилок монтажу', 6.27], ['Інструменти для роботи', 8.2], ['Продажі і маркетинг', 10.12]];
+  const listY = top + 170, rowH = TALL ? 96 : 76;
+  custom(.6, 11.9, `<div class="lc" style="width:960px;border-radius:32px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.12);padding:16px 34px">${items.map(([s]) => `<div class="ri" style="height:${rowH}px;display:flex;align-items:center;gap:24px;border-bottom:2px solid #EEF0EC"><div class="bx" style="width:50px;height:50px;border-radius:14px;border:4px solid #D9DCD7;position:relative;flex:none"><svg width="42" height="42" viewBox="0 0 42 42" style="position:absolute;left:0;top:0"><path class="ck" d="M10 22 l7 7 l15 -16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></div><div style="font:700 ${TALL ? 34 : 31}px Inter;color:#111;flex:1">${s}</div><div class="ye" style="font:800 28px Montserrat;color:${G}">✓ є</div></div>`).join('')}</div>`,
+    (d, lt, t, q) => { const p = stepf(lt, 14, .8); d.style.left = '60px'; d.style.top = listY + 'px'; d.style.opacity = clamp(p * 1.5, 0, 1) * (1 - q); d.style.transform = `translateY(${(1 - p) * 60}px)`; d.style.filter = q > 0 ? `blur(${q * 10}px)` : 'none';
+      d.querySelectorAll('.ri').forEach((r, i) => { const tt = items[i][1] + .9, k = eo((t - tt) / .15), dd = eo((t - tt - .05) / .25);
+        const bx = r.querySelector('.bx'); bx.style.background = k > 0 ? `rgba(91,174,72,${k})` : 'transparent'; bx.style.borderColor = k > .5 ? G : '#D9DCD7';
+        bx.style.transform = `scale(${1 + .15 * Math.sin(Math.PI * clamp((t - tt) / .25, 0, 1))})`; r.querySelector('.ck').style.strokeDashoffset = 40 * (1 - dd);
+        r.querySelector('.ye').style.opacity = eo((t - tt - .1) / .2); r.style.background = (t > items[i][1] && t < items[i][1] + 1.8) ? '#F6F9F4' : 'transparent'; }); });
+  const imgY = listY + 16 * 2 + rowH * 5 + (TALL ? 360 : 250), ih = TALL ? 560 : 400;
+  const seriesSlot = (t0, t1) => ['t_beesmart.png', 't_beeheat.png', 't_beeeco.png', 't_beethermic.png', 't_mbasic.png'].forEach((s, i) => card(t0 + i * .08, t1, s, { x: 130 + i * 205, y: imgY, w: 190, h: 200, fit: 'cover', from: 'up', r: 20, sh: .15 }));
+  seriesSlot(2.7, 4.4);
+  card(4.45, 6.2, 'promo/sch_conn3.jpg', { x: W / 2, y: imgY, w: 960, h: ih, fit: 'cover', kb: [1.1, 1.3, 80, -80, 0, 0], from: 'right' });
+  ['promo/err_pump.jpg', 'promo/err_wire.jpg', 'promo/err_freon.jpg'].forEach((s, i) => { card(6.27 + i * .15, 8.15, s, { x: 230 + i * 310, y: imgY, w: 290, h: ih, from: 'up', rot: [-3, 0, 3][i] }); badge(6.5 + i * .15, 8.15, 230 + i * 310 + 110, imgY - ih / 2 + 10, false); });
+  card(8.2, 10.05, 'promo/app_laptop.jpg', { x: W / 2, y: imgY, w: 700, h: ih, fit: 'contain', css: 'background:#fff', from: 'scale' });
+  card(10.12, 11.85, 'promo/our_landing.png', { x: W / 2, y: imgY, w: ih * 1.78 > 960 ? 960 : ih * 1.78, h: Math.min(ih, 960 / 1.78), from: 'up' });
+  BG.push([11.9, DK, .25]);
+  text(12.0, 15.7, 'Сертифікат|*авторизованого інсталятора*', { y: Y(TALL ? .14 : .07), size: 60, color: '#fff' });
+  certificate(12.2, 15.7, Y(.52), 14.3);
+  text(14.3, 15.7, 'забирай на семінарі', { y: Y(.52) + 330, size: 50, color: G });
+  wipe(15.75);
+  clockFour(16.0, 18.8, Y(TALL ? .38 : .36), true, true);
+  text(16.5, 18.8, 'які працюватимуть|на тебе *роками*', { y: Y(TALL ? .38 : .36) + 385, size: 58, color: '#111', acc: '#fff' });
+  BG.push([18.85, G, 0]);
+  endCard(18.9, DUR + 1);
+  CAPS = [[.6, 2.69, 'Чек-лист сильного інсталятора.'], [2.69, 4.45, 'Знання серій Mycond — є.'], [4.45, 6.27, 'Схеми і проєктування — є.'], [6.27, 8.2, 'Розбір помилок монтажу — є.'], [8.2, 10.12, 'Інструменти для роботи — є.'],
+    [10.12, 11.89, 'Продажі і маркетинг — є.'], [11.89, 14.24, 'Сертифікат авторизованого інсталятора —'], [14.24, 15.79, 'забирай на семінарі.'], [15.79, 18.84, 'Чотири години, які працюватимуть на тебе роками.']];
+}
+BG.sort((a, b) => a[0] - b[0]);
+if (Q.get('caps') === '0') CAPS = [];
+
+function seek(t) {
+  // background
+  let c = BG[0][1];
+  for (let i = 1; i < BG.length; i++) { const [tt, col, fd] = BG[i]; const d = fd != null ? fd : .3; if (t >= tt) c = d > 0 ? (t < tt + d ? mix(BG[i - 1][1], col, eio((t - tt) / d)) : col) : col; }
+  document.getElementById('bg').style.background = c;
+  layers.forEach(fn => fn(t));
+  // wipes
+  let wcStyle = 'display:none', whStyle = 'display:none';
+  for (const [tw, col, cx, cy] of WIPES) {
+    const lt = t - tw; if (lt < 0 || lt > .9) continue;
+    const R = 150 * eio(lt / .45);
+    wcStyle = `display:block;background:${col};clip-path:circle(${R}% at ${cx * 100}% ${cy * 100}%)`;
+    const hs = .5 + .9 * eio(lt / .6), ho = lt < .3 ? 1 : 1 - eo((lt - .3) / .25);
+    whStyle = `display:block;top:${H / 2 - 450}px;opacity:${ho};transform:scale(${hs})`;
+    document.querySelector('#wh path').style.strokeDashoffset = 900 * (1 - eo(lt / .4));
+  }
+  document.getElementById('wc').style.cssText = wcStyle; document.getElementById('wh').style.cssText = whStyle + ';width:900px;height:900px;left:90px';
+  // captions
+  const cap = CAPS.find(([a, b]) => t >= a && t < b + .05);
+  if (cap) { const k = Math.min(eo((t - cap[0]) / .15), 1 - eo((t - cap[1]) / .12)); capEl.style.display = 'block'; capEl.textContent = cap[2]; capEl.style.opacity = k; capEl.style.bottom = (TALL ? 330 : 70) + 'px'; capEl.style.transform = `translateX(-50%) translateY(${(1 - k) * 12}px)`; }
+  else capEl.style.display = 'none';
+}
+window.seek = seek; window.DUR = DUR;
+seek(+(Q.get('t') || 0));
+</script></body></html>
