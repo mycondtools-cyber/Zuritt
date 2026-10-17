@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  name        String
+  description String    @default("")
+  sort        Int       @default(0)
+  products    Product[]
+}
+
+/// mode: "sizes" — стандартні типорозміри з таблиці; "rect" — довільні Ш×В; "slot" — щілинний, довжина + к-сть щілин
+model Product {
+  id          Int           @id @default(autoincrement())
+  slug        String        @unique
+  code        String
+  name        String
+  categoryId  Int
+  category    Category      @relation(fields: [categoryId], references: [id])
+  mode        String        @default("sizes")
+  shape       String        @default("square")
+  mounting    String[]      @default([])
+  summary     String        @default("")
+  description String        @default("")
+  images      String[]      @default([])
+  leadDays    Int           @default(5)
+  active      Boolean       @default(true)
+  sort        Int           @default(0)
+  /// [{ key, label, hint, default, choices: [{ value, label, priceAdd, pricePct }] }]
+  options     Json          @default("[]")
+  /// { areaCoef, zeta, throwK, tempK, slotWidthMm? }
+  calc        Json          @default("{}")
+  /// rect: { perM2, min }; slot: { perMeter, perExtraSlotPct, minLengthMm }
+  pricing     Json          @default("{}")
+  /// rect: { wMin, wMax, hMin, hMax, step }; slot: { lMin, lMax, step, angleMin?, angleMax? }
+  limits      Json          @default("{}")
+  sizes       ProductSize[]
+  updatedAt   DateTime      @updatedAt
+}
+
+model ProductSize {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label     String
+  w         Int?
+  h         Int?
+  d         Int?
+  /// живий переріз, м²; якщо порожньо — рахується з коефіцієнта
+  freeArea  Float?
+  price     Float   @default(0)
+  sort      Int     @default(0)
+
+  @@index([productId])
+}
+
+model RalColor {
+  id         Int     @id @default(autoincrement())
+  code       String
+  name       String  @unique
+  hex        String
+  finish     String  @default("gloss")
+  /// стандартний колір — без доплати та без збільшення терміну
+  isStandard Boolean @default(false)
+  popular    Boolean @default(false)
+  sort       Int     @default(0)
+}
+
+model Setting {
+  key   String @id
+  value Json
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String
+  phone     String
+  email     String   @default("")
+  company   String   @default("")
+  city      String   @default("")
+  comment   String   @default("")
+  items     Json
+  totalUah  Float    @default(0)
+  status    String   @default("new")
+  note      String   @default("")
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  mime      String
+  data      Bytes
+  createdAt DateTime @default(now())
+}

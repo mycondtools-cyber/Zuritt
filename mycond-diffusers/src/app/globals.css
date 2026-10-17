@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #0b1324;
+  --color-ink-2: #334155;
+  --color-muted: #64748b;
+  --color-line: #e2e8f0;
+  --color-paper: #f5f7fb;
+  --color-brand: #0e7490;
+  --color-brand-2: #0891b2;
+  --color-brand-soft: #e0f2f7;
+  --color-good: #15803d;
+  --color-good-soft: #dcfce7;
+  --color-ok: #b45309;
+  --color-ok-soft: #fef3c7;
+  --color-bad: #b91c1c;
+  --color-bad-soft: #fee2e2;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: clip;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+@utility card {
+  @apply rounded-2xl border border-line bg-white;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-white hover:bg-brand-2;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-white text-ink hover:border-brand hover:text-brand;
+}
+
+@utility input {
+  @apply w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15;
+}
+
+@utility chip {
+  @apply rounded-xl border border-line bg-white px-3 py-2 text-sm font-medium transition hover:border-brand disabled:cursor-default disabled:hover:border-line;
+  &[aria-pressed="true"] {
+    @apply border-brand bg-brand-soft text-brand ring-1 ring-brand;
+  }
+}
+
+@utility label {
+  @apply mb-1.5 flex items-center gap-1.5 text-sm font-semibold text-ink;
+}
+
+.prose-md h2 {
+  @apply mt-6 mb-2 text-lg font-bold text-ink first:mt-0;
+}
+.prose-md p {
+  @apply my-2 leading-relaxed text-ink-2;
+}
+.prose-md ul {
+  @apply my-2 list-disc space-y-1 pl-5 text-ink-2;
+}
+.prose-md strong {
+  @apply font-semibold text-ink;
+}
