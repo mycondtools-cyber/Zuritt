@@ -80,6 +80,16 @@ npm test                    # тести розрахунку, звірка з �
 
 Фото, завантажені через адмінку, зберігаються в базі (таблиця `Media`), тому окреме сховище файлів не потрібне.
 
+## Деплой на власний сервер (Docker)
+
+```bash
+cp .env.example .env   # заповнити POSTGRES_PASSWORD, ADMIN_PASSWORD, AUTH_SECRET, APP_PORT
+docker compose up -d --build
+docker compose exec app npm run db:seed   # один раз: каталог, ціни, кольори RAL
+```
+
+Сайт слухає `127.0.0.1:APP_PORT`; назовні його віддає nginx (або панель сервера) з SSL. Оновлення: `git pull && docker compose up -d --build`. База лежить у томі `pgdata`.
+
 ## Фото й логотип
 
 На сайті головний — квадратний логотип (`public/brand/mycond-logo-square.png`, шапка сайту й адмінки); на виробах — горизонтальний (прямокутний).
