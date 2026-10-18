@@ -6,15 +6,9 @@ export function SiteHeader({ phone }: { phone?: string }) {
     <header className="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-white">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-              <rect x="4" y="4" width="16" height="16" rx="2" />
-              <rect x="8" y="8" width="8" height="8" rx="1" />
-              <path d="M4 4l4 4M20 4l-4 4M4 20l4-4M20 20l-4-4" />
-            </svg>
-          </span>
+          <img src="/brand/mycond-logo.png" alt="Mycond" width={45} height={40} className="h-10 w-auto rounded-md" />
           <span className="leading-tight">
-            <span className="block text-[15px] font-extrabold tracking-tight">Mycond Повітророзподіл</span>
+            <span className="block text-[15px] font-extrabold tracking-tight">Повітророзподіл</span>
             <span className="block text-xs text-muted">дифузори · решітки · пленуми</span>
           </span>
         </Link>

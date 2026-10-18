@@ -22,8 +22,9 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     <div className="min-h-screen lg:grid lg:grid-cols-[220px_1fr]">
       <aside className="border-b border-line bg-ink text-white lg:min-h-screen lg:border-b-0">
         <div className="flex items-center justify-between p-4 lg:block">
-          <Link href="/admin" className="font-extrabold">
-            Дифузори · Адмін
+          <Link href="/admin" className="flex items-center gap-2.5 font-extrabold">
+            <img src="/brand/mycond-logo.png" alt="Mycond" width={36} height={32} className="h-8 w-auto rounded" />
+            Адмінка
           </Link>
           <Link href="/" target="_blank" className="text-xs text-white/60 hover:text-white lg:mt-1 lg:block">
             Відкрити сайт ↗
