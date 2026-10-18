@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { surfaceOf } from "@/lib/model3d/spec";
 import type { RecolorSpec } from "@/lib/recolor";
 import { useColorPreview, useRecolored } from "./color-preview";
 
@@ -55,7 +56,7 @@ export function Gallery({ images, alt, recolor }: { images: string[]; alt: strin
             spec={model}
             hex={preview?.hex ?? "#f1f0ea"}
             finish={preview?.finish ?? "gloss"}
-            surface={model.kind === "grille" ? "wall" : "ceiling"}
+            surface={surfaceOf(model)}
             labels={{ mm: t("common.mm"), drag: t("product.drag3d"), reset: t("product.reset3d"), dims: t("product.dims3d"), mounted: t("product.mounted3d"), alone: t("product.alone3d") }}
           />
           <span className="pointer-events-none absolute left-3 top-3 rounded-lg bg-ink px-2 py-1 text-xs font-bold text-white">3D</span>

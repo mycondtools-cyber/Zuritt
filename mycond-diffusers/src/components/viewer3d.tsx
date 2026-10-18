@@ -71,7 +71,8 @@ function mountingSurface(d: Dims) {
   const shape = new THREE.Shape();
   shape.absarc(0, 0, R, 0, Math.PI * 2, false);
   const hole = new THREE.Path();
-  if (d.holeH) {
+  if (d.holePath) hole.setFromPoints(d.holePath.map(([x, y]) => new THREE.Vector2(x, y)));
+  else if (d.holeH) {
     hole.moveTo(-d.holeW / 2, -d.holeH / 2);
     hole.lineTo(-d.holeW / 2, d.holeH / 2);
     hole.lineTo(d.holeW / 2, d.holeH / 2);
@@ -117,6 +118,8 @@ export default function Viewer3D({ spec, hex, finish, surface, labels }: Viewer3
   const api = useRef<{ setLook: (hex: string, finish: Finish) => void; reset: () => void; showDims: (v: boolean) => void; showMount: (v: boolean) => void } | null>(null);
   const [dimsOn, setDimsOn] = useState(true);
   const [mounted, setMounted] = useState(true);
+  // пленум-бокси тощо не монтуються врівень з поверхнею — лише окремо
+  const [canMount, setCanMount] = useState(true);
 
   // сцена перебудовується лише при зміні геометрії; колір — без перебудови
   useEffect(() => {
@@ -149,6 +152,9 @@ export default function Viewer3D({ spec, hex, finish, surface, labels }: Viewer3
     scene.add(group);
     const surf = mountingSurface(dims);
     scene.add(surf);
+    const mountable = dims.mount !== false;
+    surf.visible = mountable;
+    setCanMount(mountable);
     const logo = logoDecal(dims, () => (dirty = true));
     if (logo) scene.add(logo);
     const front = new THREE.Box3().setFromObject(group).max.z;
@@ -196,7 +202,7 @@ export default function Viewer3D({ spec, hex, finish, surface, labels }: Viewer3
       controls.minAzimuthAngle = on ? -1.05 : -Infinity;
       controls.maxAzimuthAngle = on ? 1.05 : Infinity;
     };
-    limitAngles(true);
+    limitAngles(mountable);
     const home = () => {
       const fov = (camera.fov * Math.PI) / 180;
       const dist = radius / Math.sin(fov / 2) / Math.min(1, camera.aspect);
@@ -250,7 +256,7 @@ export default function Viewer3D({ spec, hex, finish, surface, labels }: Viewer3
 
     api.current = {
       setLook: (h, f) => {
-        applyFinish(mats.paint, h, f);
+        for (const m of [mats.paint, ...mats.variants]) applyFinish(m, h, f);
         dirty = true;
       },
       reset: () => {
@@ -262,8 +268,8 @@ export default function Viewer3D({ spec, hex, finish, surface, labels }: Viewer3
         dirty = true;
       },
       showMount: (v) => {
-        surf.visible = v;
-        limitAngles(v);
+        surf.visible = v && mountable;
+        limitAngles(v && mountable);
         dirty = true;
       },
     };
@@ -303,9 +309,11 @@ export default function Viewer3D({ spec, hex, finish, surface, labels }: Viewer3
       <div className="pointer-events-none absolute inset-x-0 bottom-2 flex items-center justify-between gap-2 px-3">
         <span className="hidden rounded-md bg-white/80 px-2 py-1 text-[11px] text-muted sm:inline">{labels.drag}</span>
         <span className="pointer-events-auto ml-auto flex gap-1.5 whitespace-nowrap">
-          <button type="button" aria-pressed={!mounted} onClick={() => setMounted((v) => !v)} className={btn(!mounted)}>
-            {mounted ? labels.alone : labels.mounted}
-          </button>
+          {canMount && (
+            <button type="button" aria-pressed={!mounted} onClick={() => setMounted((v) => !v)} className={btn(!mounted)}>
+              {mounted ? labels.alone : labels.mounted}
+            </button>
+          )}
           <button type="button" aria-pressed={dimsOn} onClick={() => setDimsOn((v) => !v)} className={btn(dimsOn)}>
             {labels.dims}
           </button>
