@@ -259,7 +259,7 @@
         "150x150": 531,
         "225x225": 531,
         "300x300": 531,
-        "350x350": 660,
+        "350x350": 561,
         "400x400": 561,
         "450x450": 561
        }
@@ -296,7 +296,7 @@
    ],
    "calc": {
     "areaCoef": 0.33,
-    "zeta": 1.5,
+    "zeta": 1.95,
     "throwK": 0.944,
     "tempK": 1.788
    },
@@ -712,7 +712,7 @@
      "label": "550x550/60",
      "w": 550,
      "h": 550,
-     "freeArea": 0.078,
+     "freeArea": 0.0718,
      "price": 2769.0,
      "sort": 6
     },
@@ -720,7 +720,7 @@
      "label": "595x595/60",
      "w": 595,
      "h": 595,
-     "freeArea": 0.078,
+     "freeArea": 0.0796,
      "price": 2948.0,
      "sort": 7
     },
@@ -728,7 +728,7 @@
      "label": "600x600/60",
      "w": 600,
      "h": 600,
-     "freeArea": 0.078,
+     "freeArea": 0.0805,
      "price": 2968.0,
      "sort": 8
     },
@@ -1449,41 +1449,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -1666,41 +1666,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -1878,41 +1878,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -2091,41 +2091,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -2306,41 +2306,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -2519,41 +2519,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -2730,41 +2730,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -2946,41 +2946,41 @@
    ],
    "calc": {
     "areaCoef": 0.375,
-    "zeta": 2.806,
+    "zeta": 2.1,
     "throwK": 2.065,
-    "tempK": 2.344,
+    "tempK": 3.084,
     "jet": "plane",
     "slotWidthMm": 40,
     "byKey": {
      "1": {
-      "zeta": 4.493,
+      "zeta": 4.646,
       "throwK": 1.721,
-      "tempK": 1.905
+      "tempK": 1.711
      },
      "2": {
-      "zeta": 3.794,
+      "zeta": 3.055,
       "throwK": 1.816,
-      "tempK": 2.344
+      "tempK": 2.054
      },
      "3": {
-      "zeta": 1.703,
+      "zeta": 2.524,
       "throwK": 2.065,
-      "tempK": 1.513
+      "tempK": 2.397
      },
      "4": {
-      "zeta": 2.196,
+      "zeta": 2.259,
       "throwK": 2.113,
-      "tempK": 3.118
+      "tempK": 2.741
      },
      "5": {
-      "zeta": 2.806,
+      "zeta": 2.1,
       "throwK": 2.099,
-      "tempK": 2.852
+      "tempK": 3.084
      },
      "6": {
-      "zeta": 1.586,
+      "zeta": 1.994,
       "throwK": 2.19,
-      "tempK": 3.683
+      "tempK": 3.428
      }
     }
    },
@@ -3371,8 +3371,8 @@
      },
      "4x50": {
       "zeta": 14.919,
-      "throwK": 3.795,
-      "tempK": 1.762
+      "throwK": 2.412,
+      "tempK": 2.513
      }
     }
    },
@@ -3501,11 +3501,11 @@
       {
        "value": "Наявність демпфера",
        "label": "Наявність демпфера",
-       "priceAdd": 44.0,
+       "priceAdd": 0.0,
        "pricePct": 0,
-       "pricePerSlot": 0.0,
-       "pricePerM": 510.0,
-       "pricePerSlotM": -0.0
+       "pricePerSlot": 44.0,
+       "pricePerM": 0.0,
+       "pricePerSlotM": 510.0
       },
       {
        "value": "Наявність перфорації",
@@ -3656,18 +3656,18 @@
       {
        "value": "1",
        "label": "1",
-       "priceAdd": 5.0,
+       "priceAdd": -9.0,
        "pricePct": 0,
-       "pricePerSlot": 0,
+       "pricePerSlot": -15.0,
        "pricePerM": 0,
        "pricePerSlotM": 0
       },
       {
        "value": "0",
        "label": "0 (у лінію)",
-       "priceAdd": 5.0,
+       "priceAdd": -19.33,
        "pricePct": 0,
-       "pricePerSlot": 0,
+       "pricePerSlot": -29.67,
        "pricePerM": 0,
        "pricePerSlotM": 0
       }
@@ -3771,8 +3771,8 @@
      },
      "4x30": {
       "zeta": 13.472,
-      "throwK": 3.81,
-      "tempK": 1.764
+      "throwK": 2.397,
+      "tempK": 2.514
      }
     }
    },
@@ -4245,7 +4245,7 @@
     "enabled": false
    },
    "pricing": {
-    "ralFactor": 0.0
+    "ralFactor": 3.047
    },
    "limits": {},
    "sizes": [
@@ -4480,7 +4480,7 @@
     "enabled": false
    },
    "pricing": {
-    "ralFactor": 0.0
+    "ralFactor": 3.047
    },
    "limits": {},
    "sizes": [
@@ -4923,7 +4923,7 @@
    },
    "calc": {
     "areaCoef": 0.7,
-    "zeta": 93.999,
+    "zeta": 9.4,
     "throwK": 2.727,
     "tempK": 1.778
    },

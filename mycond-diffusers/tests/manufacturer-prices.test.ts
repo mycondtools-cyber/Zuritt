@@ -15,8 +15,19 @@ const SLOT_TOLERANCE: Record<string, number> = { rsdm: 0.075 };
 
 const settings = { ralSurchargePct: 12, ralExtraDays: 0 };
 
+/** Ціни, які ми свідомо виправили (docs/manufacturer-check.md, п. 9–11) */
+function corrected(c: { slug: string; kind: string; sel: { sizeLabel?: string; options?: Record<string, string | undefined> } }) {
+  const o = c.sel.options ?? {};
+  return (
+    (c.slug === "pdk" && c.sel.sizeLabel === "350x350" && o.dspopt === "Так") ||
+    ((c.slug === "vdl" || c.slug === "dva") && c.kind === "ral") ||
+    (c.slug === "clt" && o.sladditions === "Наявність демпфера" && o.nslots !== "1")
+  );
+}
+
 describe("ціни як у виробника", () => {
   for (const c of cases) {
+    if (corrected(c)) continue;
     const sel = c.sel as Partial<Selection>;
     const name = `${c.kind}: ${c.slug} ${sel.sizeLabel ?? ""}${sel.width ? `${sel.width}x${sel.height}` : ""}${sel.length ? `L${sel.length}` : ""} ${JSON.stringify(sel.options)} ${c.ral === "RAL 9016 глянець" ? "" : c.ral}`;
     it(name, () => {
