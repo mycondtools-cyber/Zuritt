@@ -88,7 +88,7 @@ docker compose up -d --build
 docker compose exec app npm run db:seed   # один раз: каталог, ціни, кольори RAL
 ```
 
-Сайт слухає `127.0.0.1:APP_PORT`; назовні його віддає nginx (або панель сервера) з SSL. Оновлення: `git pull && docker compose up -d --build`. База лежить у томі `pgdata`.
+Оновлення на сервері mycond.eu: `deploy.sh` (або GitHub Actions → *Deploy airflow.mycond.eu*). Сайт слухає `127.0.0.1:APP_PORT`; назовні його віддає nginx (або панель сервера) з SSL. Оновлення: `git pull && docker compose up -d --build`. База лежить у томі `pgdata`.
 
 ## Фото й логотип
 

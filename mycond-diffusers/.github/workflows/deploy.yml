@@ -1,0 +1,51 @@
+name: Deploy airflow.mycond.eu
+
+# Ручний запуск: Actions → Deploy airflow.mycond.eu → Run workflow.
+# Запускає /www/repos/airflow/deploy.sh на сервері по SSH
+# (секрети DEPLOY_SSH_KEY, DEPLOY_HOST, DEPLOY_USER — ті самі, що в репозиторії mycond.eu).
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy (default: main)'
+        required: false
+        default: 'main'
+      seed:
+        description: 'Run db:seed after deploy'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-airflow
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: SSH + deploy.sh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Run deploy.sh on production
+        env:
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          BRANCH: ${{ inputs.branch }}
+          SEED: ${{ inputs.seed }}
+        run: |
+          set -euo pipefail
+          ARGS="--branch $BRANCH"
+          [[ "$SEED" == "true" ]] && ARGS="$ARGS --seed"
+          ssh -o BatchMode=yes -o ServerAliveInterval=30 \
+            "${DEPLOY_USER}@${DEPLOY_HOST}" "/www/repos/airflow/deploy.sh $ARGS"
