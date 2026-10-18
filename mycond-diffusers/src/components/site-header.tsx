@@ -10,8 +10,8 @@ export async function SiteHeader({ phone }: { phone?: string }) {
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
         <Link href="/" className="flex min-w-0 items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/mycond-logo.png" alt="Mycond" width={45} height={40} className="h-10 w-auto rounded-md" />
-          <span className="min-w-0 leading-tight">
+          <img src="/brand/mycond-logo-horizontal.png" alt="MYCOND" width={147} height={40} className="h-10 w-auto shrink-0" />
+          <span className="hidden min-w-0 border-l border-line pl-2.5 leading-tight sm:block">
             <span className="block truncate text-[15px] font-extrabold tracking-tight">{t("title")}</span>
             <span className="block truncate text-xs text-muted">{t("tagline")}</span>
           </span>

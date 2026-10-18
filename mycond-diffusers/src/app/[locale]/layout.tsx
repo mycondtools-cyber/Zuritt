@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: { default: t("title"), template: "%s · Mycond" },
     description: t("description"),
-    icons: { icon: "/brand/mycond-logo.png" },
+    icons: { icon: "/brand/mycond-icon.png", apple: "/brand/mycond-icon.png" },
     alternates: { languages: Object.fromEntries(routing.locales.map((l) => [l, path(l)])) },
   };
 }

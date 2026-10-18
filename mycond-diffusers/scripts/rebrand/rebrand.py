@@ -10,12 +10,13 @@
 import cv2, numpy as np, json, os, sys
 from PIL import Image
 sys.path.insert(0,os.path.dirname(__file__))
-from wordmark import wordmark, FONT, ROOT
+ROOT=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..')
+FONT=os.path.join(ROOT,'public/fonts/ProximaNova-Extrabld.woff')
+# офіційний горизонтальний логотип (брендбук MYCOND 2024): білий знак на фірмовому зеленому
+PLATE=cv2.imread(os.path.join(ROOT,'public/brand/mycond-logo-horizontal.png'))
 SRC=os.path.join(ROOT,'assets/aerostar-originals/products')
 DST=os.path.join(ROOT,'public/products')
 HERE=os.path.dirname(__file__)
-GREEN_HUE=59  # #4FAF4D в OpenCV (0..180)
-WM=np.array(wordmark(400)).astype(np.float32)/255
 
 def teal_mask(img, loose=False):
     hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -60,26 +61,25 @@ def process(img, region):
     filled=cv2.inpaint(tmp,mask,4,cv2.INPAINT_TELEA)
     out=img.copy(); out[mask>0]=filled[mask>0]
     # поставити знак MYCOND: та сама ширина, кут і центр
-    # розмір: висота знака ≈ висота літер AEROSTAR, але не ширше за оригінал більше ніж на 15 %
-    scale=min(rh*1.15/WM.shape[0], rw*1.15/WM.shape[1])
-    tw,th=max(2,int(WM.shape[1]*scale)),max(2,int(WM.shape[0]*scale))
-    wm=cv2.resize(WM,(tw,th),interpolation=cv2.INTER_AREA)
+    # офіційний логотип без змін кольору й пропорцій: ширина як у AEROSTAR, той самий центр і кут
+    tw=max(8,int(round(rw*1.05))); th=max(3,int(round(tw*PLATE.shape[0]/PLATE.shape[1])))
+    plate=cv2.resize(PLATE,(tw,th),interpolation=cv2.INTER_AREA).astype(np.float32)
     pad=int(max(tw,th)*0.6)+4
-    canvas=np.zeros((th+2*pad,tw+2*pad),np.float32); canvas[pad:pad+th,pad:pad+tw]=wm
-    M=cv2.getRotationMatrix2D((canvas.shape[1]/2,canvas.shape[0]/2),-ang,1.0)
-    rot=cv2.warpAffine(canvas,M,(canvas.shape[1],canvas.shape[0]),flags=cv2.INTER_LINEAR)
-    # м'якість як у фото: дрібні логотипи розмиті
-    sigma=max(0.35,rh/28)
-    rot=cv2.GaussianBlur(rot,(0,0),sigma)
-    gx,gy=int(cx+x0-canvas.shape[1]/2),int(cy+y0-canvas.shape[0]/2)
-    # колір: фірмовий зелений із насиченістю/яскравістю оригінального логотипа (те саме освітлення)
-    s_,v_=sv
-    if mode!='teal': s_=max(s_,150)
-    col=cv2.cvtColor(np.uint8([[[GREEN_HUE,min(255,s_*1.05),v_]]]),cv2.COLOR_HSV2BGR)[0,0].astype(np.float32)
-    ax0,ay0=max(0,gx),max(0,gy); ax1,ay1=min(W,gx+rot.shape[1]),min(H,gy+rot.shape[0])
-    a=np.clip(rot[ay0-gy:ay1-gy, ax0-gx:ax1-gx][...,None]*1.05,0,1)
+    cw,ch=tw+2*pad,th+2*pad
+    canvas=np.zeros((ch,cw,3),np.float32); canvas[pad:pad+th,pad:pad+tw]=plate
+    alpha=np.zeros((ch,cw),np.float32); alpha[pad:pad+th,pad:pad+tw]=1
+    M=cv2.getRotationMatrix2D((cw/2,ch/2),-ang,1.0)
+    rot=cv2.warpAffine(canvas,M,(cw,ch),flags=cv2.INTER_LINEAR)
+    ra=cv2.warpAffine(alpha,M,(cw,ch),flags=cv2.INTER_LINEAR)
+    # різкість як у фото: дрібні логотипи на фото злегка розмиті
+    sigma=max(0.3,rh/40)
+    rot=cv2.GaussianBlur(rot,(0,0),sigma); ra=cv2.GaussianBlur(ra,(0,0),sigma)
+    gx,gy=int(cx+x0-cw/2),int(cy+y0-ch/2)
+    ax0,ay0=max(0,gx),max(0,gy); ax1,ay1=min(W,gx+cw),min(H,gy+ch)
+    a=ra[ay0-gy:ay1-gy, ax0-gx:ax1-gx][...,None]
+    src=rot[ay0-gy:ay1-gy, ax0-gx:ax1-gx]/np.maximum(a,1e-3)
     roi=out[ay0:ay1,ax0:ax1].astype(np.float32)
-    out[ay0:ay1,ax0:ax1]=np.clip(roi*(1-a)+col*a,0,255).astype(np.uint8)
+    out[ay0:ay1,ax0:ax1]=np.clip(roi*(1-a)+src*a,0,255).astype(np.uint8)
     return out,(cx+x0,cy+y0,rw,rh,ang)
 
 def banner_text(img):

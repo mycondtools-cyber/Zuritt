@@ -76,7 +76,7 @@ npm test                    # тести розрахунку, звірка з �
 
 ## Фото й логотип
 
-На фото виробів логотип AEROSTAR замінено знаком MYCOND у тому ж місці (149 фото, `scripts/rebrand/`). Оригінали — у `assets/aerostar-originals/` (сайт їх не віддає). Повторити обробку: `python3 scripts/rebrand/rebrand.py`; зони логотипів нових фото додаються в `scripts/rebrand/jobs.json`.
+На фото виробів логотип AEROSTAR замінено офіційним горизонтальним логотипом MYCOND (брендбук 2024, `public/brand/mycond-logo-horizontal.png`) у тому ж місці, з тим самим кутом і розміром (149 фото, `scripts/rebrand/`). Оригінали — у `assets/aerostar-originals/` (сайт їх не віддає). Повторити обробку: `python3 scripts/rebrand/rebrand.py`; зони логотипів нових фото додаються в `scripts/rebrand/jobs.json`.
 
 ## Дані
 

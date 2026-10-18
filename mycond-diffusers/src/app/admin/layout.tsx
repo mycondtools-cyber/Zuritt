@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { icons: { icon: "/brand/mycond-logo.png" } };
+export const metadata: Metadata = { icons: { icon: "/brand/mycond-icon.png", apple: "/brand/mycond-icon.png" } };
 
 /** Адмінка — завжди українською, без мовного префікса */
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
