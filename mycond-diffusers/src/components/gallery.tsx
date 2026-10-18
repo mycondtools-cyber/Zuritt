@@ -1,13 +1,20 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import localized from "@/lib/localized-images.json";
 import { surfaceOf } from "@/lib/model3d/spec";
 import type { RecolorSpec } from "@/lib/recolor";
 import { useColorPreview, useRecolored } from "./color-preview";
 
 const PREVIEW = "__preview__";
+const LOCALIZED = localized as Record<string, string[]>;
+
+/** Креслення з перекладеними написами: /products/x/03.webp → /products/x/03.en.webp, якщо така версія є */
+function localizedSrc(src: string, locale: string) {
+  return LOCALIZED[src]?.includes(locale) ? src.replace(/\.webp$/, `.${locale}.webp`) : src;
+}
 const MODEL = "__3d__";
 
 // three.js (~600 КБ) вантажимо лише коли відкрили 3D
@@ -29,6 +36,7 @@ function Cube() {
 
 export function Gallery({ images, alt, recolor }: { images: string[]; alt: string; recolor?: RecolorSpec }) {
   const t = useTranslations();
+  const locale = useLocale();
   const ctx = useColorPreview();
   const preview = ctx?.color;
   const model = ctx?.model;
@@ -45,7 +53,7 @@ export function Gallery({ images, alt, recolor }: { images: string[]; alt: strin
 
   if (!slides.length) return <div className="card flex aspect-square items-center justify-center text-muted">{t("common.photoSoon")}</div>;
   const active = cur && slides.includes(cur) ? cur : slides[0];
-  const srcOf = (s: string) => (s === PREVIEW ? (recolored ?? recolor!.image) : s);
+  const srcOf = (s: string) => (s === PREVIEW ? (recolored ?? recolor!.image) : localizedSrc(s, locale));
   const photoNo = (s: string) => images.indexOf(s) + 1;
 
   return (
