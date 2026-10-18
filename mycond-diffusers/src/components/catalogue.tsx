@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { GROUPS } from "@/lib/products";
-import { useFormat } from "./use-format";
+import { useMoney } from "./market";
 
 export interface CatalogueItem {
   slug: string;
@@ -36,7 +36,7 @@ export function Catalogue({
 }) {
   const t = useTranslations();
   const locale = useLocale();
-  const { uah } = useFormat();
+  const money = useMoney();
   const [group, setGroup] = useState(initialGroup);
   const [cat, setCat] = useState("");
   const [shape, setShape] = useState("");
@@ -166,7 +166,7 @@ export function Catalogue({
                     <span className="text-sm">
                       {i.priceFrom > 0 ? (
                         <>
-                          {t("catalogue.from")} <b className="text-base">{uah(i.priceFrom)}</b>
+                          {t("catalogue.from")} <b className="text-base">{money.fmt(i.priceFrom)}</b>
                         </>
                       ) : (
                         <span className="text-muted">{t("common.priceOnRequest")}</span>

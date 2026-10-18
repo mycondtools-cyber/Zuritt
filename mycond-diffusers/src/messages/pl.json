@@ -32,7 +32,7 @@
     "step2Title": "Podaj strumień powietrza",
     "step2Text": "Konfigurator sam dobierze rozmiar — bez hałasu i przeciągów.",
     "step3Title": "Kolor i zapytanie",
-    "step3Text": "Dowolny kolor RAL, cena w UAH/€ i termin wykonania od razu."
+    "step3Text": "Dowolny kolor RAL, cena i termin wykonania od razu."
   },
   "groups": {
     "diffusers": "Nawiewniki",
@@ -141,8 +141,6 @@
     "calcNeedAirflow": "Podaj strumień powietrza, aby zobaczyć obliczenia.",
     "calcBadDims": "Sprawdź wymiary — są poza dopuszczalnym zakresem.",
     "marking": "Oznaczenie do zamówienia",
-    "currencyUah": "₴ UAH",
-    "currencyEur": "€ EUR",
     "unitTimesQty": "{unit} × {qty} szt.",
     "ralIncluded": " · w tym malowanie {value}",
     "leadTime": "Wykonanie: {days} dni roboczych",
@@ -221,11 +219,26 @@
     "s1Text": "Zwykle jest podany w projekcie wentylacji. Jeśli nie — powierzchnia × wysokość × krotność wymian. Krotność: mieszkania 1–2, biura 2–4, kuchnie i łazienki 5–10. Podziel całkowity strumień przez liczbę nawiewników w pomieszczeniu.",
     "s2Title": "2. Wybierz typ odpowiedni do sufitu i wnętrza",
     "types": [
-      ["Sufitowe kwadratowe (PDK, NCD)", "Mieszkania, biura, sklepy z sufitem do 3,5 m. Rozprowadzają powietrze w 1–4 kierunkach wzdłuż sufitu."],
-      ["Wirowe i panelowe (DPF, RD, DCc)", "Sufity podwieszane Armstrong, biura, open space. Strumień wirowy szybko miesza powietrze — mniej przeciągów przy dużym strumieniu."],
-      ["Szczelinowe (SD, SDH, SDT)", "Nowoczesne wnętrza, sufity napinane i z płyt gipsowo-kartonowych. Liniowy strumień wzdłuż sufitu lub okna. SDH — montaż ukryty pod szpachlę."],
-      ["Gipsowe (CRL, PCR, SQR)", "Prawie niewidoczne: montowane w suficie i malowane razem z nim. Do niewielkich strumieni w pokojach mieszkalnych."],
-      ["Wirowe i dysze (VDL, DVA, JN)", "Wysokie pomieszczenia 4–15 m: magazyny, hale, centra handlowe. Nawiewniki wirowe z elementem termostatycznym same przełączają tryb grzanie/chłodzenie, dysze JN mają zasięg 10–30 m."]
+      [
+        "Sufitowe kwadratowe (PDK, NCD)",
+        "Mieszkania, biura, sklepy z sufitem do 3,5 m. Rozprowadzają powietrze w 1–4 kierunkach wzdłuż sufitu."
+      ],
+      [
+        "Wirowe i panelowe (DPF, RD, DCc)",
+        "Sufity podwieszane Armstrong, biura, open space. Strumień wirowy szybko miesza powietrze — mniej przeciągów przy dużym strumieniu."
+      ],
+      [
+        "Szczelinowe (SD, SDH, SDT)",
+        "Nowoczesne wnętrza, sufity napinane i z płyt gipsowo-kartonowych. Liniowy strumień wzdłuż sufitu lub okna. SDH — montaż ukryty pod szpachlę."
+      ],
+      [
+        "Gipsowe (CRL, PCR, SQR)",
+        "Prawie niewidoczne: montowane w suficie i malowane razem z nim. Do niewielkich strumieni w pokojach mieszkalnych."
+      ],
+      [
+        "Wirowe i dysze (VDL, DVA, JN)",
+        "Wysokie pomieszczenia 4–15 m: magazyny, hale, centra handlowe. Nawiewniki wirowe z elementem termostatycznym same przełączają tryb grzanie/chłodzenie, dysze JN mają zasięg 10–30 m."
+      ]
     ],
     "s3Title": "3. Sprawdź trzy liczby w konfiguratorze",
     "s3Velocity": "Prędkość wylotowa — do {good} m/s w cichych pomieszczeniach, do {ok} m/s w komercyjnych.",

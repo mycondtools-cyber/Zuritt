@@ -6,7 +6,8 @@ import { db } from "@/lib/db";
 import { detailLabels, itemDetails } from "@/lib/details";
 import { uah } from "@/lib/format";
 import { toProductData } from "@/lib/products";
-import { getSettings } from "@/lib/settings";
+import { convert, formatMoney } from "@/lib/money";
+import { getMarket, getSettings } from "@/lib/settings";
 import type { CartItem } from "@/lib/types";
 
 const str = (v: unknown, max = 500) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -29,6 +30,7 @@ export async function POST(req: Request) {
   const locale = (routing.locales as readonly string[]).includes(String(body.locale)) ? String(body.locale) : routing.defaultLocale;
 
   const settings = await getSettings();
+  const market = await getMarket(locale, settings);
   const slugs = [...new Set(rawItems.map((i) => String(i.slug)))];
   const [products, colors] = await Promise.all([
     db.product.findMany({ where: { slug: { in: slugs } }, include: { sizes: true } }),
@@ -57,6 +59,9 @@ export async function POST(req: Request) {
         quantity,
         unitPrice: r.unit,
         total: r.total,
+        // у валюті клієнта з маржею — так, як він бачив на сайті
+        unitLocal: r.onRequest ? 0 : convert(r.unit, market),
+        totalLocal: r.onRequest ? 0 : Math.round(convert(r.unit, market) * quantity * 100) / 100,
         leadDays: r.leadDays,
         onRequest: r.onRequest,
       },
@@ -64,6 +69,8 @@ export async function POST(req: Request) {
   });
   if (!items.length) return fail("not_found");
   const totalUah = items.reduce((s, i) => s + i.total, 0);
+  const total = Math.round(items.reduce((s, i) => s + i.totalLocal, 0) * 100) / 100;
+  const money = (v: number) => formatMoney(v, market.currency, "uk");
 
   const order = await db.order.create({
     data: {
@@ -76,6 +83,10 @@ export async function POST(req: Request) {
       items,
       totalUah,
       locale,
+      currency: market.currency,
+      fxRate: market.rate,
+      margin: market.margin,
+      total,
     },
   });
 
@@ -83,8 +94,8 @@ export async function POST(req: Request) {
     const text = [
       `🆕 Заявка №${order.id}${locale !== routing.defaultLocale ? ` (${locale.toUpperCase()})` : ""}`,
       `${name}, ${phone}${order.company ? `, ${order.company}` : ""}${order.city ? `, ${order.city}` : ""}`,
-      ...items.map((i) => `• ${i.spec} × ${i.quantity} — ${i.onRequest ? "за запитом" : uah(i.total)}`),
-      `Разом: ${uah(totalUah)}`,
+      ...items.map((i) => `• ${i.spec} × ${i.quantity} — ${i.onRequest ? "за запитом" : money(i.totalLocal)}`),
+      `Разом: ${money(total)}${market.currency !== "UAH" || market.margin !== 1 ? ` (база ${uah(totalUah)}, маржа ×${market.margin}${market.currency !== "UAH" ? `, курс ${market.rate}` : ""})` : ""}`,
       order.comment ? `💬 ${order.comment}` : "",
     ]
       .filter(Boolean)

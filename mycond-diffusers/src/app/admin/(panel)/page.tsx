@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { uah } from "@/lib/format";
+import { formatMoney, type Currency } from "@/lib/money";
 
 export default async function Dashboard() {
   const [products, active, sizes, zeroSizes, orders, newOrders, latest] = await Promise.all([
@@ -54,7 +55,7 @@ export default async function Dashboard() {
                   <span className="font-semibold">№{o.id}</span>
                   <span>{o.name}</span>
                   <span className="text-muted">{o.phone}</span>
-                  <span className="ml-auto font-semibold">{uah(o.totalUah)}</span>
+                  <span className="ml-auto font-semibold">{o.total > 0 ? formatMoney(o.total, o.currency as Currency, "uk") : uah(o.totalUah)}</span>
                 </Link>
               </li>
             ))}

@@ -4,10 +4,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { Prisma } from "@prisma/client";
 import { checkPassword, createSession, destroySession, requireAdmin } from "@/lib/auth";
-import { CONTENT_LOCALES } from "@/i18n/routing";
+import { CONTENT_LOCALES, routing } from "@/i18n/routing";
 import { db } from "@/lib/db";
 import type { ProductTranslation, Translations } from "@/lib/i18n-content";
-import { DEFAULT_SETTINGS } from "@/lib/settings";
+import { getFx } from "@/lib/fx";
+import { CURRENCIES, type Currency, type FxRates, type MarketSetting } from "@/lib/money";
+import { DEFAULT_SETTINGS, getSettings } from "@/lib/settings";
 import type { CalcParams, Choice, ExtraInput, Limits, OptionGroup, SizeRow } from "@/lib/types";
 
 export async function login(_prev: string | null, form: FormData): Promise<string | null> {
@@ -257,12 +259,56 @@ export async function saveSettings(form: FormData) {
   await requireAdmin();
   for (const key of Object.keys(DEFAULT_SETTINGS) as (keyof typeof DEFAULT_SETTINGS)[]) {
     const raw = form.get(key);
-    if (raw === null) continue;
+    if (raw === null || typeof DEFAULT_SETTINGS[key] === "object") continue;
     const value = typeof DEFAULT_SETTINGS[key] === "number" ? n(raw, DEFAULT_SETTINGS[key] as number) : String(raw).trim();
     await db.setting.upsert({ where: { key }, update: { value }, create: { key, value } });
   }
   revalidatePath("/", "layout");
   redirect("/admin/settings?saved=1");
+}
+
+const setSetting = (key: string, value: Prisma.InputJsonValue) => db.setting.upsert({ where: { key }, update: { value }, create: { key, value } });
+
+/** Валюта й маржа кожної мовної версії + курси (автоматично з НБУ або вручну) */
+export async function saveCurrencies(form: FormData) {
+  await requireAdmin();
+  const s = await getSettings();
+  const markets: Record<string, MarketSetting> = {};
+  for (const l of routing.locales) {
+    const currency = String(form.get(`market_${l}_currency`) ?? "") as Currency;
+    const margin = n(form.get(`market_${l}_margin`), 1);
+    markets[l] = { currency: CURRENCIES.includes(currency) ? currency : s.markets[l]?.currency ?? "UAH", margin: margin > 0 && margin < 10 ? margin : 1 };
+  }
+  const auto = form.get("fx_auto") === "on";
+  const fx: FxRates = { ...s.fx, auto };
+  if (!auto) {
+    const eur = n(form.get("fx_EUR"), s.fx.EUR);
+    const pln = n(form.get("fx_PLN"), s.fx.PLN);
+    if (eur > 0) fx.EUR = eur;
+    if (pln > 0) fx.PLN = pln;
+    fx.date = undefined;
+    fx.updatedAt = new Date().toISOString();
+  }
+  await setSetting("markets", markets as unknown as Prisma.InputJsonValue);
+  await setSetting("fx", fx as unknown as Prisma.InputJsonValue);
+  // увімкнули автоматичний режим — одразу беремо свіжий курс
+  if (auto && !s.fx.auto) await getFx(fx, true).catch(() => undefined);
+  revalidatePath("/", "layout");
+  redirect("/admin/settings?saved=1");
+}
+
+/** Кнопка «Оновити курс НБУ зараз» */
+export async function refreshRates() {
+  await requireAdmin();
+  const s = await getSettings();
+  let error = "";
+  try {
+    await getFx({ ...s.fx, auto: true }, true);
+  } catch (e) {
+    error = e instanceof Error ? e.message : "помилка";
+  }
+  revalidatePath("/", "layout");
+  redirect(error ? `/admin/settings?fxError=${encodeURIComponent(error)}` : "/admin/settings?rates=1");
 }
 
 export async function updateColor(id: number, data: { isStandard?: boolean; popular?: boolean; hex?: string; name?: string; surchargePct?: number | null }) {

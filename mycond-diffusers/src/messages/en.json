@@ -32,7 +32,7 @@
     "step2Title": "Enter the airflow",
     "step2Text": "The configurator picks a size that runs quietly and without draughts.",
     "step3Title": "Colour and request",
-    "step3Text": "Any RAL colour, price in UAH/€ and lead time at a glance."
+    "step3Text": "Any RAL colour, price and lead time at a glance."
   },
   "groups": {
     "diffusers": "Diffusers",
@@ -141,8 +141,6 @@
     "calcNeedAirflow": "Enter the airflow to see the calculation.",
     "calcBadDims": "Check the dimensions — they are outside the allowed range.",
     "marking": "Order code",
-    "currencyUah": "₴ UAH",
-    "currencyEur": "€ EUR",
     "unitTimesQty": "{unit} × {qty} pcs",
     "ralIncluded": " · incl. painting {value}",
     "leadTime": "Manufacturing: {days} working days",
@@ -221,11 +219,26 @@
     "s1Text": "It is usually given in the ventilation design. If not: area × height × air change rate. Air changes: homes 1–2, offices 2–4, kitchens and bathrooms 5–10. Divide the total airflow by the number of diffusers in the room.",
     "s2Title": "2. Choose the type for your ceiling and interior",
     "types": [
-      ["Square ceiling diffusers (PDK, NCD)", "Apartments, offices and shops with ceilings up to 3.5 m. Distribute air in 1–4 directions along the ceiling."],
-      ["Swirl and panel diffusers (DPF, RD, DCc)", "Armstrong grid ceilings, offices, open spaces. The swirling jet mixes air quickly — fewer draughts at high airflow."],
-      ["Linear slot diffusers (SD, SDH, SDT)", "Modern interiors, stretch and plasterboard ceilings. A linear jet along the ceiling or a window. SDH — concealed, plastered-in installation."],
-      ["Gypsum diffusers (CRL, PCR, SQR)", "Almost invisible: built into the ceiling and painted together with it. For small airflows in living rooms."],
-      ["Swirl diffusers and nozzles (VDL, DVA, JN)", "High rooms of 4–15 m: warehouses, halls, shopping centres. Swirl diffusers with a thermostatic element switch between heating and cooling automatically; JN nozzles throw air 10–30 m."]
+      [
+        "Square ceiling diffusers (PDK, NCD)",
+        "Apartments, offices and shops with ceilings up to 3.5 m. Distribute air in 1–4 directions along the ceiling."
+      ],
+      [
+        "Swirl and panel diffusers (DPF, RD, DCc)",
+        "Armstrong grid ceilings, offices, open spaces. The swirling jet mixes air quickly — fewer draughts at high airflow."
+      ],
+      [
+        "Linear slot diffusers (SD, SDH, SDT)",
+        "Modern interiors, stretch and plasterboard ceilings. A linear jet along the ceiling or a window. SDH — concealed, plastered-in installation."
+      ],
+      [
+        "Gypsum diffusers (CRL, PCR, SQR)",
+        "Almost invisible: built into the ceiling and painted together with it. For small airflows in living rooms."
+      ],
+      [
+        "Swirl diffusers and nozzles (VDL, DVA, JN)",
+        "High rooms of 4–15 m: warehouses, halls, shopping centres. Swirl diffusers with a thermostatic element switch between heating and cooling automatically; JN nozzles throw air 10–30 m."
+      ]
     ],
     "s3Title": "3. Check three numbers in the configurator",
     "s3Velocity": "Outlet velocity — up to {good} m/s for quiet rooms, up to {ok} m/s for commercial spaces.",

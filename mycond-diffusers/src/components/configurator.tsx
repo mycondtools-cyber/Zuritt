@@ -9,16 +9,18 @@ import { ralLabel } from "@/lib/i18n-content";
 import type { ProductData, RalData, Selection, ShopSettings } from "@/lib/types";
 import { useCart } from "./cart";
 import { Hint } from "./hint";
+import { useMoney } from "./market";
 import { RalPicker } from "./ral-picker";
 import { useFormat } from "./use-format";
 
-type PublicSettings = Omit<ShopSettings, "telegramBotToken" | "telegramChatId">;
+type PublicSettings = Omit<ShopSettings, "telegramBotToken" | "telegramChatId" | "fx" | "markets">;
 
 const LEVEL_STYLE: Record<Level, string> = {
   good: "bg-good-soft text-good",
   ok: "bg-ok-soft text-ok",
   bad: "bg-bad-soft text-bad",
 };
+const CURRENCY_LABEL = { UAH: "₴ UAH", PLN: "zł PLN", EUR: "€ EUR" } as const;
 const LEVEL_KEY: Record<Level, "levelGood" | "levelOk" | "levelBad"> = { good: "levelGood", ok: "levelOk", bad: "levelBad" };
 
 function Step({ n, title, hint, children }: { n: number; title: string; hint?: string; children: React.ReactNode }) {
@@ -117,7 +119,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   const tr = useTranslations("ral");
   const messages = useMessages();
   const locale = useLocale();
-  const { uah, eur, num } = useFormat();
+  const { num } = useFormat();
   const ralText = (name: string) => ralLabel(name, { gloss: tr("suffixGloss"), matt: tr("suffixMatt"), chrome: tr("chrome") });
   const u = (k: "airflow" | "velocity" | "area" | "pressure" | "perHour") => t(`units.${k}`);
   const standard = colors.find((c) => c.isStandard) ?? colors[0];
@@ -133,7 +135,8 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   const [airflow, setAirflow] = useState(150);
   const [distance, setDistance] = useState(2);
   const [deltaT, setDeltaT] = useState<number>(10);
-  const [currency, setCurrency] = useState<"uah" | "eur">("uah");
+  const [inEur, setInEur] = useState(false);
+  const money = useMoney(inEur);
   const [room, setRoom] = useState({ open: false, area: 20, height: 2.7, changes: 2 });
   const [added, setAdded] = useState(false);
 
@@ -161,7 +164,6 @@ export function Configurator({ product: p, image, colors, settings }: { product:
           : true;
   const extrasValid = (lim.extra ?? []).every((e) => extra[e.key] >= e.min && extra[e.key] <= e.max);
 
-  const money = (uahValue: number) => (currency === "uah" ? uah(uahValue) : eur(uahValue / (settings.eurRate || 1)));
 
   function addToCart() {
     const calcInput = result ? { airflow, distance, deltaT: deltaT || null } : undefined;
@@ -351,7 +353,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                           {delta !== 0 && current?.value !== c.value && (
                             <span className="ml-1 text-xs text-muted">
                               {delta > 0 ? "+" : "−"}
-                              {money(Math.abs(delta))}
+                              {money.fmt(Math.abs(delta))}
                             </span>
                           )}
                         </button>
@@ -431,20 +433,21 @@ export function Configurator({ product: p, image, colors, settings }: { product:
           <div className="mt-4 flex flex-wrap items-end gap-4">
             <div>
               <div className="mb-1 flex gap-1 text-xs">
-                {(["uah", "eur"] as const).map((c) => (
-                  <button key={c} type="button" className={`rounded-md px-2 py-0.5 font-semibold ${currency === c ? "bg-ink text-white" : "text-muted"}`} onClick={() => setCurrency(c)}>
-                    {t(c === "uah" ? "currencyUah" : "currencyEur")}
-                  </button>
-                ))}
+                {money.canAlt &&
+                  [false, true].map((eurOn) => (
+                    <button key={String(eurOn)} type="button" className={`rounded-md px-2 py-0.5 font-semibold ${inEur === eurOn ? "bg-ink text-white" : "text-muted"}`} onClick={() => setInEur(eurOn)}>
+                      {eurOn ? "€ EUR" : CURRENCY_LABEL[money.market.currency]}
+                    </button>
+                  ))}
               </div>
               {pr.onRequest ? (
                 <p className="text-xl font-extrabold">{tc("priceOnRequest")}</p>
               ) : (
                 <>
-                  <p className="text-2xl font-extrabold tabular-nums">{money(pr.total)}</p>
+                  <p className="text-2xl font-extrabold tabular-nums">{money.fmtTotal(pr.unit, quantity)}</p>
                   <p className="text-xs text-muted">
-                    {t("unitTimesQty", { unit: money(pr.unit), qty: quantity })}
-                    {pr.ral > 0 && t("ralIncluded", { value: money(pr.ral * quantity) })}
+                    {t("unitTimesQty", { unit: money.fmt(pr.unit), qty: quantity })}
+                    {pr.ral > 0 && t("ralIncluded", { value: money.fmtTotal(pr.ral, quantity) })}
                   </p>
                 </>
               )}

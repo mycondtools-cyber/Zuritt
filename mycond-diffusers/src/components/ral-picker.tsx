@@ -4,11 +4,11 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { ralLabel } from "@/lib/i18n-content";
 import type { RalData } from "@/lib/types";
-import { useFormat } from "./use-format";
+import { useMoney } from "./market";
 
 export function RalPicker({ colors, value, onChange, surchargeUah }: { colors: RalData[]; value: string; onChange: (name: string) => void; surchargeUah: number }) {
   const t = useTranslations("ral");
-  const { uah } = useFormat();
+  const money = useMoney();
   const label = (name: string) => ralLabel(name, { gloss: t("suffixGloss"), matt: t("suffixMatt"), chrome: t("chrome") });
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
@@ -50,7 +50,7 @@ export function RalPicker({ colors, value, onChange, surchargeUah }: { colors: R
         </button>
       </div>
       {current && !current.isStandard && surchargeUah > 0 && (
-        <p className="mt-2 text-xs text-ok">{t("surcharge", { name: label(current.name), value: uah(surchargeUah) })}</p>
+        <p className="mt-2 text-xs text-ok">{t("surcharge", { name: label(current.name), value: money.fmt(surchargeUah) })}</p>
       )}
       {open && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/60 sm:items-center sm:p-4" role="dialog" aria-label={t("palette")} onClick={() => setOpen(false)}>

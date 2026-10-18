@@ -14,6 +14,9 @@ export interface OrderItem {
   quantity: number;
   unitPrice: number;
   total: number;
+  /** У валюті клієнта з маржею (заявки після появи валют) */
+  unitLocal?: number;
+  totalLocal?: number;
   leadDays: number;
   onRequest: boolean;
 }

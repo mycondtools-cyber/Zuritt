@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { uah } from "@/lib/format";
+import { formatMoney, type Currency } from "@/lib/money";
 import { STATUSES } from "@/lib/orders";
 
 export const metadata = { title: "Заявки" };
@@ -31,7 +32,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
             <span className="text-muted">{o.phone}</span>
             {o.company && <span className="text-muted">· {o.company}</span>}
             <span className="ml-auto text-xs text-muted">{o.createdAt.toLocaleString("uk-UA", { timeZone: "Europe/Kyiv" })}</span>
-            <span className="w-28 text-right font-semibold">{uah(o.totalUah)}</span>
+            <span className="w-28 text-right font-semibold">{o.total > 0 ? formatMoney(o.total, o.currency as Currency, "uk") : uah(o.totalUah)}</span>
           </Link>
         ))}
       </div>

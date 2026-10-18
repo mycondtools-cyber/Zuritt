@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { uah } from "@/lib/format";
+import { formatMoney, type Currency } from "@/lib/money";
 import { STATUSES, type OrderItem } from "@/lib/orders";
 import { setOrderStatus } from "../../../actions";
 
@@ -9,6 +10,9 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
   const o = await db.order.findUnique({ where: { id: Number((await params).id) || 0 } });
   if (!o) notFound();
   const items = o.items as unknown as OrderItem[];
+  // заявки до появи валют — лише гривні без маржі
+  const hasLocal = o.total > 0;
+  const money = (v: number) => formatMoney(v, o.currency as Currency, "uk");
   async function update(form: FormData) {
     "use server";
     await setOrderStatus(o!.id, String(form.get("status")), String(form.get("note") ?? ""));
@@ -27,20 +31,28 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
                 <Link href={`/d/${i.slug}`} target="_blank" className="font-semibold hover:text-brand">
                   {i.name}
                 </Link>
-                <span className="ml-auto whitespace-nowrap font-semibold">{i.onRequest ? "за запитом" : uah(i.total)}</span>
+                <span className="ml-auto whitespace-nowrap font-semibold">{i.onRequest ? "за запитом" : hasLocal && i.totalLocal !== undefined ? money(i.totalLocal) : uah(i.total)}</span>
               </div>
               <p className="font-mono text-sm">
                 {i.spec} × {i.quantity}
               </p>
               <p className="mt-1 text-xs text-muted">{i.details.map((d) => `${d.label}: ${d.value}`).join(" · ")}</p>
               <p className="mt-1 text-xs text-muted">
-                {i.onRequest ? "" : `${uah(i.unitPrice)}/шт · `}виготовлення {i.leadDays} дн.
+                {i.onRequest ? "" : hasLocal && i.unitLocal !== undefined ? `${money(i.unitLocal)}/шт (прайс ${uah(i.unitPrice)}) · ` : `${uah(i.unitPrice)}/шт · `}виготовлення {i.leadDays} дн.
               </p>
             </div>
           ))}
-          <div className="flex justify-between p-4 font-bold">
-            <span>Разом</span>
-            <span>{uah(o.totalUah)}</span>
+          <div className="p-4">
+            <div className="flex justify-between font-bold">
+              <span>Разом для клієнта</span>
+              <span>{hasLocal ? money(o.total) : uah(o.totalUah)}</span>
+            </div>
+            {hasLocal && (o.currency !== "UAH" || o.margin !== 1) && (
+              <p className="mt-1 text-right text-xs text-muted">
+                За прайсом {uah(o.totalUah)} · маржа ×{o.margin}
+                {o.currency !== "UAH" && ` · курс ${o.fxRate} грн/${o.currency}`}
+              </p>
+            )}
           </div>
         </div>
         <div className="space-y-4">

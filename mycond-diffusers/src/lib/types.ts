@@ -170,7 +170,10 @@ export interface RalData {
 }
 
 export interface ShopSettings {
-  eurRate: number;
+  /** Курси валют (див. lib/money.ts) */
+  fx: import("./money").FxRates;
+  /** Валюта й маржа для кожної мовної версії */
+  markets: Record<string, import("./money").MarketSetting>;
   ralSurchargePct: number;
   ralExtraDays: number;
   phone: string;

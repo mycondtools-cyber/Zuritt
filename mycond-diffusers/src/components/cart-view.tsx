@@ -4,14 +4,14 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useCart } from "./cart";
-import { useFormat } from "./use-format";
+import { useMoney } from "./market";
 
 export function CartView() {
   const cart = useCart();
   const t = useTranslations("cart");
   const tc = useTranslations("common");
   const locale = useLocale();
-  const { uah } = useFormat();
+  const money = useMoney();
   const [form, setForm] = useState({ name: "", phone: "", email: "", company: "", city: "", comment: "" });
   const [state, setState] = useState<{ status: "idle" | "sending" | "done" | "error"; message?: string; id?: number }>({ status: "idle" });
 
@@ -88,7 +88,7 @@ export function CartView() {
                     value={i.quantity}
                     onChange={(e) => cart.setQty(i.uid, parseInt(e.target.value, 10))}
                   />
-                  <span className="text-sm font-bold">{i.unitPrice > 0 ? uah(i.unitPrice * i.quantity) : tc("priceOnRequest")}</span>
+                  <span className="text-sm font-bold">{i.unitPrice > 0 ? money.fmtTotal(i.unitPrice, i.quantity) : tc("priceOnRequest")}</span>
                   <button className="ml-auto text-sm text-muted hover:text-bad" onClick={() => cart.remove(i.uid)}>
                     {t("remove")}
                   </button>
@@ -100,7 +100,7 @@ export function CartView() {
         <form onSubmit={submit} className="card h-fit space-y-3 p-5 lg:sticky lg:top-20">
           <div className="flex items-baseline justify-between">
             <span className="text-muted">{t("total")}</span>
-            <span className="text-2xl font-extrabold">{uah(cart.total)}</span>
+            <span className="text-2xl font-extrabold">{money.fmtValue(cart.items.reduce((s, i) => s + (i.unitPrice > 0 ? Math.round(money.conv(i.unitPrice) * i.quantity * 100) / 100 : 0), 0))}</span>
           </div>
           {hasOnRequest && <p className="text-xs text-ok">{t("onRequestNote")}</p>}
           <p className="text-xs text-muted">{t("leadNote", { days: maxLead })}</p>

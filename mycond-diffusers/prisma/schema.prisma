@@ -101,6 +101,11 @@ model Order {
   note      String   @default("")
   /// мова сайту, з якої надіслано заявку
   locale    String   @default("uk")
+  /// що бачив клієнт: валюта, курс (грн за 1 од.), коефіцієнт маржі і сума у валюті з маржею
+  currency  String   @default("UAH")
+  fxRate    Float    @default(1)
+  margin    Float    @default(1)
+  total     Float    @default(0)
 }
 
 model Media {
