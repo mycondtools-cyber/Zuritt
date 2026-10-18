@@ -85,7 +85,12 @@
     "related": "Inne z kategorii „{category}”",
     "zoom": "Powiększ zdjęcie",
     "photo": "Zdjęcie {n}",
-    "colorPreview": "Podgląd: {name}"
+    "colorPreview": "Podgląd: {name}",
+    "view3d": "Model 3D",
+    "drag3d": "Przeciągnij — obrót, kółko — skala",
+    "reset3d": "Resetuj widok",
+    "dims3d": "Wymiary",
+    "loading3d": "Ładowanie 3D…"
   },
   "configurator": {
     "levelGood": "dobrze",

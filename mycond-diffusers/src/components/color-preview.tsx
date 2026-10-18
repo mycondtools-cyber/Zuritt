@@ -1,15 +1,18 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import type { ModelSpec } from "@/lib/model3d/spec";
 import { hexToRgb, recolorPixels, type RecolorSpec } from "@/lib/recolor";
 
-type PreviewColor = { hex: string; name: string } | null;
-const Ctx = createContext<{ color: PreviewColor; setColor: (c: PreviewColor) => void } | null>(null);
+type PreviewColor = { hex: string; name: string; finish: "gloss" | "matt" | "metallic" } | null;
+type CtxValue = { color: PreviewColor; setColor: (c: PreviewColor) => void; model: ModelSpec | null; setModel: (m: ModelSpec | null) => void };
+const Ctx = createContext<CtxValue | null>(null);
 
-/** Обраний у конфігураторі колір — для попереднього перегляду в галереї тієї ж сторінки */
+/** Обраний у конфігураторі колір і 3D-модель — для галереї тієї ж сторінки */
 export function ColorPreviewProvider({ children }: { children: React.ReactNode }) {
   const [color, setColor] = useState<PreviewColor>(null);
-  return <Ctx.Provider value={{ color, setColor }}>{children}</Ctx.Provider>;
+  const [model, setModel] = useState<ModelSpec | null>(null);
+  return <Ctx.Provider value={{ color, setColor, model, setModel }}>{children}</Ctx.Provider>;
 }
 
 export function useColorPreview() {

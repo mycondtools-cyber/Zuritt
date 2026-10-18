@@ -85,7 +85,12 @@
     "related": "More in “{category}”",
     "zoom": "Enlarge photo",
     "photo": "Photo {n}",
-    "colorPreview": "Preview: {name}"
+    "colorPreview": "Preview: {name}",
+    "view3d": "3D model",
+    "drag3d": "Drag to rotate, scroll to zoom",
+    "reset3d": "Reset view",
+    "dims3d": "Dimensions",
+    "loading3d": "Loading 3D…"
   },
   "configurator": {
     "levelGood": "good",

@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { aero, airflowByRoom, choiceAvailable, chosen, LIMITS, price, recommendSize, recommendSlotLength, specString, visibleGroups, type Level } from "@/lib/calc";
 import { detailLabels, itemDetails } from "@/lib/details";
 import { ralLabel } from "@/lib/i18n-content";
+import { modelSpec } from "@/lib/model3d/spec";
 import type { VizKind } from "@/lib/products";
 import type { ProductData, RalData, Selection, ShopSettings } from "@/lib/types";
 import { useCart } from "./cart";
@@ -151,10 +152,18 @@ export function Configurator({ product: p, image, colors, settings, viz }: { pro
   const sel: Selection = { ...base, sizeLabel: effectiveSize };
   const ral = colors.find((c) => c.name === ralName);
   // обраний колір — у галерею (попередній перегляд виробу в цьому кольорі)
-  const setPreview = useColorPreview()?.setColor;
+  const previewCtx = useColorPreview();
+  const setPreview = previewCtx?.setColor;
   useEffect(() => {
-    if (setPreview && ral) setPreview({ hex: ral.hex, name: ralText(ral.name) });
+    if (setPreview && ral)
+      setPreview({ hex: ral.hex, name: ralText(ral.name), finish: /9006|9007/.test(ral.code) ? "metallic" : ral.finish === "matt" ? "matt" : "gloss" });
   }, [ral?.hex, ral?.name]); // eslint-disable-line react-hooks/exhaustive-deps
+  // параметрична 3D-модель з обраних розмірів
+  const spec3d = modelSpec(p, sel);
+  const specKey = JSON.stringify(spec3d);
+  useEffect(() => {
+    previewCtx?.setModel(spec3d);
+  }, [specKey]); // eslint-disable-line react-hooks/exhaustive-deps
   const result = aero(p, sel, airflow, distance, deltaT || null);
   const pr = price(p, sel, ral, settings);
   const groups = visibleGroups(p, sel);
