@@ -154,7 +154,12 @@ export function jet(p: ProductData, sel: Selection, airflow: number, size?: Size
     return Math.min(v0, k.throwK * v0 * (plane ? Math.sqrt(b / d) : Math.sqrt(a) / d));
   };
   const throwTo = (v: number) => (k.throwK > 0 && v > 0 ? (plane ? b * ((k.throwK * v0) / v) ** 2 : (k.throwK * v0 * Math.sqrt(a)) / v) : 0);
-  return { v0, plane, at, throwTo };
+  /** Різниця температур струменя й приміщення на відстані x (ΔT0 — на виході) */
+  const dTat = (x: number, dT0: number) => {
+    const d = Math.max(x, 0.1);
+    return Math.min(Math.abs(dT0), k.tempK * Math.abs(dT0) * (plane ? Math.sqrt(b / d) : Math.sqrt(a) / d));
+  };
+  return { v0, plane, at, throwTo, dTat, tempK: k.tempK };
 }
 
 export function aero(

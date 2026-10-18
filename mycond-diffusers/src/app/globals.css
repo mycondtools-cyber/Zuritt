@@ -58,17 +58,6 @@ body {
   color: var(--color-ink);
 }
 
-@keyframes jetflow {
-  to {
-    stroke-dashoffset: -38;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  [style*="jetflow"] {
-    animation: none !important;
-  }
-}
-
 @utility card {
   @apply rounded-2xl border border-line bg-white;
 }

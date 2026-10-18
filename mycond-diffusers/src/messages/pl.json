@@ -161,15 +161,21 @@
       "pressure": "Pa",
       "perHour": "1/h"
     },
-    "vizTitle": "Jak będzie poruszać się powietrze",
     "vizZone": "Strefa przebywania",
     "vizM": "m",
     "vizAtZone": "{v} przy ludziach",
     "vizCeiling": "Sufit {h} m",
     "vizDistance": "{d} m do ludzi",
-    "vizLegend": "Prędkość, m/s:",
-    "vizThrow": "Strumień zwalnia do {v} m/s na {l} m",
-    "vizNote": "Schemat orientacyjny, prędkości z obliczeń"
+    "cfdTitle": "Symulacja przepływu powietrza",
+    "cfdBadge": "model strumienia",
+    "cfdSpeed": "Prędkość",
+    "cfdTemp": "Temperatura",
+    "cfdScaleV": "Prędkość powietrza, m/s",
+    "cfdScaleT": "Różnica względem temperatury pomieszczenia, K",
+    "cfdIsoV": "izolinia {v} m/s — granica komfortu",
+    "cfdIsoT": "izolinia −{v} K — odczuwalny chłód",
+    "cfdAtZoneT": "−{v} K przy ludziach",
+    "cfdNote": "Przekrój pomieszczenia przez nawiewnik. Prędkość i temperatura na osi strumienia pochodzą z obliczeń zweryfikowanych z programem doboru producenta; pole wokół to inżynierski model strumienia i przepływu powrotnego, a nie pełna analiza CFD. Linie to tory cząstek powietrza."
   },
   "details": {
     "size": "Rozmiar",

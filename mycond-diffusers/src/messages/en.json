@@ -161,15 +161,21 @@
       "pressure": "Pa",
       "perHour": "1/h"
     },
-    "vizTitle": "How the air will move",
     "vizZone": "Occupied zone",
     "vizM": "m",
     "vizAtZone": "{v} near people",
     "vizCeiling": "Ceiling {h} m",
     "vizDistance": "{d} m to people",
-    "vizLegend": "Velocity, m/s:",
-    "vizThrow": "The jet slows to {v} m/s within {l} m",
-    "vizNote": "Schematic; velocities are calculated"
+    "cfdTitle": "Airflow simulation",
+    "cfdBadge": "jet model",
+    "cfdSpeed": "Velocity",
+    "cfdTemp": "Temperature",
+    "cfdScaleV": "Air velocity, m/s",
+    "cfdScaleT": "Difference from room temperature, K",
+    "cfdIsoV": "{v} m/s isoline — comfort limit",
+    "cfdIsoT": "−{v} K isoline — noticeably cool",
+    "cfdAtZoneT": "−{v} K near people",
+    "cfdNote": "Section through the room at the diffuser. Velocity and temperature on the jet axis come from the calculation verified against the manufacturer's selection software; the surrounding field is an engineering model of the jet and return flow, not a full CFD analysis. Lines show air particle paths."
   },
   "details": {
     "size": "Size",

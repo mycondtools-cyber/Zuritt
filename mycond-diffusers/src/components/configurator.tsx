@@ -9,7 +9,7 @@ import { ralLabel } from "@/lib/i18n-content";
 import type { VizKind } from "@/lib/products";
 import type { ProductData, RalData, Selection, ShopSettings } from "@/lib/types";
 import { useCart } from "./cart";
-import { AirflowViz } from "./airflow-viz";
+import { AirflowCfd } from "./airflow-cfd";
 import { useColorPreview } from "./color-preview";
 import { Hint } from "./hint";
 import { useMoney } from "./market";
@@ -390,7 +390,9 @@ export function Configurator({ product: p, image, colors, settings, viz }: { pro
           </h2>
           {result && dimsValid ? (
             <>
-              {viz && p.calc.throwK > 0 && <AirflowViz p={p} sel={sel} airflow={airflow} distance={distance} kind={viz} level={result.levels.velocityAtZone} />}
+              {viz && p.calc.throwK > 0 && (
+                <AirflowCfd p={p} sel={sel} airflow={airflow} distance={distance} deltaT={deltaT} kind={viz} level={result.levels.velocityAtZone} />
+              )}
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 <Metric label={t("freeArea")} value={num(result.freeArea, 4)} unit={u("area")} hint={t("freeAreaHint")} />
                 <Metric

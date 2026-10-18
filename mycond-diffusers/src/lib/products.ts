@@ -77,7 +77,7 @@ export const GROUPS: [string, string][] = [
 ];
 
 /** Схема руху повітря: «ceiling» — уздовж стелі й униз, «wall» — горизонтально від стіни, null — без схеми */
-export type VizKind = "ceiling" | "wall" | null;
+export type VizKind = import("./flowfield").FlowKind | null;
 
 export function vizKind(categorySlug: string, mounting: string[], mode: string): VizKind {
   if (mode === "box" || categorySlug === "plenums" || categorySlug === "grilles-outdoor") return null;
