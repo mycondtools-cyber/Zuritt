@@ -3,7 +3,7 @@
 import { useMemo, useState, useTransition } from "react";
 import { deleteColor, updateColor } from "@/app/admin/actions";
 
-type C = { id: number; name: string; hex: string; isStandard: boolean; popular: boolean };
+type C = { id: number; name: string; hex: string; isStandard: boolean; popular: boolean; surchargePct: number | null };
 
 export function ColorList({ colors }: { colors: C[] }) {
   const [list, setList] = useState(colors);
@@ -31,6 +31,21 @@ export function ColorList({ colors }: { colors: C[] }) {
           <div key={c.id} className="flex items-center gap-2 rounded-xl border border-line p-2 text-sm">
             <input type="color" value={c.hex} onChange={(e) => patch(c.id, { hex: e.target.value })} className="h-8 w-8 shrink-0 cursor-pointer rounded-md" aria-label={`Колір ${c.name}`} />
             <span className="min-w-0 flex-1 truncate">{c.name}</span>
+            <label className="flex items-center gap-0.5 text-xs text-muted" title="Надбавка за колір, %. Порожньо — загальна з налаштувань">
+              +
+              <input
+                className="w-12 rounded-md border border-line px-1 py-0.5 text-right text-xs text-ink"
+                inputMode="decimal"
+                defaultValue={c.surchargePct ?? ""}
+                disabled={c.isStandard}
+                aria-label={`Надбавка ${c.name}, %`}
+                onBlur={(e) => {
+                  const v = e.target.value.trim() === "" ? null : parseFloat(e.target.value.replace(",", "."));
+                  if (v !== c.surchargePct && (v === null || Number.isFinite(v))) patch(c.id, { surchargePct: v });
+                }}
+              />
+              %
+            </label>
             <button type="button" className={`rounded-md px-1.5 py-0.5 text-xs ${c.isStandard ? "bg-good text-white" : "bg-paper text-muted"}`} onClick={() => patch(c.id, { isStandard: !c.isStandard })}>
               стандарт
             </button>

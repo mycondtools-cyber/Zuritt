@@ -2,9 +2,9 @@ import { db } from "./db";
 import type { ShopSettings } from "./types";
 
 export const DEFAULT_SETTINGS: ShopSettings = {
-  eurRate: 48,
-  ralSurchargePct: 15,
-  ralExtraDays: 3,
+  eurRate: 50.75,
+  ralSurchargePct: 12,
+  ralExtraDays: 0,
   phone: "",
   email: "",
   companyName: "Mycond",

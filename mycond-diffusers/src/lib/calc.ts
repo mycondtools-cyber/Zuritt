@@ -1,4 +1,4 @@
-import type { ProductData, Selection, SizeRow, SlotPricing, RectPricing, RalData, ShopSettings } from "./types";
+import type { Choice, OptionGroup, ProductData, RalData, RectPricing, Selection, ShopSettings, SizeRow, SlotPricing } from "./types";
 
 export const AIR_DENSITY = 1.2;
 
@@ -137,47 +137,92 @@ export interface PriceResult {
   onRequest: boolean;
 }
 
+/** Групи опцій, видимі при поточному виборі (з урахуванням showIf) */
+export function visibleGroups(p: ProductData, sel: Selection): OptionGroup[] {
+  return p.options.filter((g) => !g.showIf || g.showIf.values.includes(sel.options[g.showIf.key] ?? p.options.find((x) => x.key === g.showIf!.key)?.default ?? ""));
+}
+
+/** Чи доступний варіант для обраного типорозміру */
+export function choiceAvailable(p: ProductData, c: Choice, sel: Selection): boolean {
+  if (p.mode !== "sizes" || !c.priceBySize || !Object.keys(c.priceBySize).length) return true;
+  return sel.sizeLabel !== undefined && sel.sizeLabel in c.priceBySize;
+}
+
+/** Обраний варіант групи: явний вибір, якщо доступний, інакше перший доступний */
+export function chosen(p: ProductData, g: OptionGroup, sel: Selection): Choice | undefined {
+  const want = g.choices.find((c) => c.value === (sel.options[g.key] ?? g.default));
+  if (want && choiceAvailable(p, want, sel)) return want;
+  return g.choices.find((c) => choiceAvailable(p, c, sel));
+}
+
+function choiceAdd(p: ProductData, c: Choice, sel: Selection): number {
+  if (p.mode === "sizes" && c.priceBySize && sel.sizeLabel && sel.sizeLabel in c.priceBySize) return c.priceBySize[sel.sizeLabel];
+  let add = c.priceAdd || 0;
+  if (p.mode === "slot") {
+    const n = nSlots(sel);
+    const m = (sel.length ?? 0) / 1000;
+    add += (c.pricePerSlot || 0) * n + (c.pricePerM || 0) * m + (c.pricePerSlotM || 0) * n * m;
+  }
+  return add;
+}
+
+export function basePrice(p: ProductData, sel: Selection): number {
+  if (p.mode === "sizes") return findSize(p, sel)?.price ?? 0;
+  if (p.mode === "rect") {
+    const pr = p.pricing as RectPricing;
+    const w = (sel.width ?? 0) / 1000;
+    const h = (sel.height ?? 0) / 1000;
+    if (!pr.perM2 && !pr.perM) return 0;
+    return Math.max(pr.min || 0, (pr.fixed || 0) + (pr.perM2 || 0) * w * h + (pr.perM || 0) * 2 * (w + h));
+  }
+  const pr = p.pricing as SlotPricing;
+  const len = Math.max(sel.length ?? 0, pr.minLengthMm || 0) / 1000;
+  const n = nSlots(sel);
+  const keys = Object.keys(pr.byKey ?? {});
+  // точний ключ «n x ширина», потім «n», потім найближча ширина для тієї ж кількості щілин
+  const key =
+    [`${n}x${slotWidth(p, sel)}`, String(n)].find((k) => keys.includes(k)) ??
+    keys
+      .filter((k) => k.startsWith(`${n}x`))
+      .sort((a, b) => Math.abs(+a.split("x")[1] - slotWidth(p, sel)) - Math.abs(+b.split("x")[1] - slotWidth(p, sel)))[0];
+  const row = key ? pr.byKey![key] : undefined;
+  if (row) return row.fixed + row.perMeter * len;
+  if (!pr.perMeter) return 0;
+  const slots = 1 + (n - 1) * ((pr.perExtraSlotPct ?? 0) / 100);
+  return ((pr.fixed || 0) + pr.perMeter * len) * slots;
+}
+
 export function price(
   p: ProductData,
   sel: Selection,
   ral: RalData | undefined,
   settings: Pick<ShopSettings, "ralSurchargePct" | "ralExtraDays">,
 ): PriceResult {
-  let base = 0;
-  if (p.mode === "sizes") {
-    base = findSize(p, sel)?.price ?? 0;
-  } else if (p.mode === "rect") {
-    const pr = p.pricing as RectPricing;
-    const m2 = ((sel.width ?? 0) * (sel.height ?? 0)) / 1e6;
-    base = pr.perM2 ? Math.max(pr.min || 0, pr.perM2 * m2) : 0;
-  } else {
-    const pr = p.pricing as SlotPricing;
-    const len = Math.max(sel.length ?? 0, pr.minLengthMm || 0) / 1000;
-    const slots = 1 + (nSlots(sel) - 1) * ((pr.perExtraSlotPct ?? 0) / 100);
-    base = (pr.perMeter || 0) * len * slots;
-  }
-
+  const base = basePrice(p, sel);
   let pct = 0;
   let add = 0;
-  for (const g of p.options) {
-    const c = g.choices.find((c) => c.value === (sel.options[g.key] ?? g.default));
+  for (const g of visibleGroups(p, sel)) {
+    const c = chosen(p, g, sel);
     if (c) {
       pct += c.pricePct || 0;
-      add += c.priceAdd || 0;
+      add += choiceAdd(p, c, sel);
     }
   }
   const options = (base * pct) / 100 + add;
   const nonStandard = !!ral && !ral.isStandard;
-  const ralCost = nonStandard ? (base * settings.ralSurchargePct) / 100 : 0;
-  const unit = round2(base + options + ralCost);
+  const ralPct = nonStandard ? (ral.surchargePct ?? settings.ralSurchargePct) : 0;
+  const ralFactor = (p.pricing as { ralFactor?: number }).ralFactor ?? 1;
+  // фарбується весь виріб — надбавка від ціни з опціями
+  const ralCost = ((base + options) * ralPct * ralFactor) / 100;
+  const unit = Math.round(base + options + ralCost);
   const qty = Math.max(1, Math.floor(sel.quantity || 1));
   return {
     base: round2(base),
     options: round2(options),
     ral: round2(ralCost),
     unit,
-    total: round2(unit * qty),
-    leadDays: p.leadDays + (nonStandard ? settings.ralExtraDays : 0),
+    total: unit * qty,
+    leadDays: p.leadDays + (nonStandard && ralCost > 0 ? settings.ralExtraDays : 0),
     onRequest: base <= 0,
   };
 }

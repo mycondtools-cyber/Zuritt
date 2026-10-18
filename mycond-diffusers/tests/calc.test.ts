@@ -79,9 +79,9 @@ describe("price", () => {
       { id: 1, code: "RAL 9005", name: "RAL 9005 глянець", hex: "#000", finish: "gloss", isStandard: false, popular: true }, settings);
     expect(r.base).toBe(1200);
     expect(r.options).toBe(240 + 350);
-    expect(r.ral).toBe(180);
-    expect(r.unit).toBe(1970);
-    expect(r.total).toBe(5910);
+    expect(r.ral).toBe(268.5); // 15 % від ціни з опціями (1200 + 590)
+    expect(r.unit).toBe(2059);
+    expect(r.total).toBe(6177);
     expect(r.leadDays).toBe(8);
   });
   it("is on request when no base price", () => {

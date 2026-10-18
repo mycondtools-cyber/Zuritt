@@ -11,8 +11,8 @@ export default async function ColorsPage() {
     <div className="max-w-5xl space-y-4">
       <h1 className="text-2xl font-extrabold">Кольори RAL</h1>
       <p className="text-sm text-ink-2">
-        <b>Стандарт</b> — без доплати. Інші кольори: +{s.ralSurchargePct}% і +{s.ralExtraDays} днів (змінюється в налаштуваннях). <b>Популярні</b> показуються одразу в
-        конфігураторі, решта — у повній палітрі.
+        <b>Стандарт</b> — без доплати. Для інших кольорів надбавка в % від ціни виробу (з прайсу виробника); якщо поле порожнє — {s.ralSurchargePct}% з налаштувань.
+        Надбавка множиться на коефіцієнт фарбування виробу. <b>Популярні</b> показуються одразу в конфігураторі.
       </p>
       <form action={addColor} className="card flex flex-wrap items-end gap-3 p-4">
         <label>
@@ -25,7 +25,7 @@ export default async function ColorsPage() {
         </label>
         <button className="btn-primary">Додати</button>
       </form>
-      <ColorList colors={colors.map((c) => ({ id: c.id, name: c.name, hex: c.hex, isStandard: c.isStandard, popular: c.popular }))} />
+      <ColorList colors={colors.map((c) => ({ id: c.id, name: c.name, hex: c.hex, isStandard: c.isStandard, popular: c.popular, surchargePct: c.surchargePct }))} />
     </div>
   );
 }

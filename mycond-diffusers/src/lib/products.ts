@@ -1,4 +1,5 @@
 import type { Product, ProductSize } from "@prisma/client";
+import { basePrice } from "./calc";
 import type { CalcParams, Limits, Mode, OptionGroup, ProductData, Shape } from "./types";
 
 export type ProductWithSizes = Product & { sizes: ProductSize[] };
@@ -24,14 +25,14 @@ export function toProductData(p: ProductWithSizes): ProductData {
 
 /** Мінімальна ціна «від» для картки каталогу */
 export function priceFrom(p: ProductWithSizes): number {
+  const data = toProductData(p);
   if (p.mode === "sizes") {
     const prices = p.sizes.map((s) => s.price).filter((x) => x > 0);
     return prices.length ? Math.min(...prices) : 0;
   }
-  const pr = p.pricing as Record<string, number>;
-  const l = p.limits as Limits;
-  if (p.mode === "rect") return pr.perM2 ? Math.max(pr.min || 0, (pr.perM2 * (l.wMin ?? 0) * (l.hMin ?? 0)) / 1e6) : 0;
-  return pr.perMeter ? (pr.perMeter * Math.max(l.lMin ?? 0, pr.minLengthMm || 0)) / 1000 : 0;
+  const l = data.limits;
+  const sel = { options: Object.fromEntries(data.options.map((g) => [g.key, g.default])), ralName: "", quantity: 1, width: l.wMin, height: l.hMin, length: l.lMin };
+  return Math.round(basePrice(data, sel));
 }
 
 export const MOUNTING: Record<string, string> = {

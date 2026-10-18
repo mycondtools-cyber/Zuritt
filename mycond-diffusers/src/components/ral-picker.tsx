@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import type { RalData } from "@/lib/types";
 
-export function RalPicker({ colors, value, onChange, surchargePct }: { colors: RalData[]; value: string; onChange: (name: string) => void; surchargePct: number }) {
+export function RalPicker({ colors, value, onChange, surchargeUah }: { colors: RalData[]; value: string; onChange: (name: string) => void; surchargeUah: number }) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [finish, setFinish] = useState("");
@@ -43,8 +43,8 @@ export function RalPicker({ colors, value, onChange, surchargePct }: { colors: R
           Усі кольори ({colors.length}) →
         </button>
       </div>
-      {current && !current.isStandard && surchargePct > 0 && (
-        <p className="mt-2 text-xs text-ok">Нестандартний колір: +{surchargePct}% до ціни та кілька днів до терміну.</p>
+      {current && !current.isStandard && surchargeUah > 0 && (
+        <p className="mt-2 text-xs text-ok">Фарбування в {current.name}: +{surchargeUah} грн за 1 шт.</p>
       )}
       {open && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/60 sm:items-center sm:p-4" role="dialog" aria-label="Палітра RAL" onClick={() => setOpen(false)}>

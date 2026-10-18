@@ -6,7 +6,7 @@ import type { Prisma } from "@prisma/client";
 import { checkPassword, createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
-import type { CalcParams, Limits, OptionGroup, SizeRow } from "@/lib/types";
+import type { CalcParams, Choice, Limits, OptionGroup, SizeRow } from "@/lib/types";
 
 export async function login(_prev: string | null, form: FormData): Promise<string | null> {
   if (!(await checkPassword(String(form.get("password") ?? "")))) return "Невірний пароль";
@@ -38,6 +38,19 @@ function sanitizeCalc(c: CalcParams): CalcParams {
   return out;
 }
 
+function sanitizePricing(pr: PricingInput): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(pr)) {
+    if (k === "byKey") {
+      const rows = Object.entries((v ?? {}) as Record<string, { fixed: number; perMeter: number }>).filter(([key]) => /^\d+(x\d+)?$/.test(key.trim()));
+      if (rows.length) out.byKey = Object.fromEntries(rows.map(([key, r]) => [key.trim(), { fixed: n(r.fixed), perMeter: n(r.perMeter) }]));
+    } else if (v !== null && v !== undefined && String(v) !== "") out[k] = n(v);
+  }
+  return out;
+}
+
+export type PricingInput = Record<string, number | Record<string, { fixed: number; perMeter: number }> | undefined>;
+
 export interface ProductInput {
   id: number | null;
   slug: string;
@@ -55,7 +68,7 @@ export interface ProductInput {
   sort: number;
   options: OptionGroup[];
   calc: CalcParams;
-  pricing: Record<string, number>;
+  pricing: PricingInput;
   limits: Limits;
   sizes: SizeRow[];
 }
@@ -76,7 +89,14 @@ export async function saveProduct(input: ProductInput): Promise<{ ok: true; id: 
       default: g.choices.some((c) => c.value === g.default) ? g.default : g.choices[0].value,
       choices: g.choices
         .filter((c) => c.value.trim())
-        .map((c) => ({ value: c.value.trim(), label: (c.label || c.value).trim(), priceAdd: n(c.priceAdd), pricePct: n(c.pricePct) })),
+        .map((c) => {
+          const out: Choice = { value: c.value.trim(), label: (c.label || c.value).trim(), priceAdd: n(c.priceAdd), pricePct: n(c.pricePct) };
+          for (const k of ["pricePerSlot", "pricePerM", "pricePerSlotM"] as const) if (c[k]) out[k] = n(c[k]);
+          const bySize = Object.entries(c.priceBySize ?? {}).filter(([, v]) => v !== null && v !== undefined && String(v) !== "");
+          if (bySize.length) out.priceBySize = Object.fromEntries(bySize.map(([k, v]) => [k, n(v)]));
+          return out;
+        }),
+      ...(g.showIf?.key && g.showIf.values.length ? { showIf: { key: g.showIf.key, values: g.showIf.values.map((v) => v.trim()).filter(Boolean) } } : {}),
     }));
 
   const data = {
@@ -95,7 +115,7 @@ export async function saveProduct(input: ProductInput): Promise<{ ok: true; id: 
     sort: Math.round(n(input.sort)),
     options: options as unknown as Prisma.InputJsonValue,
     calc: sanitizeCalc(input.calc) as unknown as Prisma.InputJsonValue,
-    pricing: Object.fromEntries(Object.entries(input.pricing).map(([k, v]) => [k, n(v)])) as Prisma.InputJsonValue,
+    pricing: sanitizePricing(input.pricing) as Prisma.InputJsonValue,
     limits: Object.fromEntries(Object.entries(input.limits).filter(([, v]) => v !== "" && v !== null && v !== undefined).map(([k, v]) => [k, n(v)])) as Prisma.InputJsonValue,
   };
   const sizes = input.sizes
@@ -157,12 +177,12 @@ export async function uploadImage(form: FormData): Promise<{ ok: true; urls: str
 /** Масове оновлення цін типорозмірів та базових ставок */
 export async function savePrices(
   sizes: { id: number; price: number }[],
-  pricing: { productId: number; pricing: Record<string, number> }[],
+  pricing: { productId: number; pricing: PricingInput }[],
 ): Promise<{ ok: true; count: number }> {
   await requireAdmin();
   await db.$transaction([
     ...sizes.map((s) => db.productSize.update({ where: { id: s.id }, data: { price: Math.max(0, n(s.price)) } })),
-    ...pricing.map((p) => db.product.update({ where: { id: p.productId }, data: { pricing: p.pricing as Prisma.InputJsonValue } })),
+    ...pricing.map((p) => db.product.update({ where: { id: p.productId }, data: { pricing: sanitizePricing(p.pricing) as Prisma.InputJsonValue } })),
   ]);
   revalidatePath("/", "layout");
   return { ok: true, count: sizes.length + pricing.length };
@@ -180,7 +200,7 @@ export async function saveSettings(form: FormData) {
   redirect("/admin/settings?saved=1");
 }
 
-export async function updateColor(id: number, data: { isStandard?: boolean; popular?: boolean; hex?: string; name?: string }) {
+export async function updateColor(id: number, data: { isStandard?: boolean; popular?: boolean; hex?: string; name?: string; surchargePct?: number | null }) {
   await requireAdmin();
   await db.ralColor.update({ where: { id }, data });
   revalidatePath("/", "layout");

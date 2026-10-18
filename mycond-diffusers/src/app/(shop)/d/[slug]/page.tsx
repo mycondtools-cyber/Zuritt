@@ -55,7 +55,7 @@ export default async function ProductPage({ params }: Params) {
             <Configurator
               product={toProductData(p)}
               image={p.images[0]}
-              colors={colors.map((c) => ({ id: c.id, code: c.code, name: c.name, hex: c.hex, finish: c.finish, isStandard: c.isStandard, popular: c.popular }))}
+              colors={colors.map((c) => ({ id: c.id, code: c.code, name: c.name, hex: c.hex, finish: c.finish, isStandard: c.isStandard, popular: c.popular, surchargePct: c.surchargePct }))}
               settings={publicSettings(settings)}
             />
           </div>

@@ -5,26 +5,51 @@ import { savePrices } from "@/app/admin/actions";
 import { Hint } from "@/components/hint";
 import { round2 } from "@/lib/calc";
 
+type Pricing = Record<string, number | Record<string, { fixed: number; perMeter: number }> | undefined>;
+
 export interface PriceProduct {
   id: number;
   code: string;
   name: string;
   category: string;
   mode: string;
-  pricing: Record<string, number>;
+  pricing: Pricing;
   sizes: { id: number; label: string; price: number }[];
 }
 
-const RATE_FIELDS: Record<string, [string, string][]> = {
-  rect: [
-    ["perM2", "грн/м²"],
-    ["min", "мін., грн"],
-  ],
-  slot: [
-    ["perMeter", "грн/м.п."],
-    ["perExtraSlotPct", "+% за щілину"],
-  ],
-};
+const RECT_FIELDS: [string, string][] = [
+  ["fixed", "фіксована, грн"],
+  ["perM2", "грн/м²"],
+  ["perM", "грн/м периметра"],
+  ["min", "мін., грн"],
+];
+
+/** Поля ставок товару: для щілинних — «ключ:fixed» / «ключ:perMeter» з таблиці byKey */
+function rateFields(p: PriceProduct): [string, string][] {
+  if (p.mode === "rect") return RECT_FIELDS;
+  if (p.mode === "slot") {
+    const rows = Object.keys((p.pricing.byKey as Record<string, unknown>) ?? {});
+    return rows.flatMap((k) => [
+      [`${k}:fixed`, `${k.replace("x", " щ. × ")}${k.includes("x") ? " мм" : " щ."} · фікс.`],
+      [`${k}:perMeter`, `${k.replace("x", " щ. × ")}${k.includes("x") ? " мм" : " щ."} · грн/м`],
+    ]) as [string, string][];
+  }
+  return [];
+}
+
+function getRate(p: PriceProduct, path: string): number {
+  const [k, f] = path.split(":");
+  if (!f) return (p.pricing[k] as number) || 0;
+  return ((p.pricing.byKey as Record<string, Record<string, number>>)?.[k]?.[f] as number) || 0;
+}
+
+function withRate(p: PriceProduct, path: string, value: number): Pricing {
+  const [k, f] = path.split(":");
+  if (!f) return { ...p.pricing, [k]: value };
+  const byKey = { ...((p.pricing.byKey as Record<string, { fixed: number; perMeter: number }>) ?? {}) };
+  byKey[k] = { ...byKey[k], [f]: value };
+  return { ...p.pricing, byKey };
+}
 
 export function PriceGrid({ products, categories }: { products: PriceProduct[]; categories: string[] }) {
   const [rows, setRows] = useState(products);
@@ -44,7 +69,7 @@ export function PriceGrid({ products, categories }: { products: PriceProduct[]; 
         (p) =>
           (!cat || p.category === cat) &&
           (!q || `${p.code} ${p.name}`.toLowerCase().includes(q.toLowerCase())) &&
-          (!onlyEmpty || (p.mode === "sizes" ? p.sizes.some((s) => s.price <= 0) : !(p.pricing.perM2 || p.pricing.perMeter))),
+          (!onlyEmpty || (p.mode === "sizes" ? p.sizes.some((s) => s.price <= 0) : rateFields(p).every(([k]) => !getRate(p, k)))),
       ),
     [rows, cat, q, onlyEmpty],
   );
@@ -54,7 +79,7 @@ export function PriceGrid({ products, categories }: { products: PriceProduct[]; 
     setChangedSizes((s) => new Set(s).add(sid));
   };
   const setRate = (pid: number, key: string, value: number) => {
-    setRows((r) => r.map((p) => (p.id !== pid ? p : { ...p, pricing: { ...p.pricing, [key]: value } })));
+    setRows((r) => r.map((p) => (p.id !== pid ? p : { ...p, pricing: withRate(p, key, value) })));
     setChangedProducts((s) => new Set(s).add(pid));
   };
 
@@ -72,9 +97,9 @@ export function PriceGrid({ products, categories }: { products: PriceProduct[]; 
           return { ...p, sizes: p.sizes.map((s) => ({ ...s, price: round2(s.price * k) })) };
         }
         cp.add(p.id);
-        const pricing = { ...p.pricing };
-        for (const f of ["perM2", "min", "perMeter"]) if (pricing[f]) pricing[f] = round2(pricing[f] * k);
-        return { ...p, pricing };
+        let next = p;
+        for (const [f] of rateFields(p)) next = { ...next, pricing: withRate(next, f, round2(getRate(next, f) * k)) };
+        return next;
       }),
     );
     setChangedSizes(cs);
@@ -86,7 +111,7 @@ export function PriceGrid({ products, categories }: { products: PriceProduct[]; 
     const lines = ["Код;Розмір;Ціна, грн"];
     for (const p of rows) {
       if (p.mode === "sizes") p.sizes.forEach((s) => lines.push(`${p.code};${s.label};${s.price}`));
-      else for (const [k] of RATE_FIELDS[p.mode] ?? []) lines.push(`${p.code};${k};${p.pricing[k] ?? 0}`);
+      else for (const [k] of rateFields(p)) lines.push(`${p.code};${k};${getRate(p, k)}`);
     }
     const blob = new Blob(["﻿" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
@@ -115,7 +140,7 @@ export function PriceGrid({ products, categories }: { products: PriceProduct[]; 
           setSizePrice(p.id, s.id, price);
           hits++;
         } else miss.push(`${code} ${size}`);
-      } else if ((RATE_FIELDS[p.mode] ?? []).some(([k]) => k === size)) {
+      } else if (rateFields(p).some(([k]) => k === size)) {
         setRate(p.id, size, price);
         hits++;
       } else miss.push(`${code} ${size}`);
@@ -182,8 +207,8 @@ export function PriceGrid({ products, categories }: { products: PriceProduct[]; 
       {csv !== null && (
         <div className="card mb-4 p-4">
           <p className="mb-2 text-sm text-ink-2">
-            Скопіюйте з Excel три колонки: <b>Код</b>, <b>Розмір</b>, <b>Ціна</b> (напр. «PDK 300x300 1250»). Для щілинних розмір = <code>perMeter</code>, для довільних —{" "}
-            <code>perM2</code> / <code>min</code>.
+            Скопіюйте з Excel три колонки: <b>Код</b>, <b>Розмір</b>, <b>Ціна</b> (напр. «PDK 300x300 1250»). Для щілинних розмір = <code>1:perMeter</code>, <code>2x30:fixed</code> тощо, для панелей довільного розміру —{" "}
+            <code>fixed</code> / <code>perM2</code> / <code>perM</code> / <code>min</code>. Експорт CSV показує всі ключі.
           </p>
           <textarea className="input min-h-40 font-mono text-xs" value={csv} onChange={(e) => setCsv(e.target.value)} placeholder={"PDK\t300x300\t1250\nNCD\tD200\t980"} />
           <div className="mt-2 flex gap-2">
@@ -224,13 +249,13 @@ export function PriceGrid({ products, categories }: { products: PriceProduct[]; 
               </div>
             ) : (
               <div className="flex flex-wrap gap-3">
-                {(RATE_FIELDS[p.mode] ?? []).map(([k, l]) => (
+                {rateFields(p).map(([k, l]) => (
                   <label key={k} className="block w-36">
                     <span className="mb-1 block text-xs font-semibold text-ink-2">{l}</span>
                     <input
-                      className={`input !py-1.5 ${changedProducts.has(p.id) ? "border-brand bg-brand-soft" : p.pricing[k] ? "" : "border-ok bg-ok-soft"}`}
+                      className={`input !py-1.5 ${changedProducts.has(p.id) ? "border-brand bg-brand-soft" : getRate(p, k) || k === "fixed" || k === "min" ? "" : "border-ok bg-ok-soft"}`}
                       inputMode="decimal"
-                      value={p.pricing[k] || ""}
+                      value={getRate(p, k) || ""}
                       placeholder="0"
                       onChange={(e) => setRate(p.id, k, parseFloat(e.target.value.replace(",", ".")) || 0)}
                     />

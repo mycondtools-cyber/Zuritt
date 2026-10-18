@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { aero, airflowByRoom, LIMITS, price, recommendSize, recommendSlotLength, specString, type Level } from "@/lib/calc";
+import { aero, airflowByRoom, choiceAvailable, chosen, LIMITS, price, recommendSize, recommendSlotLength, specString, visibleGroups, type Level } from "@/lib/calc";
 import { eur, num, uah } from "@/lib/format";
 import type { CartItem, ProductData, RalData, Selection, ShopSettings } from "@/lib/types";
 import { useCart } from "./cart";
@@ -130,6 +130,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   const ral = colors.find((c) => c.name === ralName);
   const result = aero(p, sel, airflow, distance, deltaT || null);
   const pr = price(p, sel, ral, settings);
+  const groups = visibleGroups(p, sel);
   const spec = specString(p, sel);
   const slotHint = recommendSlotLength(p, sel, airflow);
 
@@ -149,7 +150,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
     if (p.mode === "rect") details.push({ label: "Розмір Ш×В", value: `${width}×${height} мм` });
     if (p.mode === "slot") details.push({ label: "Довжина", value: `${length} мм` });
     if (p.mode === "slot" && lim.angleMin) details.push({ label: "Кут", value: `${angle}°` });
-    for (const g of p.options) details.push({ label: g.label, value: options[g.key] ?? g.default });
+    for (const g of groups) details.push({ label: g.label, value: chosen(p, g, sel)?.label ?? "" });
     details.push({ label: "Колір", value: ralName });
     if (result) details.push({ label: "Розрахунок", value: `${airflow} м³/год · ${num(result.velocity, 1)} м/с · ${num(result.pressureDrop, 0)} Па` });
     cart.add({
@@ -287,41 +288,53 @@ export function Configurator({ product: p, image, colors, settings }: { product:
       </Step>
 
       {/* 3. Опції */}
-      {p.options.length > 0 && (
+      {groups.length > 0 && (
         <Step n={n++} title="Виконання">
           <div className="space-y-4">
-            {p.options.map((g) => (
-              <div key={g.key}>
-                <p className="label">
-                  {g.label}
-                  <Hint text={g.hint} />
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {g.choices.map((c) => (
-                    <button
-                      key={c.value}
-                      type="button"
-                      className="chip"
-                      aria-pressed={(options[g.key] ?? g.default) === c.value}
-                      onClick={() => setOptions((o) => ({ ...o, [g.key]: c.value }))}
-                      disabled={g.choices.length === 1}
-                    >
-                      {c.label}
-                      {(c.priceAdd > 0 || c.pricePct > 0) && (
-                        <span className="ml-1 text-xs text-muted">+{c.pricePct > 0 ? `${c.pricePct}%` : uah(c.priceAdd)}</span>
-                      )}
-                    </button>
-                  ))}
+            {groups.map((g) => {
+              const current = chosen(p, g, sel);
+              return (
+                <div key={g.key}>
+                  <p className="label">
+                    {g.label}
+                    <Hint text={g.hint} />
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {g.choices.map((c) => {
+                      const available = choiceAvailable(p, c, sel);
+                      // реальна доплата відносно поточного вибору
+                      const delta = available && !pr.onRequest ? price(p, { ...sel, options: { ...options, [g.key]: c.value } }, ral, settings).unit - pr.unit : 0;
+                      return (
+                        <button
+                          key={c.value}
+                          type="button"
+                          className="chip"
+                          aria-pressed={current?.value === c.value}
+                          onClick={() => setOptions((o) => ({ ...o, [g.key]: c.value }))}
+                          disabled={g.choices.length === 1 || !available}
+                          title={available ? undefined : "Недоступно для обраного розміру"}
+                        >
+                          {c.label}
+                          {delta !== 0 && current?.value !== c.value && (
+                            <span className="ml-1 text-xs text-muted">
+                              {delta > 0 ? "+" : "−"}
+                              {money(Math.abs(delta))}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </Step>
       )}
 
       {/* 4. Колір */}
       <Step n={n++} title="Колір RAL" hint="Корпус фарбується порошковою фарбою. Стандарт — білий RAL 9016, інші кольори виготовляються під замовлення.">
-        <RalPicker colors={colors} value={ralName} onChange={setRalName} surchargePct={settings.ralSurchargePct} />
+        <RalPicker colors={colors} value={ralName} onChange={setRalName} surchargeUah={pr.onRequest ? 0 : Math.round(pr.ral)} />
       </Step>
 
       {/* 5. Результат */}

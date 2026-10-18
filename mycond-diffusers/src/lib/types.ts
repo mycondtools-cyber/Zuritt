@@ -8,6 +8,14 @@ export interface Choice {
   priceAdd: number;
   /** Доплата у % від базової ціни */
   pricePct: number;
+  /** Щілинні: доплата за кожну щілину, грн */
+  pricePerSlot?: number;
+  /** Щілинні: доплата за метр довжини, грн */
+  pricePerM?: number;
+  /** Щілинні: доплата за метр довжини на кожну щілину, грн */
+  pricePerSlotM?: number;
+  /** Типорозміри: доплата для конкретного розміру (замінює priceAdd). Якщо задано, а розміру в списку немає — варіант недоступний для цього розміру */
+  priceBySize?: Record<string, number>;
 }
 
 export interface OptionGroup {
@@ -16,6 +24,8 @@ export interface OptionGroup {
   hint: string;
   default: string;
   choices: Choice[];
+  /** Показувати групу лише коли в іншій групі обрано одне з значень */
+  showIf?: { key: string; values: string[] };
 }
 
 export interface CalcParams {
@@ -38,17 +48,32 @@ export interface CalcParams {
 }
 
 export interface RectPricing {
+  /** Фіксована частина, грн */
+  fixed?: number;
   perM2: number;
+  /** Ставка за метр периметра, грн */
+  perM?: number;
   min: number;
+  /** Коефіцієнт надбавки за колір RAL (1 — як у еталонного виробу, 0 — колір не впливає) */
+  ralFactor?: number;
 }
 
 export interface SlotPricing {
+  /** Фіксована частина, грн */
+  fixed?: number;
   /** Ціна погонного метра однощілинного дифузора */
   perMeter: number;
-  /** Доплата за кожну додаткову щілину, % від ціни 1 щілини */
+  /** Доплата за кожну додаткову щілину, % від ціни 1 щілини (якщо немає рядка в byKey) */
   perExtraSlotPct: number;
   /** Мінімальна довжина для розрахунку ціни, мм */
   minLengthMm: number;
+  /** Ціни за ключем «к-сть щілин» або «к-сть x ширина»: фіксована частина + за метр */
+  byKey?: Record<string, { fixed: number; perMeter: number }>;
+  ralFactor?: number;
+}
+
+export interface SizesPricing {
+  ralFactor?: number;
 }
 
 export interface Limits {
@@ -90,7 +115,7 @@ export interface ProductData {
   leadDays: number;
   options: OptionGroup[];
   calc: CalcParams;
-  pricing: RectPricing | SlotPricing | Record<string, never>;
+  pricing: RectPricing | SlotPricing | SizesPricing;
   limits: Limits;
   sizes: SizeRow[];
 }
@@ -103,6 +128,8 @@ export interface RalData {
   finish: string;
   isStandard: boolean;
   popular: boolean;
+  /** Надбавка за колір, % (якщо порожньо — загальна з налаштувань) */
+  surchargePct?: number | null;
 }
 
 export interface ShopSettings {

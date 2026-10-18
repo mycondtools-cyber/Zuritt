@@ -70,6 +70,8 @@ model RalColor {
   /// стандартний колір — без доплати та без збільшення терміну
   isStandard Boolean @default(false)
   popular    Boolean @default(false)
+  /// надбавка за колір, %; порожньо — загальна з налаштувань
+  surchargePct Float?
   sort       Int     @default(0)
 }
 

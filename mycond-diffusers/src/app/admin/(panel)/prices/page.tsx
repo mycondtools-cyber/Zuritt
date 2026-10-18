@@ -14,7 +14,7 @@ export default async function PricesPage() {
     name: p.name,
     category: cats.find((c) => c.id === p.categoryId)?.name ?? "",
     mode: p.mode,
-    pricing: p.pricing as Record<string, number>,
+    pricing: p.pricing as PriceProduct["pricing"],
     sizes: p.sizes.map((s) => ({ id: s.id, label: s.label, price: s.price })),
   }));
   return <PriceGrid products={data} categories={cats.map((c) => c.name)} />;

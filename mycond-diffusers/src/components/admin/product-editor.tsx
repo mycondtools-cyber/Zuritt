@@ -94,6 +94,17 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
   const pricing = p.pricing as Record<string, number | undefined>;
   const limits = p.limits as Record<string, number | undefined>;
   const setPricing = (k: string, v: string) => set("pricing", { ...p.pricing, [k]: parse(v) ?? 0 });
+  const slotRows = (p.pricing.byKey ?? {}) as Record<string, { fixed: number; perMeter: number }>;
+  const setSlotRow = (key: string, patch: Partial<{ fixed: number; perMeter: number }>, newKey = key) =>
+    set("pricing", {
+      ...p.pricing,
+      byKey: Object.fromEntries(
+        (key in slotRows ? Object.entries(slotRows) : [...Object.entries(slotRows), [key, { fixed: 0, perMeter: 0 }] as const]).map(([k, r]) =>
+          k === key ? [newKey, { ...r, ...patch }] : [k, r],
+        ),
+      ),
+    });
+  const [openBySize, setOpenBySize] = useState<string | null>(null);
   const setLimit = (k: string, v: string) => set("limits", { ...p.limits, [k]: parse(v) ?? undefined });
 
   return (
@@ -295,13 +306,18 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
 
         {p.mode === "rect" && (
           <div className="grid gap-3 sm:grid-cols-4">
-            <Field label="Ціна за м², грн" hint="Ціна = площа Ш×В × ставка, але не менше мінімальної">
+            <Field label="Фіксована частина, грн" hint="Ціна = фіксована + площа × ставка за м² + периметр × ставка за м, але не менше мінімальної">
+              <input className="input" value={numVal(pricing.fixed)} onChange={(e) => setPricing("fixed", e.target.value)} />
+            </Field>
+            <Field label="За м² площі, грн">
               <input className="input" value={numVal(pricing.perM2)} onChange={(e) => setPricing("perM2", e.target.value)} />
+            </Field>
+            <Field label="За м периметра, грн">
+              <input className="input" value={numVal(pricing.perM)} onChange={(e) => setPricing("perM", e.target.value)} />
             </Field>
             <Field label="Мінімальна ціна, грн">
               <input className="input" value={numVal(pricing.min)} onChange={(e) => setPricing("min", e.target.value)} />
             </Field>
-            <div className="sm:col-span-2" />
             {(
               [
                 ["wMin", "Ширина від"],
@@ -322,16 +338,49 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
 
         {p.mode === "slot" && (
           <div className="grid gap-3 sm:grid-cols-4">
-            <Field label="Ціна за 1 м.п., грн" hint="Для однощілинного дифузора">
-              <input className="input" value={numVal(pricing.perMeter)} onChange={(e) => setPricing("perMeter", e.target.value)} />
-            </Field>
-            <Field label="+ за кожну щілину, %" hint="Наприклад 60: 2 щілини = 160% ціни, 3 щілини = 220%">
-              <input className="input" value={numVal(pricing.perExtraSlotPct)} onChange={(e) => setPricing("perExtraSlotPct", e.target.value)} />
-            </Field>
+            <div className="sm:col-span-4">
+              <p className="label">
+                Ціна за кількістю щілин
+                <Hint text="Ціна = фіксована частина + довжина (м) × ставка за метр. Ключ «2» — для 2 щілин, «2x30» — для 2 щілин шириною 30 мм." />
+              </p>
+              <table className="w-full max-w-lg text-sm">
+                <thead className="text-left text-xs text-muted">
+                  <tr>
+                    <th className="font-semibold">Ключ</th>
+                    <th className="font-semibold">Фіксована, грн</th>
+                    <th className="font-semibold">За метр, грн</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(slotRows).map(([key, r]) => (
+                    <tr key={key}>
+                      <td className="py-1 pr-2">
+                        <input className="input !w-24 !py-1.5 font-mono" defaultValue={key} onBlur={(e) => e.target.value !== key && setSlotRow(key, {}, e.target.value)} />
+                      </td>
+                      <td className="py-1 pr-2">
+                        <input className="input !py-1.5" inputMode="decimal" value={numVal(r.fixed)} onChange={(e) => setSlotRow(key, { fixed: parse(e.target.value) ?? 0 })} />
+                      </td>
+                      <td className="py-1 pr-2">
+                        <input className="input !py-1.5" inputMode="decimal" value={numVal(r.perMeter)} onChange={(e) => setSlotRow(key, { perMeter: parse(e.target.value) ?? 0 })} />
+                      </td>
+                      <td className="py-1 text-xs">
+                        <button type="button" className="text-bad" aria-label="Видалити" onClick={() => set("pricing", { ...p.pricing, byKey: Object.fromEntries(Object.entries(slotRows).filter(([k]) => k !== key)) })}>
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button type="button" className="mt-1 text-sm font-semibold text-brand" onClick={() => setSlotRow(String(Object.keys(slotRows).length + 1), { fixed: 0, perMeter: 0 })}>
+                + рядок
+              </button>
+            </div>
             <Field label="Мін. довжина для ціни, мм" hint="Коротші дифузори рахуються як ця довжина">
               <input className="input" value={numVal(pricing.minLengthMm)} onChange={(e) => setPricing("minLengthMm", e.target.value)} />
             </Field>
-            <div />
+            <div className="sm:col-span-3" />
             {(
               [
                 ["lMin", "Довжина від, мм"],
@@ -350,6 +399,11 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
             ))}
           </div>
         )}
+        <div className="mt-4 max-w-xs">
+          <Field label="Коефіцієнт фарбування RAL" hint="Множник надбавки за колір: 1 — як у еталонного дифузора PDK, 0 — колір не впливає на ціну (напр. гіпсові під фарбування на об’єкті).">
+            <input className="input" value={numVal(pricing.ralFactor)} placeholder="1" onChange={(e) => set("pricing", { ...p.pricing, ralFactor: parse(e.target.value) ?? undefined })} />
+          </Field>
+        </div>
       </Section>
 
       <Section
@@ -385,6 +439,34 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
                   </button>
                 </div>
               </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted">
+                Показувати, лише коли
+                <select
+                  className="input !w-auto !py-1 text-xs"
+                  value={g.showIf?.key ?? ""}
+                  onChange={(e) => setGroup(gi, { showIf: e.target.value ? { key: e.target.value, values: g.showIf?.values ?? [] } : undefined })}
+                >
+                  <option value="">завжди</option>
+                  {p.options
+                    .filter((o) => o.key !== g.key)
+                    .map((o) => (
+                      <option key={o.key} value={o.key}>
+                        {o.label}
+                      </option>
+                    ))}
+                </select>
+                {g.showIf && (
+                  <>
+                    =
+                    <input
+                      className="input !w-56 !py-1 text-xs"
+                      placeholder="значення через кому"
+                      defaultValue={g.showIf.values.join(", ")}
+                      onBlur={(e) => setGroup(gi, { showIf: { key: g.showIf!.key, values: e.target.value.split(",").map((v) => v.trim()).filter(Boolean) } })}
+                    />
+                  </>
+                )}
+              </div>
               <table className="mt-2 w-full text-sm">
                 <thead className="text-left text-xs text-muted">
                   <tr>
@@ -392,17 +474,25 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
                     <th className="font-semibold">Значення</th>
                     <th className="font-semibold">+ грн</th>
                     <th className="font-semibold">+ %</th>
+                    {p.mode === "slot" && (
+                      <>
+                        <th className="font-semibold">+ грн/щілину</th>
+                        <th className="font-semibold">+ грн/м</th>
+                        <th className="font-semibold">+ грн/м·щілину</th>
+                      </>
+                    )}
+                    {p.mode === "sizes" && <th className="font-semibold">За розмірами</th>}
                     <th />
                   </tr>
                 </thead>
                 <tbody>
-                  {g.choices.map((c, ci) => (
+                  {g.choices.flatMap((c, ci) => [
                     <tr key={ci}>
                       <td className="w-20 py-1">
                         <input type="radio" name={`def-${gi}`} checked={(g.default || g.choices[0]?.value) === c.value} onChange={() => setGroup(gi, { default: c.value })} />
                       </td>
                       <td className="py-1 pr-2">
-                        <input className="input !py-1.5" value={c.label} onChange={(e) => setChoice(gi, ci, { label: e.target.value, value: e.target.value })} />
+                        <input className="input !py-1.5" value={c.label} onChange={(e) => setChoice(gi, ci, c.value === c.label ? { label: e.target.value, value: e.target.value } : { label: e.target.value })} />
                       </td>
                       <td className="w-28 py-1 pr-2">
                         <input className="input !py-1.5" inputMode="decimal" value={numVal(c.priceAdd)} onChange={(e) => setChoice(gi, ci, { priceAdd: parse(e.target.value) ?? 0 })} />
@@ -410,13 +500,53 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
                       <td className="w-24 py-1 pr-2">
                         <input className="input !py-1.5" inputMode="decimal" value={numVal(c.pricePct)} onChange={(e) => setChoice(gi, ci, { pricePct: parse(e.target.value) ?? 0 })} />
                       </td>
+                      {p.mode === "slot" &&
+                        (["pricePerSlot", "pricePerM", "pricePerSlotM"] as const).map((f) => (
+                          <td key={f} className="w-24 py-1 pr-2">
+                            <input className="input !py-1.5" inputMode="decimal" value={numVal(c[f])} onChange={(e) => setChoice(gi, ci, { [f]: parse(e.target.value) ?? undefined })} />
+                          </td>
+                        ))}
+                      {p.mode === "sizes" && (
+                        <td className="py-1 pr-2 text-xs">
+                          <button type="button" className="font-semibold text-brand" onClick={() => setOpenBySize(openBySize === `${gi}-${ci}` ? null : `${gi}-${ci}`)}>
+                            {c.priceBySize && Object.keys(c.priceBySize).length ? `${Object.keys(c.priceBySize).length} розм.` : "задати"}
+                          </button>
+                        </td>
+                      )}
                       <td className="w-8 py-1 text-xs">
                         <button type="button" className="text-bad" onClick={() => setGroup(gi, { choices: g.choices.filter((_, k) => k !== ci) })} aria-label="Видалити варіант">
                           ✕
                         </button>
                       </td>
-                    </tr>
-                  ))}
+                    </tr>,
+                    openBySize === `${gi}-${ci}` && (
+                      <tr key={`${ci}-bysize`}>
+                        <td />
+                        <td colSpan={5} className="pb-3">
+                          <p className="mb-1 text-xs text-muted">Доплата для кожного розміру, грн. Порожнє поле — варіант недоступний для цього розміру (якщо заповнено хоча б один).</p>
+                          <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+                            {p.sizes.map((sz) => (
+                              <label key={sz.label} className="text-xs">
+                                <span className="block font-semibold">{sz.label}</span>
+                                <input
+                                  className="input !py-1"
+                                  inputMode="decimal"
+                                  value={numVal(c.priceBySize?.[sz.label])}
+                                  onChange={(e) => {
+                                    const v = parse(e.target.value);
+                                    const next = { ...(c.priceBySize ?? {}) };
+                                    if (v === null) delete next[sz.label];
+                                    else next[sz.label] = v;
+                                    setChoice(gi, ci, { priceBySize: next });
+                                  }}
+                                />
+                              </label>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    ),
+                  ])}
                 </tbody>
               </table>
               <button

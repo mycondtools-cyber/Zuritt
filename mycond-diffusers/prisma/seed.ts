@@ -1,16 +1,21 @@
 /**
- * Початкове наповнення бази: категорії, 30 дифузорів, палітра RAL, налаштування.
- * Ціни стартують з нуля («Ціна за запитом») — їх заповнюють в адмінці.
- * Повторний запуск оновлює опис, фото, опції, коефіцієнти розрахунку, живі перерізи
- * та терміни, але НЕ чіпає вже введені ціни.
- *   npm run db:seed
+ * Наповнення бази: категорії, 30 дифузорів, палітра RAL.
+ *
+ *   npm run db:seed            — створює відсутнє; для наявних товарів оновлює лише технічні дані
+ *                                (коефіцієнти розрахунку, живі перерізи, терміни). Ваші ціни, опції,
+ *                                описи й фото не чіпає.
+ *   npm run db:import-prices   — те саме + перезаписує ціни, доплати опцій і надбавки RAL
+ *                                прайсом виробника з data/seed.json.
  */
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import seed from "../data/seed.json";
 
 const db = new PrismaClient();
+const IMPORT_PRICES = process.argv.includes("--prices");
 
 const POPULAR = ["RAL 9016", "RAL 9010", "RAL 9003", "RAL 9005", "RAL 9006", "RAL 7016", "RAL 7035", "RAL 9007"];
+
+type SeedSize = { label: string; w?: number | null; h?: number | null; d?: number | null; freeArea?: number | null; price?: number; sort: number };
 
 function summaryOf(md: string): string {
   const m = md.match(/## Призначення\s*\n+([^\n]+)/);
@@ -18,76 +23,79 @@ function summaryOf(md: string): string {
   return text.length > 220 ? text.slice(0, 217).replace(/\s+\S*$/, "") + "…" : text;
 }
 
+const json = (v: unknown) => v as Prisma.InputJsonValue;
+
 async function main() {
   for (const c of seed.categories) {
-    await db.category.upsert({ where: { slug: c.slug }, update: { name: c.name, description: c.description, sort: c.sort }, create: c });
+    await db.category.upsert({ where: { slug: c.slug }, update: {}, create: c });
   }
   const cats = Object.fromEntries((await db.category.findMany()).map((c) => [c.slug, c.id]));
 
   for (const p of seed.products) {
-    const data = {
-      code: p.code,
-      name: p.name,
-      categoryId: cats[p.category],
-      mode: p.mode,
-      shape: p.shape,
-      mounting: p.mounting,
-      summary: summaryOf(p.description),
-      description: p.description,
-      images: p.images,
-      sort: p.sort,
-      options: p.options,
-      limits: p.limits,
-    };
+    const sizes = p.sizes as SeedSize[];
+    const dims = (s: SeedSize) => ({ w: s.w ?? null, h: s.h ?? null, d: s.d ?? null, freeArea: s.freeArea ?? null, sort: s.sort });
     const existing = await db.product.findUnique({ where: { slug: p.slug }, include: { sizes: true } });
-    if (existing) {
-      await db.product.update({ where: { id: existing.id }, data: { ...data, calc: p.calc, leadDays: p.leadDays } });
-      for (const s of p.sizes as Record<string, unknown>[]) {
-        const dims = { w: (s.w as number) ?? null, h: (s.h as number) ?? null, d: (s.d as number) ?? null, freeArea: (s.freeArea as number) ?? null, sort: s.sort as number };
-        const cur = existing.sizes.find((x) => x.label === s.label);
-        if (cur) await db.productSize.update({ where: { id: cur.id }, data: dims });
-        else await db.productSize.create({ data: { ...dims, label: s.label as string, price: 0, productId: existing.id } });
-      }
-      // старі розміри, яких більше немає в каталозі, прибираємо лише якщо на них ще не задано ціну
-      const labels = new Set((p.sizes as { label: string }[]).map((s) => s.label));
-      await db.productSize.deleteMany({ where: { productId: existing.id, price: { lte: 0 }, label: { notIn: [...labels] } } });
+
+    if (!existing) {
+      await db.product.create({
+        data: {
+          slug: p.slug,
+          code: p.code,
+          name: p.name,
+          categoryId: cats[p.category],
+          mode: p.mode,
+          shape: p.shape,
+          mounting: p.mounting,
+          summary: summaryOf(p.description),
+          description: p.description,
+          images: p.images,
+          sort: p.sort,
+          leadDays: p.leadDays,
+          options: json(p.options),
+          limits: json(p.limits),
+          calc: json(p.calc),
+          pricing: json(p.pricing),
+          sizes: { create: sizes.map((s) => ({ ...dims(s), label: s.label, price: s.price ?? 0 })) },
+        },
+      });
       continue;
     }
-    await db.product.create({
+
+    // технічні дані виробника — оновлюємо завжди
+    await db.product.update({
+      where: { id: existing.id },
       data: {
-        ...data,
-        slug: p.slug,
+        calc: json(p.calc),
         leadDays: p.leadDays,
-        calc: p.calc,
-        pricing: p.pricing,
-        sizes: {
-          create: p.sizes.map((s: Record<string, unknown>) => ({
-            label: s.label as string,
-            w: (s.w as number) ?? null,
-            h: (s.h as number) ?? null,
-            d: (s.d as number) ?? null,
-            freeArea: (s.freeArea as number) ?? null,
-            price: 0,
-            sort: s.sort as number,
-          })),
-        },
+        limits: json(p.limits),
+        ...(IMPORT_PRICES ? { options: json(p.options), pricing: json(p.pricing), mode: p.mode } : {}),
       },
     });
+    for (const s of sizes) {
+      const cur = existing.sizes.find((x) => x.label === s.label);
+      const price = IMPORT_PRICES || !cur || cur.price <= 0 ? s.price ?? 0 : cur.price;
+      if (cur) await db.productSize.update({ where: { id: cur.id }, data: { ...dims(s), price } });
+      else await db.productSize.create({ data: { ...dims(s), label: s.label, price, productId: existing.id } });
+    }
+    // розміри, яких більше немає в каталозі, прибираємо лише якщо на них ще не задано ціну
+    await db.productSize.deleteMany({ where: { productId: existing.id, price: { lte: 0 }, label: { notIn: sizes.map((s) => s.label) } } });
   }
 
+  const colors = seed.ral.map((r, i) => ({ ...r, isStandard: r.name === "RAL 9016 глянець", popular: POPULAR.includes(r.code), sort: i }));
   if ((await db.ralColor.count()) === 0) {
-    await db.ralColor.createMany({
-      data: seed.ral.map((r, i) => ({
-        ...r,
-        isStandard: r.code === "RAL 9016",
-        popular: POPULAR.includes(r.code),
-        sort: i,
-      })),
-      skipDuplicates: true,
-    });
+    await db.ralColor.createMany({ data: colors, skipDuplicates: true });
+  } else {
+    for (const c of colors) {
+      const cur = await db.ralColor.findUnique({ where: { name: c.name } });
+      if (!cur) await db.ralColor.create({ data: c });
+      else if (IMPORT_PRICES || cur.surchargePct === null) await db.ralColor.update({ where: { id: cur.id }, data: IMPORT_PRICES ? { surchargePct: c.surchargePct, isStandard: c.isStandard } : { surchargePct: c.surchargePct } });
+    }
   }
 
-  console.log(`Seeded: ${seed.categories.length} categories, ${seed.products.length} products, ${await db.ralColor.count()} RAL colours`);
+  console.log(
+    `Seeded: ${seed.categories.length} categories, ${seed.products.length} products, ${await db.ralColor.count()} RAL colours` +
+      (IMPORT_PRICES ? " — ціни виробника імпортовано" : ""),
+  );
 }
 
 main()
