@@ -4,41 +4,14 @@
  */
 import { describe, expect, it } from "vitest";
 import { aero } from "@/lib/calc";
-import type { ProductData, Selection } from "@/lib/types";
-import seed from "../data/seed.json";
+import type { Selection } from "@/lib/types";
+import { close, product } from "./helpers";
 import cases from "./fixtures/manufacturer-calc.json";
 
 /** Явні помилки в даних виробника, які ми свідомо виправили */
 const KNOWN_ERRORS = new Set(["rda-s 600x600 p48"]);
 
-function product(slug: string): ProductData {
-  const p = seed.products.find((x) => x.slug === slug)!;
-  return {
-    id: 0,
-    slug,
-    code: p.code,
-    name: p.name,
-    mode: p.mode as ProductData["mode"],
-    shape: p.shape as ProductData["shape"],
-    leadDays: p.leadDays,
-    options: p.options as ProductData["options"],
-    calc: p.calc as ProductData["calc"],
-    pricing: p.pricing as ProductData["pricing"],
-    limits: p.limits as ProductData["limits"],
-    sizes: (p.sizes as Record<string, unknown>[]).map((s, i) => ({
-      label: s.label as string,
-      w: (s.w as number) ?? null,
-      h: (s.h as number) ?? null,
-      d: (s.d as number) ?? null,
-      freeArea: (s.freeArea as number) ?? null,
-      price: 0,
-      sort: i,
-    })),
-  };
-}
 
-/** Виробник округлює до сотих — допускаємо ±0,01 абсолютно або ±1,5 % */
-const close = (a: number, b: number) => Math.abs(a - b) <= Math.max(0.011, Math.abs(b) * 0.015);
 
 describe("збіг з калькулятором виробника", () => {
   for (const c of cases) {

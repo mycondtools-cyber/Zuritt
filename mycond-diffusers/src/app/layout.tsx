@@ -6,8 +6,8 @@ import { CartProvider } from "@/components/cart";
 const manrope = Manrope({ subsets: ["latin", "cyrillic"], variable: "--font-manrope", display: "swap" });
 
 export const metadata: Metadata = {
-  title: { default: "Дифузори — підбір і розрахунок онлайн", template: "%s · Дифузори" },
-  description: "Каталог вентиляційних дифузорів з онлайн-конфігуратором: розмір, колір RAL, розрахунок швидкості та втрат тиску, ціна.",
+  title: { default: "Дифузори, решітки, пленуми — підбір і розрахунок онлайн", template: "%s · Mycond" },
+  description: "Каталог дифузорів, вентиляційних решіток, анемостатів і пленумів з онлайн-конфігуратором: розмір, колір RAL, розрахунок швидкості та втрат тиску, ціна.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

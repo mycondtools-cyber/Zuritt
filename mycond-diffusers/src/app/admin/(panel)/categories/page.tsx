@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { GROUPS } from "@/lib/products";
 import { deleteCategory, saveCategory } from "../../actions";
 
 export const metadata = { title: "Категорії" };
@@ -6,12 +7,21 @@ export const metadata = { title: "Категорії" };
 export default async function CategoriesPage() {
   const cats = await db.category.findMany({ orderBy: { sort: "asc" }, include: { _count: { select: { products: true } } } });
   const Row = ({ c }: { c?: (typeof cats)[number] }) => (
-    <form action={saveCategory} className="grid gap-2 p-3 sm:grid-cols-[150px_1fr_2fr_70px_auto] sm:items-center">
+    <form action={saveCategory} className="grid gap-2 p-3 sm:grid-cols-[150px_1fr_2fr_240px_auto] sm:items-center">
       <input type="hidden" name="id" value={c?.id ?? ""} />
       <input name="slug" className="input font-mono text-xs" defaultValue={c?.slug} placeholder="slug" required />
       <input name="name" className="input font-semibold" defaultValue={c?.name} placeholder="Назва" required />
       <input name="description" className="input" defaultValue={c?.description} placeholder="Опис для сторінки каталогу" />
-      <input name="sort" className="input" type="number" defaultValue={c?.sort ?? 0} aria-label="Порядок" />
+      <span className="flex gap-2">
+        <select name="group" className="input !w-36" defaultValue={c?.group ?? "diffusers"} aria-label="Розділ">
+          {GROUPS.map(([g, l]) => (
+            <option key={g} value={g}>
+              {l}
+            </option>
+          ))}
+        </select>
+        <input name="sort" className="input !w-20" type="number" defaultValue={c?.sort ?? 0} aria-label="Порядок" />
+      </span>
       <span className="flex gap-2">
         <button className="btn-primary !py-2">{c ? "Зберегти" : "Додати"}</button>
         {c && c._count.products === 0 && (

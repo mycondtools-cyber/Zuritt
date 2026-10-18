@@ -31,7 +31,16 @@ export function priceFrom(p: ProductWithSizes): number {
     return prices.length ? Math.min(...prices) : 0;
   }
   const l = data.limits;
-  const sel = { options: Object.fromEntries(data.options.map((g) => [g.key, g.default])), ralName: "", quantity: 1, width: l.wMin, height: l.hMin, length: l.lMin };
+  const sel = {
+    options: Object.fromEntries(data.options.map((g) => [g.key, g.default])),
+    ralName: "",
+    quantity: 1,
+    width: l.wMin,
+    height: l.hMin,
+    length: l.lMin,
+    // для боксів — найменші габарити
+    extra: Object.fromEntries((l.extra ?? []).map((e) => [e.key, ["a", "b", "h"].includes(e.key) ? e.min : e.default])),
+  };
   return Math.round(basePrice(data, sel));
 }
 
@@ -41,16 +50,28 @@ export const MOUNTING: Record<string, string> = {
   hidden: "Прихований (під шпаклівку)",
   armstrong: "Стеля «Армстронг»",
   wall: "Стіновий",
+  facade: "Фасадний",
+  duct: "На повітровід",
 };
 
 export const SHAPES: Record<string, string> = {
   square: "Квадратні / прямокутні",
   round: "Круглі",
   slot: "Лінійні (щілинні)",
+  box: "Бокси / пленуми",
 };
 
 export const MODES: Record<Mode, string> = {
   sizes: "Типорозміри з таблиці",
   rect: "Довільний розмір Ш×В (ціна за м²)",
   slot: "Щілинний: довжина + к-сть щілин (ціна за м.п.)",
+  box: "Бокс / пленум: габарити + патрубки",
 };
+
+/** Розділи каталогу (вкладки) */
+export const GROUPS: [string, string][] = [
+  ["diffusers", "Дифузори"],
+  ["grilles", "Решітки"],
+  ["anemostats", "Анемостати"],
+  ["plenums", "Пленуми"],
+];

@@ -6,7 +6,7 @@ import type { Prisma } from "@prisma/client";
 import { checkPassword, createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
-import type { CalcParams, Choice, Limits, OptionGroup, SizeRow } from "@/lib/types";
+import type { CalcParams, Choice, ExtraInput, Limits, OptionGroup, SizeRow } from "@/lib/types";
 
 export async function login(_prev: string | null, form: FormData): Promise<string | null> {
   if (!(await checkPassword(String(form.get("password") ?? "")))) return "Невірний пароль";
@@ -29,6 +29,7 @@ function sanitizeCalc(c: CalcParams): CalcParams {
   const out: CalcParams = { areaCoef: n(c.areaCoef), zeta: n(c.zeta), throwK: n(c.throwK), tempK: n(c.tempK) };
   if (c.slotWidthMm) out.slotWidthMm = n(c.slotWidthMm);
   if (c.jet === "plane" || c.jet === "compact") out.jet = c.jet;
+  if (c.boxAuto === "af") out.boxAuto = "af";
   if (c.enabled === false) out.enabled = false;
   const by = Object.entries(c.byKey ?? {}).filter(([k]) => /^\d+(x\d+)?$/.test(k.trim()));
   if (by.length)
@@ -38,18 +39,42 @@ function sanitizeCalc(c: CalcParams): CalcParams {
   return out;
 }
 
+function sanitizeLimits(l: Limits): Limits {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(l)) {
+    if (k === "extra") {
+      const rows = ((v ?? []) as ExtraInput[]).filter((e) => e.key?.trim());
+      if (rows.length)
+        out.extra = rows.map((e) => ({
+          key: e.key.trim(),
+          label: (e.label || e.key).trim(),
+          unit: e.unit ?? "",
+          min: n(e.min),
+          max: n(e.max),
+          step: n(e.step, 1) || 1,
+          default: n(e.default),
+          ...(e.hint ? { hint: e.hint } : {}),
+        }));
+    } else if (v !== "" && v !== null && v !== undefined) out[k] = n(v);
+  }
+  return out as Limits;
+}
+
 function sanitizePricing(pr: PricingInput): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(pr)) {
     if (k === "byKey") {
       const rows = Object.entries((v ?? {}) as Record<string, { fixed: number; perMeter: number }>).filter(([key]) => /^\d+(x\d+)?$/.test(key.trim()));
       if (rows.length) out.byKey = Object.fromEntries(rows.map(([key, r]) => [key.trim(), { fixed: n(r.fixed), perMeter: n(r.perMeter) }]));
+    } else if (k === "perExtra") {
+      const rows = Object.entries((v ?? {}) as Record<string, number>).filter(([key, x]) => key.trim() && x !== null && String(x) !== "");
+      if (rows.length) out.perExtra = Object.fromEntries(rows.map(([key, x]) => [key.trim(), n(x)]));
     } else if (v !== null && v !== undefined && String(v) !== "") out[k] = n(v);
   }
   return out;
 }
 
-export type PricingInput = Record<string, number | Record<string, { fixed: number; perMeter: number }> | undefined>;
+export type PricingInput = Record<string, number | Record<string, { fixed: number; perMeter: number }> | Record<string, number> | undefined>;
 
 export interface ProductInput {
   id: number | null;
@@ -91,7 +116,11 @@ export async function saveProduct(input: ProductInput): Promise<{ ok: true; id: 
         .filter((c) => c.value.trim())
         .map((c) => {
           const out: Choice = { value: c.value.trim(), label: (c.label || c.value).trim(), priceAdd: n(c.priceAdd), pricePct: n(c.pricePct) };
-          for (const k of ["pricePerSlot", "pricePerM", "pricePerSlotM"] as const) if (c[k]) out[k] = n(c[k]);
+          for (const k of ["pricePerSlot", "pricePerM", "pricePerSlotM", "pricePerM2", "pricePerConn", "pricePerConnMm"] as const) if (c[k]) out[k] = n(c[k]);
+          if (c.calc) {
+            const calc = Object.fromEntries(Object.entries(c.calc).filter(([, x]) => x !== null && x !== undefined && String(x) !== "").map(([k, x]) => [k, n(x)]));
+            if (Object.keys(calc).length) out.calc = calc;
+          }
           const bySize = Object.entries(c.priceBySize ?? {}).filter(([, v]) => v !== null && v !== undefined && String(v) !== "");
           if (bySize.length) out.priceBySize = Object.fromEntries(bySize.map(([k, v]) => [k, n(v)]));
           return out;
@@ -116,7 +145,7 @@ export async function saveProduct(input: ProductInput): Promise<{ ok: true; id: 
     options: options as unknown as Prisma.InputJsonValue,
     calc: sanitizeCalc(input.calc) as unknown as Prisma.InputJsonValue,
     pricing: sanitizePricing(input.pricing) as Prisma.InputJsonValue,
-    limits: Object.fromEntries(Object.entries(input.limits).filter(([, v]) => v !== "" && v !== null && v !== undefined).map(([k, v]) => [k, n(v)])) as Prisma.InputJsonValue,
+    limits: sanitizeLimits(input.limits) as unknown as Prisma.InputJsonValue,
   };
   const sizes = input.sizes
     .filter((s) => s.label.trim())
@@ -234,6 +263,7 @@ export async function saveCategory(form: FormData) {
     name: String(form.get("name") ?? "").trim(),
     description: String(form.get("description") ?? "").trim(),
     sort: Math.round(n(form.get("sort"))),
+    group: String(form.get("group") ?? "diffusers"),
   };
   if (!data.slug || !data.name) return;
   if (id) await db.category.update({ where: { id }, data });

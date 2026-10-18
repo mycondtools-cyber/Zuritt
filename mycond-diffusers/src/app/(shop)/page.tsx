@@ -2,7 +2,8 @@ import { Catalogue, type CatalogueItem } from "@/components/catalogue";
 import { db } from "@/lib/db";
 import { priceFrom } from "@/lib/products";
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ g?: string }> }) {
+  const { g } = await searchParams;
   const [cats, products] = await Promise.all([
     db.category.findMany({ orderBy: { sort: "asc" } }),
     db.product.findMany({ where: { active: true }, include: { sizes: true }, orderBy: [{ sort: "asc" }] }),
@@ -24,13 +25,13 @@ export default async function Home() {
   return (
     <>
       <section className="py-8 sm:py-12">
-        <p className="text-sm font-semibold uppercase tracking-wider text-brand">Вентиляційні дифузори</p>
+        <p className="text-sm font-semibold uppercase tracking-wider text-brand">Дифузори · решітки · анемостати · пленуми</p>
         <h1 className="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight sm:text-4xl">
-          Підберіть дифузор за 3 кроки — і одразу побачите ціну та розрахунок
+          Підберіть повітророзподільник за 3 кроки — і одразу побачите ціну та розрахунок
         </h1>
         <ol className="mt-6 grid gap-3 sm:grid-cols-3">
           {[
-            ["1", "Оберіть тип", "Стельовий, щілинний, ротаційний чи вихровий — фільтри підкажуть."],
+            ["1", "Оберіть тип", "Дифузор, решітка, анемостат чи пленум — фільтри підкажуть."],
             ["2", "Вкажіть витрату повітря", "Конфігуратор сам підбере розмір без шуму й протягів."],
             ["3", "Колір і заявка", "Будь-який RAL, ціна в грн/€ і термін виготовлення одразу."],
           ].map(([n, t, d]) => (
@@ -44,7 +45,11 @@ export default async function Home() {
           ))}
         </ol>
       </section>
-      <Catalogue categories={cats.map((c) => ({ slug: c.slug, name: c.name, description: c.description }))} items={items} />
+      <Catalogue
+        categories={cats.map((c) => ({ slug: c.slug, name: c.name, description: c.description, group: c.group }))}
+        items={items}
+        initialGroup={["diffusers", "grilles", "anemostats", "plenums"].includes(g ?? "") ? g : "diffusers"}
+      />
     </>
   );
 }

@@ -6,7 +6,7 @@ import { deleteProduct, duplicateProduct, saveProduct, uploadImage, type Product
 import { Hint } from "@/components/hint";
 import { Markdown } from "@/components/markdown";
 import { MODES, MOUNTING, SHAPES } from "@/lib/products";
-import type { Choice, OptionGroup, SizeRow } from "@/lib/types";
+import type { Choice, ExtraInput, OptionGroup, SizeRow } from "@/lib/types";
 
 const CALC_FIELDS: ["areaCoef" | "zeta" | "throwK" | "tempK" | "slotWidthMm", string, string][] = [
   ["areaCoef", "Коеф. живого перерізу", "Частка габаритної площі, через яку проходить повітря (0,1–0,7). Використовується, якщо в розмірі не вказано живий переріз."],
@@ -399,6 +399,93 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
             ))}
           </div>
         )}
+        {p.mode === "box" && (
+          <div className="grid gap-3 sm:grid-cols-4">
+            <Field label="Фіксована частина, грн" hint="Ціна = фіксована + площа поверхні × ставка за м² + довжина ребер × ставка за м + додаткові поля + патрубки й опції">
+              <input className="input" value={numVal(pricing.fixed)} onChange={(e) => setPricing("fixed", e.target.value)} />
+            </Field>
+            <Field label="За м² поверхні, грн">
+              <input className="input" value={numVal(pricing.perM2)} onChange={(e) => setPricing("perM2", e.target.value)} />
+            </Field>
+            <Field label="За м ребер, грн">
+              <input className="input" value={numVal(pricing.perM)} onChange={(e) => setPricing("perM", e.target.value)} />
+            </Field>
+            <Field label="Мінімальна ціна, грн">
+              <input className="input" value={numVal(pricing.min)} onChange={(e) => setPricing("min", e.target.value)} />
+            </Field>
+          </div>
+        )}
+
+        <div className="mt-5">
+          <p className="label">
+            Додаткові поля
+            <Hint text="Числові поля конфігуратора: діаметр патрубка, ширина рамки, габарити боксу (ключі a, b, h), діаметр і кількість підключень (connD, connCount). Ставка — доплата за одиницю значення." />
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] text-sm">
+              <thead className="text-left text-xs text-muted">
+                <tr>
+                  <th className="font-semibold">Ключ</th>
+                  <th className="font-semibold">Назва</th>
+                  <th className="font-semibold">Од.</th>
+                  <th className="font-semibold">Від</th>
+                  <th className="font-semibold">До</th>
+                  <th className="font-semibold">Крок</th>
+                  <th className="font-semibold">За замовч.</th>
+                  {p.mode !== "sizes" && p.mode !== "slot" && <th className="font-semibold">грн / од.</th>}
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {(p.limits.extra ?? []).map((e, i) => {
+                  const setE = (patch: Partial<ExtraInput>) => set("limits", { ...p.limits, extra: (p.limits.extra ?? []).map((x, k) => (k === i ? { ...x, ...patch } : x)) });
+                  const perExtra = (p.pricing.perExtra ?? {}) as Record<string, number>;
+                  return (
+                    <tr key={i}>
+                      <td className="py-1 pr-2">
+                        <input className="input !w-24 !py-1.5 font-mono text-xs" value={e.key} onChange={(ev) => setE({ key: ev.target.value })} />
+                      </td>
+                      <td className="py-1 pr-2">
+                        <input className="input !py-1.5" value={e.label} onChange={(ev) => setE({ label: ev.target.value })} />
+                      </td>
+                      <td className="py-1 pr-2">
+                        <input className="input !w-16 !py-1.5" value={e.unit} onChange={(ev) => setE({ unit: ev.target.value })} />
+                      </td>
+                      {(["min", "max", "step", "default"] as const).map((f) => (
+                        <td key={f} className="py-1 pr-2">
+                          <input className="input !w-20 !py-1.5" inputMode="decimal" value={numVal(e[f])} onChange={(ev) => setE({ [f]: parse(ev.target.value) ?? 0 })} />
+                        </td>
+                      ))}
+                      {p.mode !== "sizes" && p.mode !== "slot" && (
+                        <td className="py-1 pr-2">
+                          <input
+                            className="input !w-24 !py-1.5"
+                            inputMode="decimal"
+                            value={numVal(perExtra[e.key])}
+                            onChange={(ev) => set("pricing", { ...p.pricing, perExtra: { ...perExtra, [e.key]: parse(ev.target.value) ?? 0 } })}
+                          />
+                        </td>
+                      )}
+                      <td className="py-1 text-xs">
+                        <button type="button" className="text-bad" aria-label="Видалити поле" onClick={() => set("limits", { ...p.limits, extra: (p.limits.extra ?? []).filter((_, k) => k !== i) })}>
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <button
+            type="button"
+            className="mt-1 text-sm font-semibold text-brand"
+            onClick={() => set("limits", { ...p.limits, extra: [...(p.limits.extra ?? []), { key: `x${(p.limits.extra ?? []).length + 1}`, label: "Нове поле", unit: "мм", min: 0, max: 1000, step: 1, default: 100 }] })}
+          >
+            + поле
+          </button>
+        </div>
+
         <div className="mt-4 max-w-xs">
           <Field label="Коефіцієнт фарбування RAL" hint="Множник надбавки за колір: 1 — як у еталонного дифузора PDK, 0 — колір не впливає на ціну (напр. гіпсові під фарбування на об’єкті).">
             <input className="input" value={numVal(pricing.ralFactor)} placeholder="1" onChange={(e) => set("pricing", { ...p.pricing, ralFactor: parse(e.target.value) ?? undefined })} />
@@ -481,6 +568,13 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
                         <th className="font-semibold">+ грн/м·щілину</th>
                       </>
                     )}
+                    {(p.mode === "rect" || p.mode === "box") && <th className="font-semibold">+ грн/м²</th>}
+                    {p.mode === "box" && (
+                      <>
+                        <th className="font-semibold">+ грн/підкл.</th>
+                        <th className="font-semibold">+ грн/мм Ø</th>
+                      </>
+                    )}
                     {p.mode === "sizes" && <th className="font-semibold">За розмірами</th>}
                     <th />
                   </tr>
@@ -502,6 +596,17 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
                       </td>
                       {p.mode === "slot" &&
                         (["pricePerSlot", "pricePerM", "pricePerSlotM"] as const).map((f) => (
+                          <td key={f} className="w-24 py-1 pr-2">
+                            <input className="input !py-1.5" inputMode="decimal" value={numVal(c[f])} onChange={(e) => setChoice(gi, ci, { [f]: parse(e.target.value) ?? undefined })} />
+                          </td>
+                        ))}
+                      {(p.mode === "rect" || p.mode === "box") && (
+                        <td className="w-24 py-1 pr-2">
+                          <input className="input !py-1.5" inputMode="decimal" value={numVal(c.pricePerM2)} onChange={(e) => setChoice(gi, ci, { pricePerM2: parse(e.target.value) ?? undefined })} />
+                        </td>
+                      )}
+                      {p.mode === "box" &&
+                        (["pricePerConn", "pricePerConnMm"] as const).map((f) => (
                           <td key={f} className="w-24 py-1 pr-2">
                             <input className="input !py-1.5" inputMode="decimal" value={numVal(c[f])} onChange={(e) => setChoice(gi, ci, { [f]: parse(e.target.value) ?? undefined })} />
                           </td>

@@ -27,6 +27,13 @@ const RECT_FIELDS: [string, string][] = [
 /** Поля ставок товару: для щілинних — «ключ:fixed» / «ключ:perMeter» з таблиці byKey */
 function rateFields(p: PriceProduct): [string, string][] {
   if (p.mode === "rect") return RECT_FIELDS;
+  if (p.mode === "box")
+    return [
+      ["fixed", "фіксована, грн"],
+      ["perM2", "грн/м² поверхні"],
+      ["perM", "грн/м ребер"],
+      ["min", "мін., грн"],
+    ];
   if (p.mode === "slot") {
     const rows = Object.keys((p.pricing.byKey as Record<string, unknown>) ?? {});
     return rows.flatMap((k) => [

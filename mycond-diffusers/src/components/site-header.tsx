@@ -14,8 +14,8 @@ export function SiteHeader({ phone }: { phone?: string }) {
             </svg>
           </span>
           <span className="leading-tight">
-            <span className="block text-[15px] font-extrabold tracking-tight">Mycond Дифузори</span>
-            <span className="block text-xs text-muted">підбір і розрахунок онлайн</span>
+            <span className="block text-[15px] font-extrabold tracking-tight">Mycond Повітророзподіл</span>
+            <span className="block text-xs text-muted">дифузори · решітки · пленуми</span>
           </span>
         </Link>
         <nav className="ml-auto flex items-center gap-1 text-sm font-medium sm:gap-3">

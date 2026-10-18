@@ -1,4 +1,4 @@
-import type { Choice, OptionGroup, ProductData, RalData, RectPricing, Selection, ShopSettings, SizeRow, SlotPricing } from "./types";
+import type { BoxPricing, Choice, OptionGroup, ProductData, RalData, RectPricing, Selection, ShopSettings, SizeRow, SlotPricing } from "./types";
 
 export const AIR_DENSITY = 1.2;
 
@@ -36,13 +36,78 @@ function slotWidth(p: ProductData, sel: Selection): number {
   return Number.isFinite(w) && w > 0 ? w : p.calc.slotWidthMm ?? 20;
 }
 
+/** Значення додаткового числового поля (або значення за замовчуванням) */
+export function extraVal(p: ProductData, sel: Selection, key: string): number {
+  const v = sel.extra?.[key];
+  if (v !== undefined && Number.isFinite(v)) return v;
+  return p.limits.extra?.find((e) => e.key === key)?.default ?? 0;
+}
+
+const ceil50 = (x: number) => Math.ceil(x / 50) * 50;
+const round10 = (x: number) => Math.round(x / 10) * 10;
+
+/**
+ * Габарити боксу, мм. Для AF / FLX — як у програмі виробника: з розміщення (R / W / C), діаметра,
+ * кількості рядів і отворів та діаметра підключення.
+ */
+export function boxDims(p: ProductData, sel: Selection): { a: number; b: number; h: number } {
+  if (p.calc.boxAuto === "af") {
+    const opt = (k: string, d: string) => sel.options[k] ?? p.options.find((g) => g.key === k)?.default ?? d;
+    const pl = +opt("holePlacement", "3");
+    const dia = +opt("holeDia", "75");
+    const rows = Math.max(1, +opt("rows", "1"));
+    const c = extraVal(p, sel, "holesC");
+    const l = extraVal(p, sel, "holesL");
+    const r = extraVal(p, sel, "holesR");
+    const cd = extraVal(p, sel, "connD");
+    const pitch = pl === 2 ? (dia === 90 ? 105 : 90) : dia === 90 ? 120 : 105;
+    const width = Math.max(ceil50(cd + 30), ceil50((c * pitch) / rows));
+    const length =
+      pl === 1 ? ceil50(cd + (rows >= 3 ? 150 : 100)) : pl === 2 ? ceil50(cd + 100) : Math.max(ceil50(cd + 30), ceil50((l * pitch) / rows), ceil50((r * pitch) / rows));
+    const height = pl === 2 ? round10(rows * 170 + 10) : round10(rows * (dia === 90 ? 115 : 100) + 20);
+    return { a: width, b: length, h: height };
+  }
+  const a = extraVal(p, sel, "a");
+  // квадратний бокс (PB VD) задається однією стороною
+  const b = p.limits.extra?.some((e) => e.key === "b") ? extraVal(p, sel, "b") : a;
+  return { a, b, h: extraVal(p, sel, "h") };
+}
+
+/** Бокс: площа поверхні, м², і сумарна довжина ребер, м */
+export function boxGeometry(p: ProductData, sel: Selection) {
+  const d = boxDims(p, sel);
+  const a = d.a / 1000;
+  const b = d.b / 1000;
+  const h = d.h / 1000;
+  return { surface: 2 * (a * b + a * h + b * h), edges: 4 * (a + b + h) };
+}
+
 export function findSize(p: ProductData, sel: Selection): SizeRow | undefined {
   return p.sizes.find((s) => s.label === sel.sizeLabel);
 }
 
 /** Живий переріз, м² */
 export function freeArea(p: ProductData, sel: Selection, size?: SizeRow): number {
+  return baseFreeArea(p, sel, size) * activeCalc(p, sel).areaMul;
+}
+
+/** Вплив обраних варіантів на аеродинаміку */
+function activeCalc(p: ProductData, sel: Selection) {
+  const out: { zeta?: number; throwK?: number; tempK?: number; areaMul: number } = { areaMul: 1 };
+  for (const g of visibleGroups(p, sel)) {
+    const c = chosen(p, g, sel)?.calc;
+    if (!c) continue;
+    if (c.zeta !== undefined) out.zeta = c.zeta;
+    if (c.throwK !== undefined) out.throwK = c.throwK;
+    if (c.tempK !== undefined) out.tempK = c.tempK;
+    if (c.areaMul !== undefined) out.areaMul *= c.areaMul;
+  }
+  return out;
+}
+
+function baseFreeArea(p: ProductData, sel: Selection, size?: SizeRow): number {
   const k = p.calc.areaCoef || 0;
+  if (p.mode === "box") return 0;
   if (p.mode === "sizes") {
     const s = size ?? findSize(p, sel);
     if (!s) return 0;
@@ -60,7 +125,8 @@ export function coefs(p: ProductData, sel: Selection) {
   const c = p.calc;
   const by = c.byKey ?? {};
   const o = (p.mode === "slot" && (by[`${nSlots(sel)}x${slotWidth(p, sel)}`] ?? by[String(nSlots(sel))])) || {};
-  return { zeta: o.zeta ?? c.zeta, throwK: o.throwK ?? c.throwK, tempK: o.tempK ?? c.tempK };
+  const ch = activeCalc(p, sel);
+  return { zeta: ch.zeta ?? o.zeta ?? c.zeta, throwK: ch.throwK ?? o.throwK ?? c.throwK, tempK: ch.tempK ?? o.tempK ?? c.tempK };
 }
 
 /**
@@ -98,8 +164,8 @@ export function aero(
     deltaTAtZone: dT,
     levels: {
       velocity: level(v0, LIMITS.velocity),
-      velocityAtZone: level(vx, LIMITS.velocityAtZone),
-      pressureDrop: level(dp, LIMITS.pressureDrop),
+      velocityAtZone: k.throwK > 0 ? level(vx, LIMITS.velocityAtZone) : "good",
+      pressureDrop: k.zeta > 0 ? level(dp, LIMITS.pressureDrop) : "good",
     },
   };
 }
@@ -158,12 +224,21 @@ export function chosen(p: ProductData, g: OptionGroup, sel: Selection): Choice |
 function choiceAdd(p: ProductData, c: Choice, sel: Selection): number {
   if (p.mode === "sizes" && c.priceBySize && sel.sizeLabel && sel.sizeLabel in c.priceBySize) return c.priceBySize[sel.sizeLabel];
   let add = c.priceAdd || 0;
+  if (c.pricePerM2) add += c.pricePerM2 * (p.mode === "box" ? boxGeometry(p, sel).surface : ((sel.width ?? 0) * (sel.height ?? 0)) / 1e6);
+  if (p.mode === "box" && (c.pricePerConn || c.pricePerConnMm)) {
+    const n = extraVal(p, sel, "connCount") || 1;
+    add += n * ((c.pricePerConn || 0) + (c.pricePerConnMm || 0) * extraVal(p, sel, "connD"));
+  }
   if (p.mode === "slot") {
     const n = nSlots(sel);
     const m = (sel.length ?? 0) / 1000;
     add += (c.pricePerSlot || 0) * n + (c.pricePerM || 0) * m + (c.pricePerSlotM || 0) * n * m;
   }
   return add;
+}
+
+function extrasPrice(p: ProductData, sel: Selection, perExtra?: Record<string, number>): number {
+  return Object.entries(perExtra ?? {}).reduce((sum, [k, coef]) => sum + coef * extraVal(p, sel, k), 0);
 }
 
 export function basePrice(p: ProductData, sel: Selection): number {
@@ -173,7 +248,13 @@ export function basePrice(p: ProductData, sel: Selection): number {
     const w = (sel.width ?? 0) / 1000;
     const h = (sel.height ?? 0) / 1000;
     if (!pr.perM2 && !pr.perM) return 0;
-    return Math.max(pr.min || 0, (pr.fixed || 0) + (pr.perM2 || 0) * w * h + (pr.perM || 0) * 2 * (w + h));
+    return Math.max(pr.min || 0, (pr.fixed || 0) + (pr.perM2 || 0) * w * h + (pr.perM || 0) * 2 * (w + h) + extrasPrice(p, sel, pr.perExtra));
+  }
+  if (p.mode === "box") {
+    const pr = p.pricing as BoxPricing;
+    if (!pr.perM2 && !pr.perM && !pr.fixed) return 0;
+    const g = boxGeometry(p, sel);
+    return Math.max(pr.min || 0, (pr.fixed || 0) + (pr.perM2 || 0) * g.surface + (pr.perM || 0) * g.edges + extrasPrice(p, sel, pr.perExtra));
   }
   const pr = p.pricing as SlotPricing;
   const len = Math.max(sel.length ?? 0, pr.minLengthMm || 0) / 1000;
@@ -235,7 +316,12 @@ export function specString(p: ProductData, sel: Selection): string {
   let dims = "";
   if (p.mode === "sizes") dims = sel.sizeLabel ?? "";
   else if (p.mode === "rect") dims = `${sel.width}x${sel.height}`;
-  else dims = `${nSlots(sel)}x${slotWidth(p, sel)} L=${sel.length}${sel.angle ? ` ${sel.angle}°` : ""}`;
+  else if (p.mode === "box") {
+    const d = extraVal(p, sel, "connD");
+    const n = extraVal(p, sel, "connCount") || 1;
+    const g = boxDims(p, sel);
+    dims = `${g.a}x${g.b}x${g.h}h${d ? ` / Ø${d}${n > 1 ? `×${n}` : ""}` : ""}`;
+  } else dims = `${nSlots(sel)}x${slotWidth(p, sel)} L=${sel.length}${sel.angle ? ` ${sel.angle}°` : ""}`;
   return `${p.code}${ral} ${dims}`.trim();
 }
 

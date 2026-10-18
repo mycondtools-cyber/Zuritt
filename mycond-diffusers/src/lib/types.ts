@@ -1,5 +1,5 @@
-export type Mode = "sizes" | "rect" | "slot";
-export type Shape = "square" | "round" | "slot";
+export type Mode = "sizes" | "rect" | "slot" | "box";
+export type Shape = "square" | "round" | "slot" | "box";
 
 export interface Choice {
   value: string;
@@ -16,6 +16,26 @@ export interface Choice {
   pricePerSlotM?: number;
   /** Типорозміри: доплата для конкретного розміру (замінює priceAdd). Якщо задано, а розміру в списку немає — варіант недоступний для цього розміру */
   priceBySize?: Record<string, number>;
+  /** Доплата за м²: для решіток — площа Ш×В, для боксів — площа поверхні */
+  pricePerM2?: number;
+  /** Бокси: доплата за кожен патрубок / отвір, грн */
+  pricePerConn?: number;
+  /** Бокси: доплата за кожен патрубок на 1 мм діаметра, грн */
+  pricePerConnMm?: number;
+  /** Вплив варіанта на аеродинаміку (кут жалюзі, демпфер тощо) */
+  calc?: { zeta?: number; throwK?: number; tempK?: number; areaMul?: number };
+}
+
+/** Додаткове числове поле конфігуратора (діаметр патрубка, ширина рамки, габарит боксу…) */
+export interface ExtraInput {
+  key: string;
+  label: string;
+  unit: string;
+  min: number;
+  max: number;
+  step: number;
+  default: number;
+  hint?: string;
 }
 
 export interface OptionGroup {
@@ -45,6 +65,8 @@ export interface CalcParams {
   byKey?: Record<string, { zeta?: number; throwK?: number; tempK?: number }>;
   /** false — розрахунок для моделі не показується (немає даних виробника) */
   enabled?: boolean;
+  /** Бокси AF / FLX: габарити рахуються автоматично з кількості й діаметра отворів */
+  boxAuto?: "af";
 }
 
 export interface RectPricing {
@@ -56,6 +78,8 @@ export interface RectPricing {
   min: number;
   /** Коефіцієнт надбавки за колір RAL (1 — як у еталонного виробу, 0 — колір не впливає) */
   ralFactor?: number;
+  /** Лінійна доплата за одиницю додаткового поля: { ключ поля: грн за одиницю } */
+  perExtra?: Record<string, number>;
 }
 
 export interface SlotPricing {
@@ -76,6 +100,17 @@ export interface SizesPricing {
   ralFactor?: number;
 }
 
+/** Бокси (пленуми): фіксована + за м² поверхні + за м ребер; патрубки й опції — через доплати варіантів */
+export interface BoxPricing {
+  fixed: number;
+  perM2: number;
+  perM: number;
+  /** Лінійна доплата за одиницю додаткового поля: { ключ поля: грн за одиницю } */
+  perExtra?: Record<string, number>;
+  min?: number;
+  ralFactor?: number;
+}
+
 export interface Limits {
   wMin?: number;
   wMax?: number;
@@ -91,6 +126,8 @@ export interface Limits {
   angleMax?: number;
   angleStep?: number;
   angleDefault?: number;
+  /** Додаткові числові поля; для боксів — габарити a, b, h та параметри патрубків connD, connCount */
+  extra?: ExtraInput[];
 }
 
 export interface SizeRow {
@@ -115,7 +152,7 @@ export interface ProductData {
   leadDays: number;
   options: OptionGroup[];
   calc: CalcParams;
-  pricing: RectPricing | SlotPricing | SizesPricing;
+  pricing: RectPricing | SlotPricing | SizesPricing | BoxPricing;
   limits: Limits;
   sizes: SizeRow[];
 }
@@ -150,6 +187,8 @@ export interface Selection {
   height?: number;
   length?: number;
   angle?: number;
+  /** Значення додаткових числових полів */
+  extra?: Record<string, number>;
   options: Record<string, string>;
   ralName: string;
   quantity: number;

@@ -123,7 +123,9 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   const [room, setRoom] = useState({ open: false, area: 20, height: 2.7, changes: 2 });
   const [added, setAdded] = useState(false);
 
-  const base: Selection = { options, ralName, quantity, width, height, length, angle: p.limits.angleMin ? angle : undefined };
+  const [extra, setExtra] = useState<Record<string, number>>(() => Object.fromEntries((p.limits.extra ?? []).map((e) => [e.key, e.default])));
+  const calcOn = p.calc.enabled !== false && p.mode !== "box";
+  const base: Selection = { options, ralName, quantity, width, height, length, angle: p.limits.angleMin ? angle : undefined, extra };
   const recommended = useMemo(() => recommendSize(p, base, airflow, distance), [p, options, airflow, distance]); // eslint-disable-line react-hooks/exhaustive-deps
   const effectiveSize = sizeLabel ?? recommended?.label ?? p.sizes[0]?.label;
   const sel: Selection = { ...base, sizeLabel: effectiveSize };
@@ -140,7 +142,10 @@ export function Configurator({ product: p, image, colors, settings }: { product:
       ? !!effectiveSize
       : p.mode === "rect"
         ? width >= (lim.wMin ?? 0) && width <= (lim.wMax ?? 1e9) && height >= (lim.hMin ?? 0) && height <= (lim.hMax ?? 1e9)
-        : length >= (lim.lMin ?? 0) && length <= (lim.lMax ?? 1e9);
+        : p.mode === "slot"
+          ? length >= (lim.lMin ?? 0) && length <= (lim.lMax ?? 1e9)
+          : true;
+  const extrasValid = (lim.extra ?? []).every((e) => extra[e.key] >= e.min && extra[e.key] <= e.max);
 
   const money = (uahValue: number) => (currency === "uah" ? uah(uahValue) : eur(uahValue / (settings.eurRate || 1)));
 
@@ -150,6 +155,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
     if (p.mode === "rect") details.push({ label: "Розмір Ш×В", value: `${width}×${height} мм` });
     if (p.mode === "slot") details.push({ label: "Довжина", value: `${length} мм` });
     if (p.mode === "slot" && lim.angleMin) details.push({ label: "Кут", value: `${angle}°` });
+    for (const e of lim.extra ?? []) details.push({ label: e.label, value: `${extra[e.key]}${e.unit ? ` ${e.unit}` : ""}` });
     for (const g of groups) details.push({ label: g.label, value: chosen(p, g, sel)?.label ?? "" });
     details.push({ label: "Колір", value: ralName });
     if (result) details.push({ label: "Розрахунок", value: `${airflow} м³/год · ${num(result.velocity, 1)} м/с · ${num(result.pressureDrop, 0)} Па` });
@@ -174,6 +180,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   return (
     <div className="space-y-4">
       {/* 1. Розрахунок — спочатку витрата, щоб підібрати розмір */}
+      {calcOn && (
       <Step n={n++} title="Скільки повітря подаємо?" hint="Вкажіть витрату повітря на один дифузор. Якщо не знаєте — порахуйте за площею приміщення.">
         <div className="grid gap-3 sm:grid-cols-3">
           <NumberField
@@ -227,11 +234,12 @@ export function Configurator({ product: p, image, colors, settings }: { product:
           </div>
         )}
       </Step>
+      )}
 
       {/* 2. Розмір */}
       <Step
         n={n++}
-        title={p.mode === "slot" ? "Довжина та щілини" : "Розмір"}
+        title={p.mode === "slot" ? "Довжина та щілини" : p.mode === "box" ? "Габарити та підключення" : "Розмір"}
         hint={p.mode === "sizes" ? "Посадковий розмір — під отвір або повітровід. Ми позначаємо найменший розмір, що працює тихо й без протягів." : undefined}
       >
         {p.mode === "sizes" && (
@@ -283,6 +291,23 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                 </button>
               </p>
             )}
+          </div>
+        )}
+        {(lim.extra?.length ?? 0) > 0 && (
+          <div className={`grid gap-3 sm:grid-cols-3 ${p.mode === "box" ? "" : "mt-3"}`}>
+            {lim.extra!.map((e) => (
+              <NumberField
+                key={e.key}
+                label={e.label}
+                hint={e.hint}
+                value={extra[e.key]}
+                onChange={(v) => setExtra((x) => ({ ...x, [e.key]: v }))}
+                min={e.min}
+                max={e.max}
+                step={e.step}
+                unit={e.unit}
+              />
+            ))}
           </div>
         )}
       </Step>
@@ -339,6 +364,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
 
       {/* 5. Результат */}
       <section className="card overflow-hidden">
+        {p.mode !== "box" && (
         <div className="p-4 sm:p-5">
           <h2 className="mb-3 flex items-center gap-2 font-bold">
             Розрахунок
@@ -355,6 +381,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                   level={result.levels.velocity}
                   hint={`До ${LIMITS.velocity.good} м/с — тихо (житло, офіс), до ${LIMITS.velocity.ok} м/с — допустимо, вище — чутний шум.`}
                 />
+                {p.calc.throwK > 0 && (
                 <Metric
                   label="У робочій зоні"
                   value={num(result.velocityAtZone, 2)}
@@ -362,6 +389,8 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                   level={result.levels.velocityAtZone}
                   hint={`Швидкість потоку біля людей. До ${LIMITS.velocityAtZone.good} м/с — комфортно, вище ${LIMITS.velocityAtZone.ok} м/с — відчувається протяг.`}
                 />
+                )}
+                {p.calc.zeta > 0 && (
                 <Metric
                   label="Втрата тиску"
                   value={num(result.pressureDrop, result.pressureDrop < 10 ? 1 : 0)}
@@ -369,8 +398,9 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                   level={result.levels.pressureDrop}
                   hint={`Скільки тиску «з’їдає» дифузор. До ${LIMITS.pressureDrop.good} Па — добре, понад ${LIMITS.pressureDrop.ok} Па — вентилятор працюватиме важче й гучніше.`}
                 />
+                )}
               </div>
-              {result.deltaTAtZone !== null && (
+              {result.deltaTAtZone !== null && p.calc.tempK > 0 && (
                 <p className="mt-3 text-sm text-ink-2">
                   Різниця температур у робочій зоні ≈ <b>{num(result.deltaTAtZone, 2)} K</b>
                   {result.deltaTAtZone > 2 ? " — відчутно, краще збільшити розмір або відстань." : " — комфортно."}
@@ -388,6 +418,8 @@ export function Configurator({ product: p, image, colors, settings }: { product:
             </p>
           )}
         </div>
+
+        )}
 
         <div className="border-t border-line bg-paper p-4 sm:p-5">
           <p className="text-xs text-muted">Маркування для замовлення</p>
@@ -419,7 +451,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                 <span className="mb-1 block text-xs text-muted">Кількість</span>
                 <input className="input" type="number" min={1} value={quantity} onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))} />
               </label>
-              <button type="button" className="btn-primary !py-3" onClick={addToCart} disabled={!dimsValid}>
+              <button type="button" className="btn-primary !py-3" onClick={addToCart} disabled={!dimsValid || !extrasValid}>
                 {added ? "✓ Додано" : "Додати до заявки"}
               </button>
             </div>
