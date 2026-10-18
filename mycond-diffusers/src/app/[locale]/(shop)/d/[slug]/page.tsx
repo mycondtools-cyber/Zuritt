@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { ColorPreviewProvider } from "@/components/color-preview";
 import { Configurator } from "@/components/configurator";
 import { Gallery } from "@/components/gallery";
 import { Markdown } from "@/components/markdown";
 import { Link } from "@/i18n/navigation";
+import recolorSpecs from "../../../../../../data/recolor.json";
 import { db } from "@/lib/db";
+import type { RecolorSpec } from "@/lib/recolor";
 import { localizeCategory, localizeProduct } from "@/lib/i18n-content";
-import { toProductData } from "@/lib/products";
+import { toProductData, vizKind } from "@/lib/products";
 import { getSettings, publicSettings } from "@/lib/settings";
 
 type Params = { params: Promise<{ slug: string; locale: string }> };
@@ -43,9 +46,10 @@ export default async function ProductPage({ params }: Params) {
         </Link>{" "}
         / <span>{p.category.name}</span>
       </nav>
+      <ColorPreviewProvider>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <div className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-          <Gallery images={p.images} alt={p.name} />
+          <Gallery images={p.images} alt={p.name} recolor={(recolorSpecs as Record<string, RecolorSpec>)[p.slug]} />
         </div>
         <div>
           <span className="rounded-lg bg-ink px-2 py-1 text-xs font-bold text-white">{p.code}</span>
@@ -64,10 +68,13 @@ export default async function ProductPage({ params }: Params) {
               image={p.images[0]}
               colors={colors.map((c) => ({ id: c.id, code: c.code, name: c.name, hex: c.hex, finish: c.finish, isStandard: c.isStandard, popular: c.popular, surchargePct: c.surchargePct }))}
               settings={publicSettings(settings)}
+              viz={vizKind(p.category.slug, p.mounting, p.mode)}
             />
           </div>
         </div>
       </div>
+
+      </ColorPreviewProvider>
 
       {p.description && (
         <section className="card mt-8 p-5 sm:p-8">

@@ -75,3 +75,12 @@ export const GROUPS: [string, string][] = [
   ["anemostats", "Анемостати"],
   ["plenums", "Пленуми"],
 ];
+
+/** Схема руху повітря: «ceiling» — уздовж стелі й униз, «wall» — горизонтально від стіни, null — без схеми */
+export type VizKind = "ceiling" | "wall" | null;
+
+export function vizKind(categorySlug: string, mounting: string[], mode: string): VizKind {
+  if (mode === "box" || categorySlug === "plenums" || categorySlug === "grilles-outdoor") return null;
+  if (["ceiling", "rotary", "slot", "gypsum", "anemostats", "vortex"].includes(categorySlug)) return mounting.includes("wall") && !mounting.some((m) => ["ceiling", "hidden", "stretch", "armstrong"].includes(m)) ? "wall" : "ceiling";
+  return "wall";
+}

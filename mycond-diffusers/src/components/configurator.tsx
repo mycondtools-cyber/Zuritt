@@ -1,13 +1,16 @@
 "use client";
 
 import { useLocale, useMessages, useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { aero, airflowByRoom, choiceAvailable, chosen, LIMITS, price, recommendSize, recommendSlotLength, specString, visibleGroups, type Level } from "@/lib/calc";
 import { detailLabels, itemDetails } from "@/lib/details";
 import { ralLabel } from "@/lib/i18n-content";
+import type { VizKind } from "@/lib/products";
 import type { ProductData, RalData, Selection, ShopSettings } from "@/lib/types";
 import { useCart } from "./cart";
+import { AirflowViz } from "./airflow-viz";
+import { useColorPreview } from "./color-preview";
 import { Hint } from "./hint";
 import { useMoney } from "./market";
 import { RalPicker } from "./ral-picker";
@@ -112,7 +115,7 @@ function Metric({ label, value, unit, level, hint }: { label: string; value: str
   );
 }
 
-export function Configurator({ product: p, image, colors, settings }: { product: ProductData; image?: string; colors: RalData[]; settings: PublicSettings }) {
+export function Configurator({ product: p, image, colors, settings, viz }: { product: ProductData; image?: string; colors: RalData[]; settings: PublicSettings; viz?: VizKind }) {
   const cart = useCart();
   const t = useTranslations("configurator");
   const tc = useTranslations("common");
@@ -147,6 +150,11 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   const effectiveSize = sizeLabel ?? recommended?.label ?? p.sizes[0]?.label;
   const sel: Selection = { ...base, sizeLabel: effectiveSize };
   const ral = colors.find((c) => c.name === ralName);
+  // обраний колір — у галерею (попередній перегляд виробу в цьому кольорі)
+  const setPreview = useColorPreview()?.setColor;
+  useEffect(() => {
+    if (setPreview && ral) setPreview({ hex: ral.hex, name: ralText(ral.name) });
+  }, [ral?.hex, ral?.name]); // eslint-disable-line react-hooks/exhaustive-deps
   const result = aero(p, sel, airflow, distance, deltaT || null);
   const pr = price(p, sel, ral, settings);
   const groups = visibleGroups(p, sel);
@@ -382,6 +390,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
           </h2>
           {result && dimsValid ? (
             <>
+              {viz && p.calc.throwK > 0 && <AirflowViz p={p} sel={sel} airflow={airflow} distance={distance} kind={viz} level={result.levels.velocityAtZone} />}
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 <Metric label={t("freeArea")} value={num(result.freeArea, 4)} unit={u("area")} hint={t("freeAreaHint")} />
                 <Metric

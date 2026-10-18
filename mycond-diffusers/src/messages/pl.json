@@ -84,7 +84,8 @@
     "description": "Opis i wykonanie",
     "related": "Inne z kategorii „{category}”",
     "zoom": "Powiększ zdjęcie",
-    "photo": "Zdjęcie {n}"
+    "photo": "Zdjęcie {n}",
+    "colorPreview": "Podgląd: {name}"
   },
   "configurator": {
     "levelGood": "dobrze",
@@ -159,7 +160,16 @@
       "area": "m²",
       "pressure": "Pa",
       "perHour": "1/h"
-    }
+    },
+    "vizTitle": "Jak będzie poruszać się powietrze",
+    "vizZone": "Strefa przebywania",
+    "vizM": "m",
+    "vizAtZone": "{v} przy ludziach",
+    "vizCeiling": "Sufit {h} m",
+    "vizDistance": "{d} m do ludzi",
+    "vizLegend": "Prędkość, m/s:",
+    "vizThrow": "Strumień zwalnia do {v} m/s na {l} m",
+    "vizNote": "Schemat orientacyjny, prędkości z obliczeń"
   },
   "details": {
     "size": "Rozmiar",

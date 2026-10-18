@@ -84,7 +84,8 @@
     "description": "Опис та виготовлення",
     "related": "Інші з категорії «{category}»",
     "zoom": "Збільшити фото",
-    "photo": "Фото {n}"
+    "photo": "Фото {n}",
+    "colorPreview": "Попередній перегляд: {name}"
   },
   "configurator": {
     "levelGood": "добре",
@@ -159,7 +160,16 @@
       "area": "м²",
       "pressure": "Па",
       "perHour": "1/год"
-    }
+    },
+    "vizTitle": "Як рухатиметься повітря",
+    "vizZone": "Робоча зона",
+    "vizM": "м",
+    "vizAtZone": "{v} біля людей",
+    "vizCeiling": "Стеля {h} м",
+    "vizDistance": "{d} м до людей",
+    "vizLegend": "Швидкість, м/с:",
+    "vizThrow": "Струмінь сповільнюється до {v} м/с за {l} м",
+    "vizNote": "Схема орієнтовна, швидкості — з розрахунку"
   },
   "details": {
     "size": "Розмір",

@@ -136,6 +136,27 @@ export function coefs(p: ProductData, sel: Selection) {
  *  компактний струмінь: vx = K·v0·√A0 / x,   ΔTx = n·ΔT0·√A0 / x
  *  плаский (щілинний):  vx = K·v0·√(b / x),  ΔTx = n·ΔT0·√(b / x),  b — ефективна ширина однієї щілини
  */
+/**
+ * Профіль струменя: швидкість на відстані x уздовж струменя — та сама модель, що й в aero().
+ * throwTo(v) — довжина струменя, на якій швидкість падає до v (далекобійність L_v).
+ */
+export function jet(p: ProductData, sel: Selection, airflow: number, size?: SizeRow) {
+  if (p.calc.enabled === false) return null;
+  const a = freeArea(p, sel, size);
+  if (!(a > 0) || !(airflow > 0)) return null;
+  const k = coefs(p, sel);
+  const v0 = airflow / 3600 / a;
+  const plane = p.mode === "slot" && p.calc.jet !== "compact";
+  // для плаского струменя — ширина однієї щілини, м
+  const b = plane ? a / (nSlots(sel) * ((sel.length ?? 0) / 1000)) : 0;
+  const at = (x: number) => {
+    const d = Math.max(x, 0.1);
+    return Math.min(v0, k.throwK * v0 * (plane ? Math.sqrt(b / d) : Math.sqrt(a) / d));
+  };
+  const throwTo = (v: number) => (k.throwK > 0 && v > 0 ? (plane ? b * ((k.throwK * v0) / v) ** 2 : (k.throwK * v0 * Math.sqrt(a)) / v) : 0);
+  return { v0, plane, at, throwTo };
+}
+
 export function aero(
   p: ProductData,
   sel: Selection,

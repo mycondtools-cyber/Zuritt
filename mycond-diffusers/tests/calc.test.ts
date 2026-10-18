@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { aero, freeArea, price, recommendSize, recommendSlotLength, specString } from "@/lib/calc";
+import { aero, freeArea, jet, price, recommendSize, recommendSlotLength, specString } from "@/lib/calc";
+import { product } from "./helpers";
 import type { ProductData, Selection } from "@/lib/types";
 
 const square: ProductData = {
@@ -89,5 +90,26 @@ describe("price", () => {
   });
   it("builds spec string", () => {
     expect(specString(square, sel({ sizeLabel: "400x400", ralName: "RAL 9005 мат" }))).toBe("PDK (RAL 9005M) 400x400");
+  });
+});
+
+
+describe("профіль струменя (схема руху повітря)", () => {
+  it("збігається зі швидкістю в робочій зоні з aero() і спадає з відстанню", () => {
+    const cases: [string, Partial<Selection>][] = [
+      ["pdk", { sizeLabel: "300x300" }],
+      ["sd", { length: 1000, options: { nslots: "2" } }],
+      ["1-r-25-35", { width: 400, height: 200 }],
+    ];
+    for (const [slug, sel] of cases) {
+      const p = product(slug);
+      const s: Selection = { ralName: "", quantity: 1, options: {}, ...sel };
+      const j = jet(p, s, 300)!;
+      expect(j.at(2)).toBeCloseTo(aero(p, s, 300, 2, null)!.velocityAtZone, 10);
+      expect(j.at(4)).toBeLessThan(j.at(2));
+      // далекобійність до 0,25 м/с — саме там швидкість 0,25
+      const l = j.throwTo(0.25);
+      if (l > 0.1) expect(j.at(l)).toBeCloseTo(Math.min(0.25, j.v0), 6);
+    }
   });
 });
