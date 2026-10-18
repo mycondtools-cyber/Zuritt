@@ -8,10 +8,10 @@ import { Markdown } from "@/components/markdown";
 import { MODES, MOUNTING, SHAPES } from "@/lib/products";
 import type { Choice, OptionGroup, SizeRow } from "@/lib/types";
 
-const CALC_FIELDS: [keyof ProductInput["calc"], string, string][] = [
+const CALC_FIELDS: ["areaCoef" | "zeta" | "throwK" | "tempK" | "slotWidthMm", string, string][] = [
   ["areaCoef", "Коеф. живого перерізу", "Частка габаритної площі, через яку проходить повітря (0,1–0,7). Використовується, якщо в розмірі не вказано живий переріз."],
   ["zeta", "ζ — опір", "Коефіцієнт місцевого опору: dP = ζ·ρ·v²/2. Типово 2–4 для дифузорів, ~1 для сопел."],
-  ["throwK", "K — далекобійність", "Згасання швидкості струменя: vx = K·v0·√A / x. Стельові 1,5–2,5, вихрові ~1, сопла 6–9."],
+  ["throwK", "K — далекобійність", "Згасання швидкості струменя: vx = K·v0·√A / x (для щілинних — плаский струмінь vx = K·v0·√(b/x))."],
   ["tempK", "n — температура", "Згасання різниці температур: зазвичай ≈ 0,7–0,8·K."],
   ["slotWidthMm", "Ширина щілини, мм", "Для щілинних, якщо ширина не обирається в опціях."],
 ];
@@ -431,7 +431,11 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
         </div>
       </Section>
 
-      <Section title="Коефіцієнти розрахунку" hint="Впливають на швидкість, тиск і рекомендацію розміру. Беруться з технічного каталогу виробника; стартові значення — типові довідкові.">
+      <Section title="Коефіцієнти розрахунку" hint="Впливають на швидкість, тиск і рекомендацію розміру. Відкалібровані за програмою підбору виробника.">
+        <label className="mb-3 flex items-center gap-2 text-sm font-semibold">
+          <input type="checkbox" checked={p.calc.enabled !== false} onChange={(e) => set("calc", { ...p.calc, enabled: e.target.checked ? undefined : false })} />
+          Показувати розрахунок на сайті
+        </label>
         <div className="grid gap-3 sm:grid-cols-5">
           {CALC_FIELDS.map(([k, l, h]) => (
             <Field key={k} label={l} hint={h}>
@@ -444,6 +448,62 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
             </Field>
           ))}
         </div>
+        {p.mode === "slot" && (
+          <div className="mt-4">
+            <p className="label">
+              Уточнення за кількістю щілин
+              <Hint text="Ключ «2» — для 2 щілин, «2x30» — для 2 щілин шириною 30 мм. Порожнє поле — береться загальний коефіцієнт вище." />
+            </p>
+            <table className="w-full max-w-xl text-sm">
+              <thead className="text-left text-xs text-muted">
+                <tr>
+                  <th className="font-semibold">Ключ</th>
+                  <th className="font-semibold">ζ</th>
+                  <th className="font-semibold">K</th>
+                  <th className="font-semibold">n</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(p.calc.byKey ?? {}).map(([key, v]) => {
+                  const setRow = (patch: Record<string, number | null>, newKey = key) => {
+                    const entries = Object.entries(p.calc.byKey ?? {}).map(([k, x]) => (k === key ? [newKey, { ...x, ...patch }] : [k, x]));
+                    set("calc", { ...p.calc, byKey: Object.fromEntries(entries) });
+                  };
+                  return (
+                    <tr key={key}>
+                      <td className="py-1 pr-2">
+                        <input className="input !w-24 !py-1.5 font-mono" defaultValue={key} onBlur={(e) => e.target.value !== key && setRow({}, e.target.value)} />
+                      </td>
+                      {(["zeta", "throwK", "tempK"] as const).map((f) => (
+                        <td key={f} className="py-1 pr-2">
+                          <input className="input !py-1.5" inputMode="decimal" value={numVal(v[f])} onChange={(e) => setRow({ [f]: parse(e.target.value) })} />
+                        </td>
+                      ))}
+                      <td className="py-1 text-xs">
+                        <button
+                          type="button"
+                          className="text-bad"
+                          aria-label="Видалити"
+                          onClick={() => set("calc", { ...p.calc, byKey: Object.fromEntries(Object.entries(p.calc.byKey ?? {}).filter(([k]) => k !== key)) })}
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <button
+              type="button"
+              className="mt-1 text-sm font-semibold text-brand"
+              onClick={() => set("calc", { ...p.calc, byKey: { ...(p.calc.byKey ?? {}), [String(Object.keys(p.calc.byKey ?? {}).length + 1)]: {} } })}
+            >
+              + рядок
+            </button>
+          </div>
+        )}
       </Section>
 
       <Section

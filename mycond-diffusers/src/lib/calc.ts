@@ -55,12 +55,20 @@ export function freeArea(p: ProductData, sel: Selection, size?: SizeRow): number
   return (k * nSlots(sel) * slotWidth(p, sel) * (sel.length ?? 0)) / 1e6;
 }
 
+/** Коефіцієнти з урахуванням уточнень для конкретної к-сті/ширини щілин */
+export function coefs(p: ProductData, sel: Selection) {
+  const c = p.calc;
+  const by = c.byKey ?? {};
+  const o = (p.mode === "slot" && (by[`${nSlots(sel)}x${slotWidth(p, sel)}`] ?? by[String(nSlots(sel))])) || {};
+  return { zeta: o.zeta ?? c.zeta, throwK: o.throwK ?? c.throwK, tempK: o.tempK ?? c.tempK };
+}
+
 /**
- * Орієнтовний аеродинамічний розрахунок:
- *  v0 = Q / (3600·A0)          — швидкість у живому перерізі
- *  dP = ζ·ρ·v0²/2              — втрата тиску
- *  vx = K·v0·√A0 / x           — швидкість струменя на відстані x (не більше v0)
- *  ΔTx = n·ΔT0·√A0 / x         — залишкова різниця температур у робочій зоні
+ * Аеродинамічний розрахунок (та сама модель, що й у програмі підбору виробника):
+ *  v0 = Q / (3600·A0)                 — швидкість у живому перерізі
+ *  dP = ζ·ρ·v0²/2                     — втрата тиску
+ *  компактний струмінь: vx = K·v0·√A0 / x,   ΔTx = n·ΔT0·√A0 / x
+ *  плаский (щілинний):  vx = K·v0·√(b / x),  ΔTx = n·ΔT0·√(b / x),  b — ефективна ширина однієї щілини
  */
 export function aero(
   p: ProductData,
@@ -70,13 +78,18 @@ export function aero(
   deltaT0: number | null,
   size?: SizeRow,
 ): AeroResult | null {
+  if (p.calc.enabled === false) return null;
   const a = freeArea(p, sel, size);
   if (!(a > 0) || !(airflow > 0)) return null;
+  const k = coefs(p, sel);
   const v0 = airflow / 3600 / a;
-  const dp = (p.calc.zeta * AIR_DENSITY * v0 * v0) / 2;
+  const dp = (k.zeta * AIR_DENSITY * v0 * v0) / 2;
   const x = Math.max(distance, 0.1);
-  const vx = Math.min(v0, (p.calc.throwK * v0 * Math.sqrt(a)) / x);
-  const dT = deltaT0 ? Math.min(Math.abs(deltaT0), (p.calc.tempK * Math.abs(deltaT0) * Math.sqrt(a)) / x) : null;
+  const plane = p.mode === "slot" && p.calc.jet !== "compact";
+  // для плаского струменя — ширина однієї щілини, м
+  const decay = plane ? Math.sqrt(a / (nSlots(sel) * ((sel.length ?? 0) / 1000)) / x) : Math.sqrt(a) / x;
+  const vx = Math.min(v0, k.throwK * v0 * decay);
+  const dT = deltaT0 ? Math.min(Math.abs(deltaT0), k.tempK * Math.abs(deltaT0) * decay) : null;
   return {
     freeArea: a,
     velocity: v0,
@@ -93,7 +106,7 @@ export function aero(
 
 /** Найменший типорозмір, на якому швидкість і тиск у «зеленій» зоні */
 export function recommendSize(p: ProductData, sel: Selection, airflow: number, distance: number): SizeRow | undefined {
-  if (p.mode !== "sizes") return undefined;
+  if (p.mode !== "sizes" || p.calc.enabled === false) return undefined;
   const sorted = [...p.sizes].sort((a, b) => freeArea(p, sel, a) - freeArea(p, sel, b));
   const ok = (s: SizeRow, lvl: Level[]) => {
     const r = aero(p, { ...sel, sizeLabel: s.label }, airflow, distance, null, s);

@@ -118,7 +118,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   const [quantity, setQuantity] = useState(1);
   const [airflow, setAirflow] = useState(150);
   const [distance, setDistance] = useState(2);
-  const [deltaT, setDeltaT] = useState<number>(0);
+  const [deltaT, setDeltaT] = useState<number>(10);
   const [currency, setCurrency] = useState<"uah" | "eur">("uah");
   const [room, setRoom] = useState({ open: false, area: 20, height: 2.7, changes: 2 });
   const [added, setAdded] = useState(false);
@@ -197,7 +197,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
           />
           <NumberField
             label="ΔT припливу"
-            hint="Різниця між температурою приміщення і припливного повітря (напр. кондиціонер дає +8 К холодніше). Необов’язково — 0, якщо вентиляція без нагріву/охолодження."
+            hint="Різниця між температурою приміщення і припливного повітря (напр. кондиціонер подає на 8 K холодніше). За замовчуванням 10 K, як у програмі підбору виробника; 0 — не рахувати."
             value={deltaT}
             onChange={setDeltaT}
             min={0}
@@ -254,6 +254,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                 );
               })}
             </div>
+            {p.sizes.some((s) => s.label.includes("/")) && <p className="mt-2 text-xs text-muted">Число після «/» — кількість поворотних планок.</p>}
             {sizeLabel && recommended && sizeLabel !== recommended.label && (
               <button type="button" className="mt-3 text-sm font-semibold text-brand" onClick={() => setSizeLabel(undefined)}>
                 Повернути рекомендований {recommended.label}
@@ -350,7 +351,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                 />
                 <Metric
                   label="Втрата тиску"
-                  value={num(result.pressureDrop, 0)}
+                  value={num(result.pressureDrop, result.pressureDrop < 10 ? 1 : 0)}
                   unit="Па"
                   level={result.levels.pressureDrop}
                   hint={`Скільки тиску «з’їдає» дифузор. До ${LIMITS.pressureDrop.good} Па — добре, понад ${LIMITS.pressureDrop.ok} Па — вентилятор працюватиме важче й гучніше.`}
@@ -358,14 +359,20 @@ export function Configurator({ product: p, image, colors, settings }: { product:
               </div>
               {result.deltaTAtZone !== null && (
                 <p className="mt-3 text-sm text-ink-2">
-                  Різниця температур у робочій зоні ≈ <b>{num(result.deltaTAtZone, 1)} K</b>
-                  {result.deltaTAtZone > 1.5 ? " — відчутно, краще збільшити розмір або відстань." : " — комфортно."}
+                  Різниця температур у робочій зоні ≈ <b>{num(result.deltaTAtZone, 2)} K</b>
+                  {result.deltaTAtZone > 2 ? " — відчутно, краще збільшити розмір або відстань." : " — комфортно."}
                 </p>
               )}
               <Verdict result={result} />
             </>
           ) : (
-            <p className="text-sm text-muted">{dimsValid ? "Вкажіть витрату повітря, щоб побачити розрахунок." : "Перевірте розміри — вони поза допустимим діапазоном."}</p>
+            <p className="text-sm text-muted">
+              {p.calc.enabled === false
+                ? "Для цієї моделі підбір виконує інженер за діаграмами виробника — додайте її до заявки, і ми надішлемо розрахунок."
+                : dimsValid
+                  ? "Вкажіть витрату повітря, щоб побачити розрахунок."
+                  : "Перевірте розміри — вони поза допустимим діапазоном."}
+            </p>
           )}
         </div>
 

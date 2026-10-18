@@ -25,6 +25,19 @@ const n = (v: unknown, d = 0) => {
 };
 const nOrNull = (v: unknown) => (v === null || v === undefined || v === "" ? null : n(v));
 
+function sanitizeCalc(c: CalcParams): CalcParams {
+  const out: CalcParams = { areaCoef: n(c.areaCoef), zeta: n(c.zeta), throwK: n(c.throwK), tempK: n(c.tempK) };
+  if (c.slotWidthMm) out.slotWidthMm = n(c.slotWidthMm);
+  if (c.jet === "plane" || c.jet === "compact") out.jet = c.jet;
+  if (c.enabled === false) out.enabled = false;
+  const by = Object.entries(c.byKey ?? {}).filter(([k]) => /^\d+(x\d+)?$/.test(k.trim()));
+  if (by.length)
+    out.byKey = Object.fromEntries(
+      by.map(([k, v]) => [k.trim(), Object.fromEntries(Object.entries(v).filter(([, x]) => x !== null && x !== undefined && String(x) !== "").map(([kk, x]) => [kk, n(x)]))]),
+    );
+  return out;
+}
+
 export interface ProductInput {
   id: number | null;
   slug: string;
@@ -81,7 +94,7 @@ export async function saveProduct(input: ProductInput): Promise<{ ok: true; id: 
     active: input.active,
     sort: Math.round(n(input.sort)),
     options: options as unknown as Prisma.InputJsonValue,
-    calc: Object.fromEntries(Object.entries(input.calc).map(([k, v]) => [k, n(v)])) as Prisma.InputJsonValue,
+    calc: sanitizeCalc(input.calc) as unknown as Prisma.InputJsonValue,
     pricing: Object.fromEntries(Object.entries(input.pricing).map(([k, v]) => [k, n(v)])) as Prisma.InputJsonValue,
     limits: Object.fromEntries(Object.entries(input.limits).filter(([, v]) => v !== "" && v !== null && v !== undefined).map(([k, v]) => [k, n(v)])) as Prisma.InputJsonValue,
   };

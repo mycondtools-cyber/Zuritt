@@ -29,6 +29,12 @@ export interface CalcParams {
   tempK: number;
   /** Ширина щілини за замовчуванням, мм (для щілинних) */
   slotWidthMm?: number;
+  /** Тип струменя: компактний (vx ∝ 1/x) або плоский для щілинних (vx ∝ 1/√x) */
+  jet?: "compact" | "plane";
+  /** Уточнені коефіцієнти для щілинних за ключем «к-сть щілин» або «к-сть x ширина» (напр. "2" або "2x30") */
+  byKey?: Record<string, { zeta?: number; throwK?: number; tempK?: number }>;
+  /** false — розрахунок для моделі не показується (немає даних виробника) */
+  enabled?: boolean;
 }
 
 export interface RectPricing {

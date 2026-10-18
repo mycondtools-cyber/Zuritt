@@ -1,7 +1,8 @@
 /**
  * Початкове наповнення бази: категорії, 30 дифузорів, палітра RAL, налаштування.
  * Ціни стартують з нуля («Ціна за запитом») — їх заповнюють в адмінці.
- * Повторний запуск оновлює опис/фото/опції, але НЕ чіпає вже введені ціни.
+ * Повторний запуск оновлює опис, фото, опції, коефіцієнти розрахунку, живі перерізи
+ * та терміни, але НЕ чіпає вже введені ціни.
  *   npm run db:seed
  */
 import { PrismaClient } from "@prisma/client";
@@ -38,9 +39,18 @@ async function main() {
       options: p.options,
       limits: p.limits,
     };
-    const existing = await db.product.findUnique({ where: { slug: p.slug } });
+    const existing = await db.product.findUnique({ where: { slug: p.slug }, include: { sizes: true } });
     if (existing) {
-      await db.product.update({ where: { id: existing.id }, data });
+      await db.product.update({ where: { id: existing.id }, data: { ...data, calc: p.calc, leadDays: p.leadDays } });
+      for (const s of p.sizes as Record<string, unknown>[]) {
+        const dims = { w: (s.w as number) ?? null, h: (s.h as number) ?? null, d: (s.d as number) ?? null, freeArea: (s.freeArea as number) ?? null, sort: s.sort as number };
+        const cur = existing.sizes.find((x) => x.label === s.label);
+        if (cur) await db.productSize.update({ where: { id: cur.id }, data: dims });
+        else await db.productSize.create({ data: { ...dims, label: s.label as string, price: 0, productId: existing.id } });
+      }
+      // старі розміри, яких більше немає в каталозі, прибираємо лише якщо на них ще не задано ціну
+      const labels = new Set((p.sizes as { label: string }[]).map((s) => s.label));
+      await db.productSize.deleteMany({ where: { productId: existing.id, price: { lte: 0 }, label: { notIn: [...labels] } } });
       continue;
     }
     await db.product.create({

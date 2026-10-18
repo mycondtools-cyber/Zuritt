@@ -46,9 +46,9 @@
    ],
    "calc": {
     "areaCoef": 0.33,
-    "zeta": 3.0,
-    "throwK": 1.8,
-    "tempK": 1.4
+    "zeta": 1.5,
+    "throwK": 0.944,
+    "tempK": 1.788
    },
    "pricing": {},
    "limits": {},
@@ -58,77 +58,88 @@
      "sort": 0,
      "price": 0,
      "w": 150,
-     "h": 150
+     "h": 150,
+     "freeArea": 0.0141
     },
     {
      "label": "225x225",
      "sort": 1,
      "price": 0,
      "w": 225,
-     "h": 225
+     "h": 225,
+     "freeArea": 0.0308
     },
     {
      "label": "300x300",
      "sort": 2,
      "price": 0,
      "w": 300,
-     "h": 300
+     "h": 300,
+     "freeArea": 0.0516
     },
     {
      "label": "350x350",
      "sort": 3,
      "price": 0,
      "w": 350,
-     "h": 350
+     "h": 350,
+     "freeArea": 0.0763
     },
     {
      "label": "400x400",
      "sort": 4,
      "price": 0,
      "w": 400,
-     "h": 400
+     "h": 400,
+     "freeArea": 0.0895
     },
     {
      "label": "450x450",
      "sort": 5,
      "price": 0,
      "w": 450,
-     "h": 450
+     "h": 450,
+     "freeArea": 0.1085
     },
     {
      "label": "485x485",
      "sort": 6,
      "price": 0,
      "w": 485,
-     "h": 485
+     "h": 485,
+     "freeArea": 0.1285
     },
     {
      "label": "550x550",
      "sort": 7,
      "price": 0,
      "w": 550,
-     "h": 550
+     "h": 550,
+     "freeArea": 0.1611
     },
     {
      "label": "600x600",
      "sort": 8,
      "price": 0,
      "w": 600,
-     "h": 600
+     "h": 600,
+     "freeArea": 0.1959
     },
     {
      "label": "700x700",
      "sort": 9,
      "price": 0,
      "w": 700,
-     "h": 700
+     "h": 700,
+     "freeArea": 0.2532
     },
     {
      "label": "800x800",
      "sort": 10,
      "price": 0,
      "w": 800,
-     "h": 800
+     "h": 800,
+     "freeArea": 0.3303
     }
    ],
    "options": [
@@ -185,7 +196,7 @@
     "/products/pdk/08.webp",
     "/products/pdk/09.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 8,
    "sort": 0
   },
   {
@@ -201,9 +212,9 @@
    ],
    "calc": {
     "areaCoef": 0.33,
-    "zeta": 3.0,
-    "throwK": 1.8,
-    "tempK": 1.4
+    "zeta": 1.5,
+    "throwK": 0.944,
+    "tempK": 1.788
    },
    "pricing": {},
    "limits": {},
@@ -213,77 +224,88 @@
      "sort": 0,
      "price": 0,
      "w": 150,
-     "h": 150
+     "h": 150,
+     "freeArea": 0.0141
     },
     {
      "label": "225x225",
      "sort": 1,
      "price": 0,
      "w": 225,
-     "h": 225
+     "h": 225,
+     "freeArea": 0.0308
     },
     {
      "label": "300x300",
      "sort": 2,
      "price": 0,
      "w": 300,
-     "h": 300
+     "h": 300,
+     "freeArea": 0.0516
     },
     {
      "label": "350x350",
      "sort": 3,
      "price": 0,
      "w": 350,
-     "h": 350
+     "h": 350,
+     "freeArea": 0.0763
     },
     {
      "label": "400x400",
      "sort": 4,
      "price": 0,
      "w": 400,
-     "h": 400
+     "h": 400,
+     "freeArea": 0.0895
     },
     {
      "label": "450x450",
      "sort": 5,
      "price": 0,
      "w": 450,
-     "h": 450
+     "h": 450,
+     "freeArea": 0.1085
     },
     {
      "label": "485x485",
      "sort": 6,
      "price": 0,
      "w": 485,
-     "h": 485
+     "h": 485,
+     "freeArea": 0.1285
     },
     {
      "label": "550x550",
      "sort": 7,
      "price": 0,
      "w": 550,
-     "h": 550
+     "h": 550,
+     "freeArea": 0.1611
     },
     {
      "label": "600x600",
      "sort": 8,
      "price": 0,
      "w": 600,
-     "h": 600
+     "h": 600,
+     "freeArea": 0.1959
     },
     {
      "label": "700x700",
      "sort": 9,
      "price": 0,
      "w": 700,
-     "h": 700
+     "h": 700,
+     "freeArea": 0.2532
     },
     {
      "label": "800x800",
      "sort": 10,
      "price": 0,
      "w": 800,
-     "h": 800
+     "h": 800,
+     "freeArea": 0.3303
     }
    ],
    "options": [
@@ -338,7 +360,7 @@
     "/products/pdk-r/06.webp",
     "/products/pdk-r/07.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 8,
    "sort": 1
   },
   {
@@ -354,9 +376,9 @@
    ],
    "calc": {
     "areaCoef": 0.4,
-    "zeta": 2.6,
-    "throwK": 1.5,
-    "tempK": 1.2
+    "zeta": 1.501,
+    "throwK": 0.724,
+    "tempK": 0.677
    },
    "pricing": {},
    "limits": {},
@@ -365,31 +387,36 @@
      "label": "D150",
      "sort": 0,
      "price": 0,
-     "d": 150
+     "d": 150,
+     "freeArea": 0.0101
     },
     {
      "label": "D200",
      "sort": 1,
      "price": 0,
-     "d": 200
+     "d": 200,
+     "freeArea": 0.0232
     },
     {
      "label": "D250",
      "sort": 2,
      "price": 0,
-     "d": 250
+     "d": 250,
+     "freeArea": 0.0358
     },
     {
      "label": "D300",
      "sort": 3,
      "price": 0,
-     "d": 300
+     "d": 300,
+     "freeArea": 0.051
     },
     {
      "label": "D350",
      "sort": 4,
      "price": 0,
-     "d": 350
+     "d": 350,
+     "freeArea": 0.063
     }
    ],
    "options": [],
@@ -404,7 +431,7 @@
     "/products/ncd/07.webp",
     "/products/ncd/08.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 8,
    "sort": 2
   },
   {
@@ -420,10 +447,10 @@
     "armstrong"
    ],
    "calc": {
-    "areaCoef": 0.15,
-    "zeta": 3.0,
-    "throwK": 1.2,
-    "tempK": 1.0
+    "areaCoef": 0.1111,
+    "zeta": 10.0,
+    "throwK": 0.623,
+    "tempK": 0.179
    },
    "pricing": {
     "perM2": 0,
@@ -449,7 +476,7 @@
     "/products/dcc/05.webp",
     "/products/dcc/06.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 3
   },
   {
@@ -465,10 +492,10 @@
     "armstrong"
    ],
    "calc": {
-    "areaCoef": 0.15,
-    "zeta": 3.0,
-    "throwK": 1.2,
-    "tempK": 1.0
+    "areaCoef": 0.141,
+    "zeta": 10.0,
+    "throwK": 0.623,
+    "tempK": 0.179
    },
    "pricing": {
     "perM2": 0,
@@ -492,7 +519,7 @@
     "/products/dcs/03.webp",
     "/products/dcs/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 4
   },
   {
@@ -509,113 +536,111 @@
    ],
    "calc": {
     "areaCoef": 0.12,
-    "zeta": 2.6,
-    "throwK": 1.1,
-    "tempK": 0.9
+    "zeta": 10.7,
+    "throwK": 0.375,
+    "tempK": 1.12
    },
    "pricing": {},
    "limits": {},
    "sizes": [
     {
-     "label": "250x250",
-     "sort": 0,
-     "price": 0,
+     "label": "250x250/9",
      "w": 250,
-     "h": 250
+     "h": 250,
+     "freeArea": 0.012,
+     "price": 0,
+     "sort": 0
     },
     {
-     "label": "300x300",
-     "sort": 1,
-     "price": 0,
+     "label": "300x300/16",
      "w": 300,
-     "h": 300
+     "h": 300,
+     "freeArea": 0.021,
+     "price": 0,
+     "sort": 1
     },
     {
-     "label": "350x350",
-     "sort": 2,
-     "price": 0,
+     "label": "350x350/24",
      "w": 350,
-     "h": 350
+     "h": 350,
+     "freeArea": 0.031,
+     "price": 0,
+     "sort": 2
     },
     {
-     "label": "400x400",
-     "sort": 3,
-     "price": 0,
+     "label": "400x400/32",
      "w": 400,
-     "h": 400
+     "h": 400,
+     "freeArea": 0.042,
+     "price": 0,
+     "sort": 3
     },
     {
-     "label": "450x450",
-     "sort": 4,
-     "price": 0,
+     "label": "450x450/36",
      "w": 450,
-     "h": 450
+     "h": 450,
+     "freeArea": 0.047,
+     "price": 0,
+     "sort": 4
     },
     {
-     "label": "500x500",
-     "sort": 5,
-     "price": 0,
+     "label": "500x500/48",
      "w": 500,
-     "h": 500
+     "h": 500,
+     "freeArea": 0.063,
+     "price": 0,
+     "sort": 5
     },
     {
-     "label": "550x550",
-     "sort": 6,
-     "price": 0,
+     "label": "550x550/60",
      "w": 550,
-     "h": 550
+     "h": 550,
+     "freeArea": 0.078,
+     "price": 0,
+     "sort": 6
     },
     {
-     "label": "595x595",
-     "sort": 7,
-     "price": 0,
+     "label": "595x595/60",
      "w": 595,
-     "h": 595
+     "h": 595,
+     "freeArea": 0.078,
+     "price": 0,
+     "sort": 7
     },
     {
-     "label": "600x600",
-     "sort": 8,
-     "price": 0,
+     "label": "600x600/60",
      "w": 600,
-     "h": 600
+     "h": 600,
+     "freeArea": 0.078,
+     "price": 0,
+     "sort": 8
     },
     {
-     "label": "620x620",
-     "sort": 9,
-     "price": 0,
+     "label": "620x620/64",
      "w": 620,
-     "h": 620
+     "h": 620,
+     "freeArea": 0.084,
+     "price": 0,
+     "sort": 9
     },
     {
-     "label": "700x700",
-     "sort": 10,
-     "price": 0,
+     "label": "700x700/80",
      "w": 700,
-     "h": 700
+     "h": 700,
+     "freeArea": 0.104,
+     "price": 0,
+     "sort": 10
     },
     {
-     "label": "800x800",
-     "sort": 11,
-     "price": 0,
+     "label": "800x800/100",
      "w": 800,
-     "h": 800
+     "h": 800,
+     "freeArea": 0.131,
+     "price": 0,
+     "sort": 11
     }
    ],
    "options": [
-    {
-     "key": "plank_amount",
-     "label": "Кількість планок",
-     "hint": "Кількість поворотних планок у секторі дифузора.",
-     "choices": [
-      {
-       "value": "9",
-       "label": "9",
-       "priceAdd": 0,
-       "pricePct": 0
-      }
-     ],
-     "default": "9"
-    },
     {
      "key": "plank_colour",
      "label": "Колір планок",
@@ -690,7 +715,7 @@
     "/products/dpf-1/03.webp",
     "/products/dpf-1/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 5
   },
   {
@@ -707,113 +732,111 @@
    ],
    "calc": {
     "areaCoef": 0.12,
-    "zeta": 2.6,
-    "throwK": 1.1,
-    "tempK": 0.9
+    "zeta": 10.7,
+    "throwK": 0.375,
+    "tempK": 1.12
    },
    "pricing": {},
    "limits": {},
    "sizes": [
     {
-     "label": "250x250",
-     "sort": 0,
-     "price": 0,
+     "label": "250x250/8",
      "w": 250,
-     "h": 250
+     "h": 250,
+     "freeArea": 0.0107,
+     "price": 0,
+     "sort": 0
     },
     {
-     "label": "300x300",
-     "sort": 1,
-     "price": 0,
+     "label": "300x300/15",
      "w": 300,
-     "h": 300
+     "h": 300,
+     "freeArea": 0.0196,
+     "price": 0,
+     "sort": 1
     },
     {
-     "label": "350x350",
-     "sort": 2,
-     "price": 0,
+     "label": "350x350/16",
      "w": 350,
-     "h": 350
+     "h": 350,
+     "freeArea": 0.0209,
+     "price": 0,
+     "sort": 2
     },
     {
-     "label": "400x400",
-     "sort": 3,
-     "price": 0,
+     "label": "400x400/18",
      "w": 400,
-     "h": 400
+     "h": 400,
+     "freeArea": 0.0235,
+     "price": 0,
+     "sort": 3
     },
     {
-     "label": "450x450",
-     "sort": 4,
-     "price": 0,
+     "label": "450x450/24",
      "w": 450,
-     "h": 450
+     "h": 450,
+     "freeArea": 0.0313,
+     "price": 0,
+     "sort": 4
     },
     {
-     "label": "500x500",
-     "sort": 5,
-     "price": 0,
+     "label": "500x500/38",
      "w": 500,
-     "h": 500
+     "h": 500,
+     "freeArea": 0.0496,
+     "price": 0,
+     "sort": 5
     },
     {
-     "label": "550x550",
-     "sort": 6,
-     "price": 0,
+     "label": "550x550/41",
      "w": 550,
-     "h": 550
+     "h": 550,
+     "freeArea": 0.0535,
+     "price": 0,
+     "sort": 6
     },
     {
-     "label": "595x595",
-     "sort": 7,
-     "price": 0,
+     "label": "595x595/46",
      "w": 595,
-     "h": 595
+     "h": 595,
+     "freeArea": 0.0601,
+     "price": 0,
+     "sort": 7
     },
     {
-     "label": "600x600",
-     "sort": 8,
-     "price": 0,
+     "label": "600x600/46",
      "w": 600,
-     "h": 600
+     "h": 600,
+     "freeArea": 0.0601,
+     "price": 0,
+     "sort": 8
     },
     {
-     "label": "620x620",
-     "sort": 9,
-     "price": 0,
+     "label": "620x620/49",
      "w": 620,
-     "h": 620
+     "h": 620,
+     "freeArea": 0.064,
+     "price": 0,
+     "sort": 9
     },
     {
-     "label": "700x700",
-     "sort": 10,
-     "price": 0,
+     "label": "700x700/64",
      "w": 700,
-     "h": 700
+     "h": 700,
+     "freeArea": 0.0836,
+     "price": 0,
+     "sort": 10
     },
     {
-     "label": "800x800",
-     "sort": 11,
-     "price": 0,
+     "label": "800x800/82",
      "w": 800,
-     "h": 800
+     "h": 800,
+     "freeArea": 0.1071,
+     "price": 0,
+     "sort": 11
     }
    ],
    "options": [
-    {
-     "key": "plank_amount",
-     "label": "Кількість планок",
-     "hint": "Кількість поворотних планок у секторі дифузора.",
-     "choices": [
-      {
-       "value": "8",
-       "label": "8",
-       "priceAdd": 0,
-       "pricePct": 0
-      }
-     ],
-     "default": "8"
-    },
     {
      "key": "plank_colour",
      "label": "Колір планок",
@@ -888,7 +911,7 @@
     "/products/dpf-3/03.webp",
     "/products/dpf-3/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 6
   },
   {
@@ -904,10 +927,10 @@
     "wall"
    ],
    "calc": {
-    "areaCoef": 0.12,
-    "zeta": 2.6,
-    "throwK": 1.1,
-    "tempK": 0.9
+    "areaCoef": 0.7,
+    "zeta": 1.3,
+    "throwK": 1.892,
+    "tempK": 1.676
    },
    "pricing": {
     "perM2": 0,
@@ -952,7 +975,7 @@
     "/products/rd/03.webp",
     "/products/rd/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 8,
    "sort": 7
   },
   {
@@ -969,71 +992,87 @@
    ],
    "calc": {
     "areaCoef": 0.12,
-    "zeta": 2.6,
-    "throwK": 1.1,
-    "tempK": 0.9
+    "zeta": 6.0,
+    "throwK": 2.1,
+    "tempK": 0.87
    },
    "pricing": {},
    "limits": {},
    "sizes": [
     {
-     "label": "300x300",
-     "sort": 0,
-     "price": 0,
+     "label": "300x300/8",
      "w": 300,
-     "h": 300
+     "h": 300,
+     "freeArea": 0.016,
+     "price": 0,
+     "sort": 0
     },
     {
-     "label": "400x400",
-     "sort": 1,
-     "price": 0,
+     "label": "400x400/16",
      "w": 400,
-     "h": 400
+     "h": 400,
+     "freeArea": 0.032,
+     "price": 0,
+     "sort": 1
     },
     {
-     "label": "500x500",
-     "sort": 2,
-     "price": 0,
+     "label": "500x500/24",
      "w": 500,
-     "h": 500
+     "h": 500,
+     "freeArea": 0.048,
+     "price": 0,
+     "sort": 2
     },
     {
-     "label": "595x595",
-     "sort": 3,
+     "label": "500x500/32",
+     "w": 500,
+     "h": 500,
+     "freeArea": 0.064,
      "price": 0,
+     "sort": 3
+    },
+    {
+     "label": "595x595/24",
      "w": 595,
-     "h": 595
+     "h": 595,
+     "freeArea": 0.072,
+     "price": 0,
+     "sort": 4
     },
     {
-     "label": "600x600",
-     "sort": 4,
+     "label": "595x595/48",
+     "w": 595,
+     "h": 595,
+     "freeArea": 0.096,
      "price": 0,
+     "sort": 5
+    },
+    {
+     "label": "600x600/24",
      "w": 600,
-     "h": 600
+     "h": 600,
+     "freeArea": 0.072,
+     "price": 0,
+     "sort": 6
     },
     {
-     "label": "620x620",
-     "sort": 5,
+     "label": "600x600/48",
+     "w": 600,
+     "h": 600,
+     "freeArea": 0.096,
      "price": 0,
+     "sort": 7
+    },
+    {
+     "label": "620x620/54",
      "w": 620,
-     "h": 620
+     "h": 620,
+     "freeArea": 0.108,
+     "price": 0,
+     "sort": 8
     }
    ],
    "options": [
-    {
-     "key": "plank_amount",
-     "label": "Кількість планок",
-     "hint": "Кількість поворотних планок у секторі дифузора.",
-     "choices": [
-      {
-       "value": "8",
-       "label": "8",
-       "priceAdd": 0,
-       "pricePct": 0
-      }
-     ],
-     "default": "8"
-    },
     {
      "key": "plank_colour",
      "label": "Колір планок",
@@ -1114,7 +1153,7 @@
     "/products/rda-s/09.webp",
     "/products/rda-s/10.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 8
   },
   {
@@ -1131,78 +1170,71 @@
    ],
    "calc": {
     "areaCoef": 0.12,
-    "zeta": 2.6,
-    "throwK": 1.1,
-    "tempK": 0.9
+    "zeta": 6.0,
+    "throwK": 2.1,
+    "tempK": 0.87
    },
    "pricing": {},
    "limits": {},
    "sizes": [
     {
-     "label": "300x300",
-     "sort": 0,
-     "price": 0,
+     "label": "300x300/8",
      "w": 300,
-     "h": 300
+     "h": 300,
+     "freeArea": 0.016,
+     "price": 0,
+     "sort": 0
     },
     {
-     "label": "400x400",
-     "sort": 1,
-     "price": 0,
+     "label": "400x400/16",
      "w": 400,
-     "h": 400
+     "h": 400,
+     "freeArea": 0.04,
+     "price": 0,
+     "sort": 1
     },
     {
-     "label": "500x500",
-     "sort": 2,
-     "price": 0,
+     "label": "500x500/32",
      "w": 500,
-     "h": 500
+     "h": 500,
+     "freeArea": 0.072,
+     "price": 0,
+     "sort": 2
     },
     {
-     "label": "595x595",
-     "sort": 3,
-     "price": 0,
+     "label": "595x595/48",
      "w": 595,
-     "h": 595
+     "h": 595,
+     "freeArea": 0.104,
+     "price": 0,
+     "sort": 3
     },
     {
-     "label": "600x600",
-     "sort": 4,
-     "price": 0,
+     "label": "600x600/48",
      "w": 600,
-     "h": 600
+     "h": 600,
+     "freeArea": 0.104,
+     "price": 0,
+     "sort": 4
     },
     {
-     "label": "700x700",
-     "sort": 5,
-     "price": 0,
+     "label": "700x700/60",
      "w": 700,
-     "h": 700
+     "h": 700,
+     "freeArea": 0.13,
+     "price": 0,
+     "sort": 5
     },
     {
-     "label": "800x800",
-     "sort": 6,
-     "price": 0,
+     "label": "800x800/72",
      "w": 800,
-     "h": 800
+     "h": 800,
+     "freeArea": 0.16,
+     "price": 0,
+     "sort": 6
     }
    ],
    "options": [
-    {
-     "key": "plank_amount",
-     "label": "Кількість планок",
-     "hint": "Кількість поворотних планок у секторі дифузора.",
-     "choices": [
-      {
-       "value": "8",
-       "label": "8",
-       "priceAdd": 0,
-       "pricePct": 0
-      }
-     ],
-     "default": "8"
-    },
     {
      "key": "plank_colour",
      "label": "Колір планок",
@@ -1274,7 +1306,7 @@
    "images": [
     "/products/rdc-s/01.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 9
   },
   {
@@ -1290,11 +1322,44 @@
     "wall"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -1418,7 +1483,7 @@
     "/products/sd/08.webp",
     "/products/sd/09.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 10
   },
   {
@@ -1434,11 +1499,44 @@
     "wall"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -1557,7 +1655,7 @@
     "/products/sd-d/03.webp",
     "/products/sd-d/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 11
   },
   {
@@ -1573,11 +1671,44 @@
     "wall"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -1698,7 +1829,7 @@
     "/products/sd-p/05.webp",
     "/products/sd-p/06.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 12
   },
   {
@@ -1713,11 +1844,44 @@
     "ceiling"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -1840,7 +2004,7 @@
     "/products/sda/03.webp",
     "/products/sda/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 13
   },
   {
@@ -1855,11 +2019,44 @@
     "hidden"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -1980,7 +2177,7 @@
     "/products/sdh/05.webp",
     "/products/sdh/06.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 14
   },
   {
@@ -1995,11 +2192,44 @@
     "hidden"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -2118,7 +2348,7 @@
     "/products/sdh-d/03.webp",
     "/products/sdh-d/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 15
   },
   {
@@ -2133,11 +2363,44 @@
     "hidden"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -2261,7 +2524,7 @@
     "/products/sdh-p/08.webp",
     "/products/sdh-p/09.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 16
   },
   {
@@ -2276,11 +2539,44 @@
     "hidden"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 0.375,
+    "zeta": 2.806,
+    "throwK": 2.065,
+    "tempK": 2.344,
+    "jet": "plane",
+    "slotWidthMm": 40,
+    "byKey": {
+     "1": {
+      "zeta": 4.493,
+      "throwK": 1.721,
+      "tempK": 1.905
+     },
+     "2": {
+      "zeta": 3.794,
+      "throwK": 1.816,
+      "tempK": 2.344
+     },
+     "3": {
+      "zeta": 1.703,
+      "throwK": 2.065,
+      "tempK": 1.513
+     },
+     "4": {
+      "zeta": 2.196,
+      "throwK": 2.113,
+      "tempK": 3.118
+     },
+     "5": {
+      "zeta": 2.806,
+      "throwK": 2.099,
+      "tempK": 2.852
+     },
+     "6": {
+      "zeta": 1.586,
+      "throwK": 2.19,
+      "tempK": 3.683
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -2405,7 +2701,7 @@
     "/products/sdha/05.webp",
     "/products/sdha/06.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 17
   },
   {
@@ -2420,11 +2716,24 @@
     "stretch"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 1.0,
+    "zeta": 4.314,
+    "throwK": 1.297,
+    "tempK": 1.41,
+    "jet": "plane",
+    "slotWidthMm": 20,
+    "byKey": {
+     "1x20": {
+      "zeta": 4.293,
+      "throwK": 1.297,
+      "tempK": 1.41
+     },
+     "1x30": {
+      "zeta": 5.791,
+      "throwK": 1.287,
+      "tempK": 1.551
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -2553,7 +2862,7 @@
     "/products/sdt/03.webp",
     "/products/sdt/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 18
   },
   {
@@ -2568,11 +2877,34 @@
     "hidden"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 50
+    "areaCoef": 0.5,
+    "zeta": 11.155,
+    "throwK": 1.75,
+    "tempK": 1.762,
+    "jet": "plane",
+    "slotWidthMm": 50,
+    "byKey": {
+     "1x50": {
+      "zeta": 5.812,
+      "throwK": 1.291,
+      "tempK": 1.556
+     },
+     "2x50": {
+      "zeta": 11.155,
+      "throwK": 1.75,
+      "tempK": 1.959
+     },
+     "3x50": {
+      "zeta": 14.429,
+      "throwK": 2.081,
+      "tempK": 2.236
+     },
+     "4x50": {
+      "zeta": 14.919,
+      "throwK": 3.795,
+      "tempK": 1.762
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -2699,7 +3031,7 @@
     "/products/clt/09.webp",
     "/products/clt/10.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 19
   },
   {
@@ -2715,11 +3047,29 @@
     "wall"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 1.0,
+    "zeta": 3.395,
+    "throwK": 1.187,
+    "tempK": 1.885,
+    "jet": "plane",
+    "slotWidthMm": 20,
+    "byKey": {
+     "1x20": {
+      "zeta": 3.594,
+      "throwK": 1.368,
+      "tempK": 2.04
+     },
+     "1x30": {
+      "zeta": 3.195,
+      "throwK": 1.007,
+      "tempK": 1.731
+     },
+     "1x40": {
+      "zeta": 2.709,
+      "throwK": 0.853,
+      "tempK": 1.428
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -2832,7 +3182,7 @@
     "/products/rsd/01.webp",
     "/products/rsd/02.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 20
   },
   {
@@ -2847,11 +3197,54 @@
     "hidden"
    ],
    "calc": {
-    "areaCoef": 0.6,
-    "zeta": 2.5,
-    "throwK": 2.4,
-    "tempK": 1.9,
-    "slotWidthMm": 20
+    "areaCoef": 1.0,
+    "zeta": 7.987,
+    "throwK": 1.488,
+    "tempK": 1.71,
+    "jet": "plane",
+    "slotWidthMm": 20,
+    "byKey": {
+     "1x20": {
+      "zeta": 3.894,
+      "throwK": 1.297,
+      "tempK": 1.41
+     },
+     "1x30": {
+      "zeta": 5.192,
+      "throwK": 1.287,
+      "tempK": 1.551
+     },
+     "2x20": {
+      "zeta": 6.521,
+      "throwK": 1.463,
+      "tempK": 1.71
+     },
+     "2x30": {
+      "zeta": 9.984,
+      "throwK": 1.749,
+      "tempK": 1.96
+     },
+     "3x20": {
+      "zeta": 7.987,
+      "throwK": 1.668,
+      "tempK": 1.4
+     },
+     "3x30": {
+      "zeta": 12.886,
+      "throwK": 2.073,
+      "tempK": 2.237
+     },
+     "4x20": {
+      "zeta": 8.527,
+      "throwK": 1.488,
+      "tempK": 1.72
+     },
+     "4x30": {
+      "zeta": 13.472,
+      "throwK": 3.81,
+      "tempK": 1.764
+     }
+    }
    },
    "pricing": {
     "perMeter": 0,
@@ -3006,7 +3399,7 @@
     "/products/rsdm/11.webp",
     "/products/rsdm/12.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 13,
    "sort": 21
   },
   {
@@ -3051,7 +3444,7 @@
     "/products/crl/02.webp",
     "/products/crl/03.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 8,
    "sort": 22
   },
   {
@@ -3128,7 +3521,7 @@
     "/products/pcr/06.webp",
     "/products/pcr/07.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 40,
    "sort": 23
   },
   {
@@ -3173,7 +3566,7 @@
     "/products/sqr/02.webp",
     "/products/sqr/03.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 40,
    "sort": 24
   },
   {
@@ -3191,7 +3584,8 @@
     "areaCoef": 0.3,
     "zeta": 3.2,
     "throwK": 1.5,
-    "tempK": 1.2
+    "tempK": 1.2,
+    "enabled": false
    },
    "pricing": {},
    "limits": {},
@@ -3243,7 +3637,7 @@
     "/products/drp/05.webp",
     "/products/drp/06.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 10,
    "sort": 25
   },
   {
@@ -3261,7 +3655,8 @@
     "areaCoef": 0.3,
     "zeta": 3.2,
     "throwK": 1.5,
-    "tempK": 1.2
+    "tempK": 1.2,
+    "enabled": false
    },
    "pricing": {},
    "limits": {},
@@ -3396,7 +3791,7 @@
     "/products/vdl/01.webp",
     "/products/vdl/02.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 40,
    "sort": 26
   },
   {
@@ -3414,7 +3809,8 @@
     "areaCoef": 0.3,
     "zeta": 3.2,
     "throwK": 1.5,
-    "tempK": 1.2
+    "tempK": 1.2,
+    "enabled": false
    },
    "pricing": {},
    "limits": {},
@@ -3532,7 +3928,7 @@
     "/products/dva/02.webp",
     "/products/dva/03.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 40,
    "sort": 27
   },
   {
@@ -3550,7 +3946,8 @@
     "areaCoef": 0.3,
     "zeta": 3.2,
     "throwK": 1.5,
-    "tempK": 1.2
+    "tempK": 1.2,
+    "enabled": false
    },
    "pricing": {},
    "limits": {},
@@ -3588,7 +3985,7 @@
     "/products/cde/03.webp",
     "/products/cde/04.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 10,
    "sort": 28
   },
   {
@@ -3668,7 +4065,7 @@
     "/products/jn/02.webp",
     "/products/jn/03.webp"
    ],
-   "leadDays": 5,
+   "leadDays": 10,
    "sort": 29
   }
  ],
