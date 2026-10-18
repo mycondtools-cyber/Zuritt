@@ -1,12 +1,16 @@
 "use client";
 
+import { useLocale, useMessages, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { aero, airflowByRoom, choiceAvailable, chosen, LIMITS, price, recommendSize, recommendSlotLength, specString, visibleGroups, type Level } from "@/lib/calc";
-import { eur, num, uah } from "@/lib/format";
-import type { CartItem, ProductData, RalData, Selection, ShopSettings } from "@/lib/types";
+import { detailLabels, itemDetails } from "@/lib/details";
+import { ralLabel } from "@/lib/i18n-content";
+import type { ProductData, RalData, Selection, ShopSettings } from "@/lib/types";
 import { useCart } from "./cart";
 import { Hint } from "./hint";
 import { RalPicker } from "./ral-picker";
+import { useFormat } from "./use-format";
 
 type PublicSettings = Omit<ShopSettings, "telegramBotToken" | "telegramChatId">;
 
@@ -15,7 +19,7 @@ const LEVEL_STYLE: Record<Level, string> = {
   ok: "bg-ok-soft text-ok",
   bad: "bg-bad-soft text-bad",
 };
-const LEVEL_TEXT: Record<Level, string> = { good: "добре", ok: "допустимо", bad: "забагато" };
+const LEVEL_KEY: Record<Level, "levelGood" | "levelOk" | "levelBad"> = { good: "levelGood", ok: "levelOk", bad: "levelBad" };
 
 function Step({ n, title, hint, children }: { n: number; title: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -55,6 +59,7 @@ function NumberField({
     setPrev(value);
     setRaw(String(value));
   }
+  const t = useTranslations("configurator");
   const out = (min !== undefined && value < min) || (max !== undefined && value > max);
   return (
     <label className="block">
@@ -81,8 +86,8 @@ function NumberField({
       </span>
       {(min !== undefined || max !== undefined) && (
         <span className={`mt-1 block text-xs ${out ? "text-bad" : "text-muted"}`}>
-          {min !== undefined && max !== undefined ? `від ${min} до ${max}` : ""}
-          {step ? ` · крок ${step}` : ""} {unit}
+          {min !== undefined && max !== undefined ? t("range", { min, max }) : ""}
+          {step ? ` · ${t("step", { step })}` : ""} {unit}
         </span>
       )}
     </label>
@@ -90,6 +95,7 @@ function NumberField({
 }
 
 function Metric({ label, value, unit, level, hint }: { label: string; value: string; unit: string; level?: Level; hint: string }) {
+  const t = useTranslations("configurator");
   return (
     <div className="rounded-xl border border-line p-3">
       <div className="flex items-center gap-1.5 text-xs text-muted">
@@ -99,13 +105,21 @@ function Metric({ label, value, unit, level, hint }: { label: string; value: str
         <span className="text-xl font-extrabold tabular-nums">{value}</span>
         <span className="text-xs text-muted">{unit}</span>
       </div>
-      {level && <span className={`mt-1.5 inline-block rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${LEVEL_STYLE[level]}`}>{LEVEL_TEXT[level]}</span>}
+      {level && <span className={`mt-1.5 inline-block rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${LEVEL_STYLE[level]}`}>{t(LEVEL_KEY[level])}</span>}
     </div>
   );
 }
 
 export function Configurator({ product: p, image, colors, settings }: { product: ProductData; image?: string; colors: RalData[]; settings: PublicSettings }) {
   const cart = useCart();
+  const t = useTranslations("configurator");
+  const tc = useTranslations("common");
+  const tr = useTranslations("ral");
+  const messages = useMessages();
+  const locale = useLocale();
+  const { uah, eur, num } = useFormat();
+  const ralText = (name: string) => ralLabel(name, { gloss: tr("suffixGloss"), matt: tr("suffixMatt"), chrome: tr("chrome") });
+  const u = (k: "airflow" | "velocity" | "area" | "pressure" | "perHour") => t(`units.${k}`);
   const standard = colors.find((c) => c.isStandard) ?? colors[0];
 
   const [options, setOptions] = useState<Record<string, string>>(() => Object.fromEntries(p.options.map((g) => [g.key, g.default])));
@@ -150,15 +164,8 @@ export function Configurator({ product: p, image, colors, settings }: { product:
   const money = (uahValue: number) => (currency === "uah" ? uah(uahValue) : eur(uahValue / (settings.eurRate || 1)));
 
   function addToCart() {
-    const details: CartItem["details"] = [];
-    if (p.mode === "sizes") details.push({ label: "Розмір", value: effectiveSize ?? "" });
-    if (p.mode === "rect") details.push({ label: "Розмір Ш×В", value: `${width}×${height} мм` });
-    if (p.mode === "slot") details.push({ label: "Довжина", value: `${length} мм` });
-    if (p.mode === "slot" && lim.angleMin) details.push({ label: "Кут", value: `${angle}°` });
-    for (const e of lim.extra ?? []) details.push({ label: e.label, value: `${extra[e.key]}${e.unit ? ` ${e.unit}` : ""}` });
-    for (const g of groups) details.push({ label: g.label, value: chosen(p, g, sel)?.label ?? "" });
-    details.push({ label: "Колір", value: ralName });
-    if (result) details.push({ label: "Розрахунок", value: `${airflow} м³/год · ${num(result.velocity, 1)} м/с · ${num(result.pressureDrop, 0)} Па` });
+    const calcInput = result ? { airflow, distance, deltaT: deltaT || null } : undefined;
+    const details = itemDetails(p, sel, calcInput, detailLabels(messages as unknown as Parameters<typeof detailLabels>[0]), locale, ralText);
     cart.add({
       uid: crypto.randomUUID(),
       slug: p.slug,
@@ -171,6 +178,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
       quantity,
       leadDays: pr.leadDays,
       selection: sel,
+      calc: calcInput,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2500);
@@ -181,31 +189,31 @@ export function Configurator({ product: p, image, colors, settings }: { product:
     <div className="space-y-4">
       {/* 1. Розрахунок — спочатку витрата, щоб підібрати розмір */}
       {calcOn && (
-      <Step n={n++} title="Скільки повітря подаємо?" hint="Вкажіть витрату повітря на один дифузор. Якщо не знаєте — порахуйте за площею приміщення.">
+      <Step n={n++} title={t("airTitle")} hint={t("airHint")}>
         <div className="grid gap-3 sm:grid-cols-3">
           <NumberField
-            label="Витрата повітря"
-            hint="Скільки повітря проходить через один дифузор за годину. Береться з проєкту або з розрахунку кратності."
+            label={t("airflow")}
+            hint={t("airflowHint")}
             value={airflow}
             onChange={setAirflow}
             min={10}
             max={5000}
             step={10}
-            unit="м³/год"
+            unit={u("airflow")}
           />
           <NumberField
-            label="До робочої зони"
-            hint="Відстань від дифузора до зони, де перебувають люди (зазвичай висота стелі мінус 1,8 м). Чим ближче — тим вища швидкість потоку біля людей."
+            label={t("distance")}
+            hint={t("distanceHint")}
             value={distance}
             onChange={setDistance}
             min={0.5}
             max={15}
             step={0.1}
-            unit="м"
+            unit={tc("m")}
           />
           <NumberField
-            label="ΔT припливу"
-            hint="Різниця між температурою приміщення і припливного повітря (напр. кондиціонер подає на 8 K холодніше). За замовчуванням 10 K, як у програмі підбору виробника; 0 — не рахувати."
+            label={t("deltaT")}
+            hint={t("deltaTHint")}
             value={deltaT}
             onChange={setDeltaT}
             min={0}
@@ -215,21 +223,21 @@ export function Configurator({ product: p, image, colors, settings }: { product:
           />
         </div>
         <button type="button" className="mt-3 text-sm font-semibold text-brand" onClick={() => setRoom((r) => ({ ...r, open: !r.open }))}>
-          {room.open ? "Сховати" : "Не знаю витрату — порахувати за приміщенням"}
+          {room.open ? t("roomHide") : t("roomShow")}
         </button>
         {room.open && (
           <div className="mt-3 grid gap-3 rounded-xl bg-paper p-3 sm:grid-cols-4 sm:items-end">
-            <NumberField label="Площа" value={room.area} onChange={(v) => setRoom((r) => ({ ...r, area: v }))} unit="м²" />
-            <NumberField label="Висота" value={room.height} onChange={(v) => setRoom((r) => ({ ...r, height: v }))} unit="м" />
+            <NumberField label={t("roomArea")} value={room.area} onChange={(v) => setRoom((r) => ({ ...r, area: v }))} unit={u("area")} />
+            <NumberField label={t("roomHeight")} value={room.height} onChange={(v) => setRoom((r) => ({ ...r, height: v }))} unit={tc("m")} />
             <NumberField
-              label="Кратність"
-              hint="Скільки разів на годину оновлюється повітря: житло 1–2, офіс 2–4, кухня/санвузол 5–10."
+              label={t("roomChanges")}
+              hint={t("roomChangesHint")}
               value={room.changes}
               onChange={(v) => setRoom((r) => ({ ...r, changes: v }))}
-              unit="1/год"
+              unit={u("perHour")}
             />
             <button type="button" className="btn-primary" onClick={() => setAirflow(airflowByRoom(room.area, room.height, room.changes))}>
-              = {airflowByRoom(room.area, room.height, room.changes)} м³/год
+              = {airflowByRoom(room.area, room.height, room.changes)} {u("airflow")}
             </button>
           </div>
         )}
@@ -239,8 +247,8 @@ export function Configurator({ product: p, image, colors, settings }: { product:
       {/* 2. Розмір */}
       <Step
         n={n++}
-        title={p.mode === "slot" ? "Довжина та щілини" : p.mode === "box" ? "Габарити та підключення" : "Розмір"}
-        hint={p.mode === "sizes" ? "Посадковий розмір — під отвір або повітровід. Ми позначаємо найменший розмір, що працює тихо й без протягів." : undefined}
+        title={t(p.mode === "slot" ? "sizeTitleSlot" : p.mode === "box" ? "sizeTitleBox" : "sizeTitle")}
+        hint={p.mode === "sizes" ? t("sizeHint") : undefined}
       >
         {p.mode === "sizes" && (
           <>
@@ -257,37 +265,37 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                     onClick={() => setSizeLabel(s.label)}
                   >
                     <span className="block font-bold">{s.label}</span>
-                    <span className="block text-[11px] text-muted">{r ? `${num(r.velocity, 1)} м/с` : "—"}</span>
-                    {isRec && <span className="absolute -right-1.5 -top-2 rounded-md bg-good px-1.5 py-0.5 text-[10px] font-bold text-white">радимо</span>}
+                    <span className="block text-[11px] text-muted">{r ? `${num(r.velocity, 1)} ${u("velocity")}` : "—"}</span>
+                    {isRec && <span className="absolute -right-1.5 -top-2 rounded-md bg-good px-1.5 py-0.5 text-[10px] font-bold text-white">{t("recommended")}</span>}
                   </button>
                 );
               })}
             </div>
-            {p.sizes.some((s) => s.label.includes("/")) && <p className="mt-2 text-xs text-muted">Число після «/» — кількість поворотних планок.</p>}
+            {p.sizes.some((s) => s.label.includes("/")) && <p className="mt-2 text-xs text-muted">{t("planksNote")}</p>}
             {sizeLabel && recommended && sizeLabel !== recommended.label && (
               <button type="button" className="mt-3 text-sm font-semibold text-brand" onClick={() => setSizeLabel(undefined)}>
-                Повернути рекомендований {recommended.label}
+                {t("backToRecommended", { size: recommended.label })}
               </button>
             )}
           </>
         )}
         {p.mode === "rect" && (
           <div className="grid gap-3 sm:grid-cols-2">
-            <NumberField label="Ширина L" value={width} onChange={setWidth} min={lim.wMin} max={lim.wMax} step={lim.step} unit="мм" />
-            <NumberField label="Висота H" value={height} onChange={setHeight} min={lim.hMin} max={lim.hMax} step={lim.step} unit="мм" />
+            <NumberField label={t("width")} value={width} onChange={setWidth} min={lim.wMin} max={lim.wMax} step={lim.step} unit={tc("mm")} />
+            <NumberField label={t("height")} value={height} onChange={setHeight} min={lim.hMin} max={lim.hMax} step={lim.step} unit={tc("mm")} />
           </div>
         )}
         {p.mode === "slot" && (
           <div className="grid gap-3 sm:grid-cols-2">
-            <NumberField label="Довжина" hint="Загальна довжина дифузора. Довгі лінії збираються з кількох секцій." value={length} onChange={setLength} min={lim.lMin} max={lim.lMax} step={lim.step} unit="мм" />
+            <NumberField label={t("length")} hint={t("lengthHint")} value={length} onChange={setLength} min={lim.lMin} max={lim.lMax} step={lim.step} unit={tc("mm")} />
             {lim.angleMin !== undefined && (
-              <NumberField label="Кут кутового елемента" value={angle} onChange={setAngle} min={lim.angleMin} max={lim.angleMax} step={lim.angleStep} unit="°" />
+              <NumberField label={t("angle")} value={angle} onChange={setAngle} min={lim.angleMin} max={lim.angleMax} step={lim.angleStep} unit="°" />
             )}
             {slotHint && slotHint !== length && (
               <p className="text-sm text-muted sm:col-span-2">
-                Для {airflow} м³/год з обраною кількістю щілин радимо довжину від <b>{slotHint} мм</b>.{" "}
+                {t.rich("slotAdvice", { airflow, length: slotHint, b: (c) => <b>{c}</b> })}{" "}
                 <button type="button" className="font-semibold text-brand" onClick={() => setLength(slotHint)}>
-                  Застосувати
+                  {t("apply")}
                 </button>
               </p>
             )}
@@ -314,7 +322,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
 
       {/* 3. Опції */}
       {groups.length > 0 && (
-        <Step n={n++} title="Виконання">
+        <Step n={n++} title={t("optionsTitle")}>
           <div className="space-y-4">
             {groups.map((g) => {
               const current = chosen(p, g, sel);
@@ -337,7 +345,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
                           aria-pressed={current?.value === c.value}
                           onClick={() => setOptions((o) => ({ ...o, [g.key]: c.value }))}
                           disabled={g.choices.length === 1 || !available}
-                          title={available ? undefined : "Недоступно для обраного розміру"}
+                          title={available ? undefined : t("unavailable")}
                         >
                           {c.label}
                           {delta !== 0 && current?.value !== c.value && (
@@ -358,7 +366,7 @@ export function Configurator({ product: p, image, colors, settings }: { product:
       )}
 
       {/* 4. Колір */}
-      <Step n={n++} title="Колір RAL" hint="Корпус фарбується порошковою фарбою. Стандарт — білий RAL 9016, інші кольори виготовляються під замовлення.">
+      <Step n={n++} title={t("colorTitle")} hint={t("colorHint")}>
         <RalPicker colors={colors} value={ralName} onChange={setRalName} surchargeUah={pr.onRequest ? 0 : Math.round(pr.ral)} />
       </Step>
 
@@ -367,54 +375,50 @@ export function Configurator({ product: p, image, colors, settings }: { product:
         {p.mode !== "box" && (
         <div className="p-4 sm:p-5">
           <h2 className="mb-3 flex items-center gap-2 font-bold">
-            Розрахунок
-            <Hint text="Орієнтовний розрахунок за довідковими коефіцієнтами. Для відповідальних об’єктів остаточний підбір перевіряє інженер." />
+            {t("calcTitle")}
+            <Hint text={t("calcHint")} />
           </h2>
           {result && dimsValid ? (
             <>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                <Metric label="Живий переріз" value={num(result.freeArea, 4)} unit="м²" hint="Площа, через яку реально проходить повітря (без рамки й ламелей)." />
+                <Metric label={t("freeArea")} value={num(result.freeArea, 4)} unit={u("area")} hint={t("freeAreaHint")} />
                 <Metric
-                  label="Швидкість на виході"
+                  label={t("velocity")}
                   value={num(result.velocity, 2)}
-                  unit="м/с"
+                  unit={u("velocity")}
                   level={result.levels.velocity}
-                  hint={`До ${LIMITS.velocity.good} м/с — тихо (житло, офіс), до ${LIMITS.velocity.ok} м/с — допустимо, вище — чутний шум.`}
+                  hint={t("velocityHint", LIMITS.velocity)}
                 />
                 {p.calc.throwK > 0 && (
                 <Metric
-                  label="У робочій зоні"
+                  label={t("zone")}
                   value={num(result.velocityAtZone, 2)}
-                  unit="м/с"
+                  unit={u("velocity")}
                   level={result.levels.velocityAtZone}
-                  hint={`Швидкість потоку біля людей. До ${LIMITS.velocityAtZone.good} м/с — комфортно, вище ${LIMITS.velocityAtZone.ok} м/с — відчувається протяг.`}
+                  hint={t("zoneHint", LIMITS.velocityAtZone)}
                 />
                 )}
                 {p.calc.zeta > 0 && (
                 <Metric
-                  label="Втрата тиску"
+                  label={t("pressure")}
                   value={num(result.pressureDrop, result.pressureDrop < 10 ? 1 : 0)}
-                  unit="Па"
+                  unit={u("pressure")}
                   level={result.levels.pressureDrop}
-                  hint={`Скільки тиску «з’їдає» дифузор. До ${LIMITS.pressureDrop.good} Па — добре, понад ${LIMITS.pressureDrop.ok} Па — вентилятор працюватиме важче й гучніше.`}
+                  hint={t("pressureHint", LIMITS.pressureDrop)}
                 />
                 )}
               </div>
               {result.deltaTAtZone !== null && p.calc.tempK > 0 && (
                 <p className="mt-3 text-sm text-ink-2">
-                  Різниця температур у робочій зоні ≈ <b>{num(result.deltaTAtZone, 2)} K</b>
-                  {result.deltaTAtZone > 2 ? " — відчутно, краще збільшити розмір або відстань." : " — комфортно."}
+                  {t.rich("deltaTZone", { value: num(result.deltaTAtZone, 2), b: (c) => <b>{c}</b> })}
+                  {result.deltaTAtZone > 2 ? t("deltaTBad") : t("deltaTGood")}
                 </p>
               )}
               <Verdict result={result} />
             </>
           ) : (
             <p className="text-sm text-muted">
-              {p.calc.enabled === false
-                ? "Для цієї моделі підбір виконує інженер за діаграмами виробника — додайте її до заявки, і ми надішлемо розрахунок."
-                : dimsValid
-                  ? "Вкажіть витрату повітря, щоб побачити розрахунок."
-                  : "Перевірте розміри — вони поза допустимим діапазоном."}
+              {t(p.calc.enabled === false ? "calcDisabled" : dimsValid ? "calcNeedAirflow" : "calcBadDims")}
             </p>
           )}
         </div>
@@ -422,44 +426,44 @@ export function Configurator({ product: p, image, colors, settings }: { product:
         )}
 
         <div className="border-t border-line bg-paper p-4 sm:p-5">
-          <p className="text-xs text-muted">Маркування для замовлення</p>
+          <p className="text-xs text-muted">{t("marking")}</p>
           <p className="mt-0.5 font-mono text-sm font-bold">{spec}</p>
           <div className="mt-4 flex flex-wrap items-end gap-4">
             <div>
               <div className="mb-1 flex gap-1 text-xs">
                 {(["uah", "eur"] as const).map((c) => (
                   <button key={c} type="button" className={`rounded-md px-2 py-0.5 font-semibold ${currency === c ? "bg-ink text-white" : "text-muted"}`} onClick={() => setCurrency(c)}>
-                    {c === "uah" ? "₴ грн" : "€ EUR"}
+                    {t(c === "uah" ? "currencyUah" : "currencyEur")}
                   </button>
                 ))}
               </div>
               {pr.onRequest ? (
-                <p className="text-xl font-extrabold">Ціна за запитом</p>
+                <p className="text-xl font-extrabold">{tc("priceOnRequest")}</p>
               ) : (
                 <>
                   <p className="text-2xl font-extrabold tabular-nums">{money(pr.total)}</p>
                   <p className="text-xs text-muted">
-                    {money(pr.unit)} × {quantity} шт.
-                    {pr.ral > 0 && ` · у т.ч. фарбування ${money(pr.ral * quantity)}`}
+                    {t("unitTimesQty", { unit: money(pr.unit), qty: quantity })}
+                    {pr.ral > 0 && t("ralIncluded", { value: money(pr.ral * quantity) })}
                   </p>
                 </>
               )}
-              <p className="mt-1 text-xs text-muted">Виготовлення: {pr.leadDays} роб. днів</p>
+              <p className="mt-1 text-xs text-muted">{t("leadTime", { days: pr.leadDays })}</p>
             </div>
             <div className="ml-auto flex items-end gap-2">
               <label className="w-24">
-                <span className="mb-1 block text-xs text-muted">Кількість</span>
+                <span className="mb-1 block text-xs text-muted">{t("quantity")}</span>
                 <input className="input" type="number" min={1} value={quantity} onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))} />
               </label>
               <button type="button" className="btn-primary !py-3" onClick={addToCart} disabled={!dimsValid || !extrasValid}>
-                {added ? "✓ Додано" : "Додати до заявки"}
+                {added ? t("added") : t("addToCart")}
               </button>
             </div>
           </div>
           {added && (
-            <a href="/cart" className="mt-3 block text-sm font-semibold text-brand">
-              Перейти до заявки ({cart.count}) →
-            </a>
+            <Link href="/cart" className="mt-3 block text-sm font-semibold text-brand">
+              {t("goToCart", { count: cart.count })}
+            </Link>
           )}
         </div>
       </section>
@@ -468,14 +472,15 @@ export function Configurator({ product: p, image, colors, settings }: { product:
 }
 
 function Verdict({ result }: { result: NonNullable<ReturnType<typeof aero>> }) {
+  const t = useTranslations("configurator");
   const tips: string[] = [];
-  if (result.levels.velocity === "bad") tips.push("Швидкість на виході завелика — буде шумно. Оберіть більший розмір або поставте кілька дифузорів.");
-  if (result.levels.velocityAtZone === "bad") tips.push("Біля людей буде протяг. Збільште розмір, кількість дифузорів або оберіть вихровий тип.");
-  if (result.levels.pressureDrop === "bad") tips.push("Великий опір: вентилятору знадобиться більше тиску. Збільште розмір.");
+  if (result.levels.velocity === "bad") tips.push(t("tipVelocity"));
+  if (result.levels.velocityAtZone === "bad") tips.push(t("tipZone"));
+  if (result.levels.pressureDrop === "bad") tips.push(t("tipPressure"));
   const allGood = Object.values(result.levels).every((l) => l === "good");
   return (
     <div className={`mt-3 rounded-xl p-3 text-sm ${allGood ? "bg-good-soft text-good" : tips.length ? "bg-bad-soft text-bad" : "bg-ok-soft text-ok"}`}>
-      {allGood ? "✓ Розмір підходить: тихо, без протягів і з невеликим опором." : tips.length ? tips.map((t) => <p key={t}>• {t}</p>) : "Працюватиме, але з невеликим запасом — для житлових кімнат краще розмір більше."}
+      {allGood ? t("verdictGood") : tips.length ? tips.map((x) => <p key={x}>• {x}</p>) : t("verdictOk")}
     </div>
   );
 }

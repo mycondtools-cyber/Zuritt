@@ -1,6 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Link } from "@/i18n/navigation";
 import type { CartItem } from "@/lib/types";
 
 const KEY = "diffusers-cart-v1";
@@ -82,15 +84,16 @@ export function useCart() {
 
 export function CartBadge() {
   const { count } = useCart();
+  const t = useTranslations("header");
   return (
-    <a href="/cart" className="relative inline-flex items-center gap-2 rounded-xl bg-ink px-3.5 py-2 text-sm font-semibold text-white hover:bg-brand">
+    <Link href="/cart" className="relative inline-flex items-center gap-2 rounded-xl bg-ink px-3.5 py-2 text-sm font-semibold text-white hover:bg-brand">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
         <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6" />
         <circle cx="10" cy="20" r="1.4" />
         <circle cx="17" cy="20" r="1.4" />
       </svg>
-      <span className="hidden sm:inline">Заявка</span>
+      <span className="hidden sm:inline">{t("cart")}</span>
       {count > 0 && <span className="rounded-full bg-white px-1.5 text-xs font-bold text-ink">{count}</span>}
-    </a>
+    </Link>
   );
 }

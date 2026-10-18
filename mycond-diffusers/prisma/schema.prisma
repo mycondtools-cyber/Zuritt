@@ -15,6 +15,8 @@ model Category {
   /// розділ каталогу: diffusers | grilles | anemostats | plenums
   group       String    @default("diffusers")
   sort        Int       @default(0)
+  /// переклади: { en: { name, description }, pl: {...} }
+  translations Json     @default("{}")
   products    Product[]
 }
 
@@ -41,6 +43,8 @@ model Product {
   calc        Json          @default("{}")
   /// rect: { perM2, min }; slot: { perMeter, perExtraSlotPct, minLengthMm }
   pricing     Json          @default("{}")
+  /// переклади: { en: { name, summary, description, options: { key: { label, hint, choices: { value: label } } }, extra: { key: { label, hint, unit } } }, pl: {...} }
+  translations Json         @default("{}")
   /// rect: { wMin, wMax, hMin, hMax, step }; slot: { lMin, lMax, step, angleMin?, angleMax? }
   limits      Json          @default("{}")
   sizes       ProductSize[]
@@ -95,6 +99,8 @@ model Order {
   totalUah  Float    @default(0)
   status    String   @default("new")
   note      String   @default("")
+  /// мова сайту, з якої надіслано заявку
+  locale    String   @default("uk")
 }
 
 model Media {

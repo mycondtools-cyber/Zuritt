@@ -4,7 +4,9 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { Prisma } from "@prisma/client";
 import { checkPassword, createSession, destroySession, requireAdmin } from "@/lib/auth";
+import { CONTENT_LOCALES } from "@/i18n/routing";
 import { db } from "@/lib/db";
+import type { ProductTranslation, Translations } from "@/lib/i18n-content";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
 import type { CalcParams, Choice, ExtraInput, Limits, OptionGroup, SizeRow } from "@/lib/types";
 
@@ -96,6 +98,38 @@ export interface ProductInput {
   pricing: PricingInput;
   limits: Limits;
   sizes: SizeRow[];
+  translations: Translations<ProductTranslation>;
+}
+
+const clean = (v: unknown, max = 20000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+
+/** Лише відомі мови й поля, без порожніх рядків — щоб у БД не було сміття */
+function sanitizeTranslations(t: Translations<ProductTranslation> | undefined): Translations<ProductTranslation> {
+  const out: Translations<ProductTranslation> = {};
+  for (const l of CONTENT_LOCALES) {
+    const src = t?.[l];
+    if (!src) continue;
+    const tr: ProductTranslation = {};
+    for (const k of ["name", "summary", "description"] as const) {
+      const v = clean(src[k], k === "description" ? 50000 : 500);
+      if (v) tr[k] = v;
+    }
+    const options: NonNullable<ProductTranslation["options"]> = {};
+    for (const [key, g] of Object.entries(src.options ?? {})) {
+      const choices = Object.fromEntries(Object.entries(g.choices ?? {}).map(([v, x]) => [v, clean(x, 200)]).filter(([, x]) => x));
+      const og = { ...(clean(g.label, 200) && { label: clean(g.label, 200) }), ...(clean(g.hint, 1000) && { hint: clean(g.hint, 1000) }), ...(Object.keys(choices).length && { choices }) };
+      if (Object.keys(og).length) options[key] = og;
+    }
+    if (Object.keys(options).length) tr.options = options;
+    const extra: NonNullable<ProductTranslation["extra"]> = {};
+    for (const [key, e] of Object.entries(src.extra ?? {})) {
+      const ex = { ...(clean(e.label, 200) && { label: clean(e.label, 200) }), ...(clean(e.hint, 1000) && { hint: clean(e.hint, 1000) }), ...(clean(e.unit, 20) && { unit: clean(e.unit, 20) }) };
+      if (Object.keys(ex).length) extra[key] = ex;
+    }
+    if (Object.keys(extra).length) tr.extra = extra;
+    if (Object.keys(tr).length) out[l] = tr;
+  }
+  return out;
 }
 
 export async function saveProduct(input: ProductInput): Promise<{ ok: true; id: number } | { ok: false; error: string }> {
@@ -146,6 +180,7 @@ export async function saveProduct(input: ProductInput): Promise<{ ok: true; id: 
     calc: sanitizeCalc(input.calc) as unknown as Prisma.InputJsonValue,
     pricing: sanitizePricing(input.pricing) as Prisma.InputJsonValue,
     limits: sanitizeLimits(input.limits) as unknown as Prisma.InputJsonValue,
+    translations: sanitizeTranslations(input.translations) as Prisma.InputJsonValue,
   };
   const sizes = input.sizes
     .filter((s) => s.label.trim())
@@ -184,6 +219,7 @@ export async function duplicateProduct(id: number) {
       calc: p.calc as Prisma.InputJsonValue,
       pricing: p.pricing as Prisma.InputJsonValue,
       limits: p.limits as Prisma.InputJsonValue,
+      translations: p.translations as Prisma.InputJsonValue,
       sizes: { create: sizes.map(({ id: _sid, productId: _pid, ...s }) => s) },
     },
   });
@@ -264,6 +300,11 @@ export async function saveCategory(form: FormData) {
     description: String(form.get("description") ?? "").trim(),
     sort: Math.round(n(form.get("sort"))),
     group: String(form.get("group") ?? "diffusers"),
+    translations: Object.fromEntries(
+      CONTENT_LOCALES.map((l) => [l, { name: clean(form.get(`tr_${l}_name`), 200), description: clean(form.get(`tr_${l}_description`), 2000) }])
+        .map(([l, t]) => [l, Object.fromEntries(Object.entries(t as Record<string, string>).filter(([, v]) => v))])
+        .filter(([, t]) => Object.keys(t).length),
+    ) as Prisma.InputJsonValue,
   };
   if (!data.slug || !data.name) return;
   if (id) await db.category.update({ where: { id }, data });

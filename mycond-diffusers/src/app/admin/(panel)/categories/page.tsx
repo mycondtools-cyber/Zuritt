@@ -1,4 +1,6 @@
+import { CONTENT_LOCALES, LOCALE_NAMES } from "@/i18n/routing";
 import { db } from "@/lib/db";
+import type { CategoryTranslation } from "@/lib/i18n-content";
 import { GROUPS } from "@/lib/products";
 import { deleteCategory, saveCategory } from "../../actions";
 
@@ -22,6 +24,24 @@ export default async function CategoriesPage() {
         </select>
         <input name="sort" className="input !w-20" type="number" defaultValue={c?.sort ?? 0} aria-label="Порядок" />
       </span>
+      <details className="sm:order-last sm:col-span-full">
+        <summary className="cursor-pointer text-xs font-semibold text-muted">
+          Переклади{" "}
+          {CONTENT_LOCALES.map((l) => ((c?.translations as Record<string, CategoryTranslation>)?.[l]?.name ? `✓${l.toUpperCase()} ` : `·${l.toUpperCase()} `))}
+        </summary>
+        <div className="mt-2 grid gap-2">
+          {CONTENT_LOCALES.map((l) => {
+            const t = (c?.translations as Record<string, CategoryTranslation> | undefined)?.[l];
+            return (
+              <div key={l} className="grid gap-2 sm:grid-cols-[100px_1fr_2fr] sm:items-center">
+                <span className="text-xs font-semibold">{LOCALE_NAMES[l]}</span>
+                <input name={`tr_${l}_name`} className="input" defaultValue={t?.name} placeholder={c?.name ?? "Назва"} />
+                <input name={`tr_${l}_description`} className="input" defaultValue={t?.description} placeholder={c?.description ?? "Опис"} />
+              </div>
+            );
+          })}
+        </div>
+      </details>
       <span className="flex gap-2">
         <button className="btn-primary !py-2">{c ? "Зберегти" : "Додати"}</button>
         {c && c._count.products === 0 && (

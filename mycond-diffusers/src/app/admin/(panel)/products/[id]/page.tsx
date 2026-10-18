@@ -31,6 +31,7 @@ export default async function EditProduct({ params }: { params: Promise<{ id: st
       pricing: {},
       limits: {},
       sizes: [],
+      translations: {},
     };
   } else {
     const p = await db.product.findUnique({ where: { id: Number(id) || 0 }, include: { sizes: { orderBy: { sort: "asc" } } } });
@@ -55,6 +56,7 @@ export default async function EditProduct({ params }: { params: Promise<{ id: st
       pricing: p.pricing as Record<string, number>,
       limits: p.limits as Limits,
       sizes: p.sizes.map((s) => ({ id: s.id, label: s.label, w: s.w, h: s.h, d: s.d, freeArea: s.freeArea, price: s.price, sort: s.sort })),
+      translations: (p.translations as ProductInput["translations"]) ?? {},
     };
   }
   return <ProductEditor initial={input} categories={cats.map((c) => ({ id: c.id, name: c.name }))} />;

@@ -56,6 +56,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
             )}
             {o.company && <p>{o.company}</p>}
             {o.city && <p>{o.city}</p>}
+            {o.locale !== "uk" && <p className="text-xs font-semibold text-ok">Мова сайту клієнта: {o.locale.toUpperCase()} — відповідайте цією мовою</p>}
             {o.comment && <p className="mt-2 rounded-lg bg-paper p-2">{o.comment}</p>}
             <p className="pt-2 text-xs text-muted">{o.createdAt.toLocaleString("uk-UA", { timeZone: "Europe/Kyiv" })}</p>
           </div>

@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import { deleteProduct, duplicateProduct, saveProduct, uploadImage, type ProductInput } from "@/app/admin/actions";
 import { Hint } from "@/components/hint";
 import { Markdown } from "@/components/markdown";
+import { TranslationsEditor } from "./translations-editor";
 import { MODES, MOUNTING, SHAPES } from "@/lib/products";
 import type { Choice, ExtraInput, OptionGroup, SizeRow } from "@/lib/types";
 
@@ -751,6 +752,14 @@ export function ProductEditor({ initial, categories }: { initial: ProductInput; 
         }
       >
         {preview ? <Markdown source={p.description} /> : <textarea className="input min-h-80 font-mono text-xs" value={p.description} onChange={(e) => set("description", e.target.value)} />}
+      </Section>
+
+      <Section title="Переклади" hint="Англійська, польська та інші мови сайту. Порожні поля показуються українською.">
+        <TranslationsEditor
+          base={{ name: p.name, summary: p.summary, description: p.description, options: p.options, extra: p.limits.extra ?? [] }}
+          value={p.translations}
+          onChange={(v) => set("translations", v)}
+        />
       </Section>
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white/95 backdrop-blur lg:left-[220px]">

@@ -206,4 +206,6 @@ export interface CartItem {
   quantity: number;
   leadDays: number;
   selection: Selection;
+  /** Вихідні дані розрахунку (щоб сервер міг відтворити рядок «Розрахунок») */
+  calc?: { airflow: number; distance: number; deltaT: number | null };
 }

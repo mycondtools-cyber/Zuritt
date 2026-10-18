@@ -1,8 +1,16 @@
-export const uah = (n: number) =>
-  new Intl.NumberFormat("uk-UA", { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(n) + " грн";
+import { INTL_LOCALE, type Locale } from "@/i18n/routing";
 
-export const eur = (n: number) =>
-  new Intl.NumberFormat("uk-UA", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + " €";
+const UAH_LABEL: Record<string, string> = { uk: "грн" };
 
-export const num = (n: number, d = 2) =>
-  new Intl.NumberFormat("uk-UA", { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
+/** Форматування цін і чисел для мови сайту (адмінка — українська за замовчуванням) */
+export function formatters(locale: string = "uk") {
+  const intl = INTL_LOCALE[locale as Locale] ?? "uk-UA";
+  const uahLabel = UAH_LABEL[locale] ?? "UAH";
+  return {
+    uah: (n: number) => new Intl.NumberFormat(intl, { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(n) + " " + uahLabel,
+    eur: (n: number) => new Intl.NumberFormat(intl, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + " €",
+    num: (n: number, d = 2) => new Intl.NumberFormat(intl, { minimumFractionDigits: d, maximumFractionDigits: d }).format(n),
+  };
+}
+
+export const { uah, eur, num } = formatters("uk");

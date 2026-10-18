@@ -11,6 +11,7 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:import-prices": "tsx prisma/seed.ts --prices",
+    "db:import-translations": "tsx prisma/seed.ts --translations",
     "postinstall": "prisma generate"
   },
   "prisma": {
@@ -19,6 +20,7 @@
   "dependencies": {
     "@prisma/client": "6.19.3",
     "next": "15.5.28",
+    "next-intl": "4.14.9",
     "react": "19.1.1",
     "react-dom": "19.1.1"
   },

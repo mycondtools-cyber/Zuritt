@@ -6,12 +6,24 @@
  *                                описи й фото не чіпає.
  *   npm run db:import-prices   — те саме + перезаписує ціни, доплати опцій і надбавки RAL
  *                                прайсом виробника з data/seed.json.
+ *   npm run db:import-translations — те саме + перезаписує переклади (en, pl…) товарів і категорій.
+ *
+ * Переклади без прапорця лише доповнюються: мова, якої ще немає в товарі, додається з data/seed.json,
+ * ваші правки наявних мов не чіпаються.
  */
 import { Prisma, PrismaClient } from "@prisma/client";
 import seed from "../data/seed.json";
 
 const db = new PrismaClient();
 const IMPORT_PRICES = process.argv.includes("--prices");
+const IMPORT_TRANSLATIONS = process.argv.includes("--translations");
+
+/** Додає відсутні мови з seed (або перезаписує всі з --translations) */
+function mergeTranslations(current: Prisma.JsonValue | undefined, seeded: unknown): Prisma.InputJsonValue {
+  const cur = current && typeof current === "object" && !Array.isArray(current) ? (current as Record<string, unknown>) : {};
+  const add = (seeded ?? {}) as Record<string, unknown>;
+  return (IMPORT_TRANSLATIONS ? { ...cur, ...add } : { ...add, ...cur }) as Prisma.InputJsonValue;
+}
 
 const POPULAR = ["RAL 9016", "RAL 9010", "RAL 9003", "RAL 9005", "RAL 9006", "RAL 7016", "RAL 7035", "RAL 9007"];
 
@@ -27,7 +39,9 @@ const json = (v: unknown) => v as Prisma.InputJsonValue;
 
 async function main() {
   for (const c of seed.categories) {
-    await db.category.upsert({ where: { slug: c.slug }, update: {}, create: c });
+    const cur = await db.category.findUnique({ where: { slug: c.slug } });
+    if (!cur) await db.category.create({ data: { ...c, translations: json(c.translations ?? {}) } });
+    else await db.category.update({ where: { id: cur.id }, data: { translations: mergeTranslations(cur.translations, c.translations) } });
   }
   const cats = Object.fromEntries((await db.category.findMany()).map((c) => [c.slug, c.id]));
 
@@ -55,6 +69,7 @@ async function main() {
           limits: json(p.limits),
           calc: json(p.calc),
           pricing: json(p.pricing),
+          translations: json(p.translations ?? {}),
           sizes: { create: sizes.map((s) => ({ ...dims(s), label: s.label, price: s.price ?? 0 })) },
         },
       });
@@ -68,6 +83,7 @@ async function main() {
         calc: json(p.calc),
         leadDays: p.leadDays,
         limits: json(p.limits),
+        translations: mergeTranslations(existing.translations, p.translations),
         ...(IMPORT_PRICES ? { options: json(p.options), pricing: json(p.pricing), mode: p.mode } : {}),
       },
     });
@@ -94,7 +110,8 @@ async function main() {
 
   console.log(
     `Seeded: ${seed.categories.length} categories, ${seed.products.length} products, ${await db.ralColor.count()} RAL colours` +
-      (IMPORT_PRICES ? " — ціни виробника імпортовано" : ""),
+      (IMPORT_PRICES ? " — ціни виробника імпортовано" : "") +
+      (IMPORT_TRANSLATIONS ? " — переклади імпортовано" : ""),
   );
 }
 

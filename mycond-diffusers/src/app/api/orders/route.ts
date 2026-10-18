@@ -1,25 +1,32 @@
 import { NextResponse } from "next/server";
 import { price, specString } from "@/lib/calc";
+import { routing } from "@/i18n/routing";
+import uk from "@/messages/uk.json";
 import { db } from "@/lib/db";
+import { detailLabels, itemDetails } from "@/lib/details";
 import { uah } from "@/lib/format";
 import { toProductData } from "@/lib/products";
 import { getSettings } from "@/lib/settings";
 import type { CartItem } from "@/lib/types";
 
 const str = (v: unknown, max = 500) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+/** code — ключ повідомлення cart.errors.* (клієнт показує його мовою сайту), error — текст для інших клієнтів */
+const fail = (code: keyof typeof uk.cart.errors) => NextResponse.json({ code, error: uk.cart.errors[code] }, { status: 400 });
+const num = (v: unknown, min: number, max: number) => (typeof v === "number" && Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : null);
 
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Некоректний запит" }, { status: 400 });
+    return fail("bad_request");
   }
   const name = str(body.name, 120);
   const phone = str(body.phone, 40);
-  if (!name || phone.replace(/\D/g, "").length < 9) return NextResponse.json({ error: "Вкажіть ім’я та телефон" }, { status: 400 });
+  if (!name || phone.replace(/\D/g, "").length < 9) return fail("contact");
   const rawItems = Array.isArray(body.items) ? (body.items as CartItem[]).slice(0, 100) : [];
-  if (!rawItems.length) return NextResponse.json({ error: "Заявка порожня" }, { status: 400 });
+  if (!rawItems.length) return fail("empty");
+  const locale = (routing.locales as readonly string[]).includes(String(body.locale)) ? String(body.locale) : routing.defaultLocale;
 
   const settings = await getSettings();
   const slugs = [...new Set(rawItems.map((i) => String(i.slug)))];
@@ -36,13 +43,17 @@ export async function POST(req: Request) {
     const quantity = Math.min(10000, Math.max(1, Math.floor(Number(i.quantity) || 1)));
     const sel = { ...i.selection, quantity };
     const r = price(data, sel, colors.find((c) => c.name === sel.ralName), settings);
+    const airflow = num(i.calc?.airflow, 1, 100000);
+    const distance = num(i.calc?.distance, 0.1, 100);
+    const calc = airflow && distance ? { airflow, distance, deltaT: num(i.calc?.deltaT, 0, 50) } : undefined;
     return [
       {
         slug: p.slug,
         code: p.code,
         name: p.name,
         spec: specString(data, sel),
-        details: Array.isArray(i.details) ? i.details.slice(0, 20).map((d) => ({ label: str(d.label, 80), value: str(d.value, 200) })) : [],
+        // менеджер бачить параметри українською, незалежно від мови сайту клієнта
+        details: itemDetails(data, sel, calc, detailLabels(uk), "uk"),
         quantity,
         unitPrice: r.unit,
         total: r.total,
@@ -51,7 +62,7 @@ export async function POST(req: Request) {
       },
     ];
   });
-  if (!items.length) return NextResponse.json({ error: "Товари не знайдено" }, { status: 400 });
+  if (!items.length) return fail("not_found");
   const totalUah = items.reduce((s, i) => s + i.total, 0);
 
   const order = await db.order.create({
@@ -64,12 +75,13 @@ export async function POST(req: Request) {
       comment: str(body.comment, 2000),
       items,
       totalUah,
+      locale,
     },
   });
 
   if (settings.telegramBotToken && settings.telegramChatId) {
     const text = [
-      `🆕 Заявка №${order.id}`,
+      `🆕 Заявка №${order.id}${locale !== routing.defaultLocale ? ` (${locale.toUpperCase()})` : ""}`,
       `${name}, ${phone}${order.company ? `, ${order.company}` : ""}${order.city ? `, ${order.city}` : ""}`,
       ...items.map((i) => `• ${i.spec} × ${i.quantity} — ${i.onRequest ? "за запитом" : uah(i.total)}`),
       `Разом: ${uah(totalUah)}`,

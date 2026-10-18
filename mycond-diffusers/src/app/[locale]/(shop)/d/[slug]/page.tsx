@@ -1,38 +1,45 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Configurator } from "@/components/configurator";
 import { Gallery } from "@/components/gallery";
 import { Markdown } from "@/components/markdown";
+import { Link } from "@/i18n/navigation";
 import { db } from "@/lib/db";
-import { MOUNTING, toProductData } from "@/lib/products";
+import { localizeCategory, localizeProduct } from "@/lib/i18n-content";
+import { toProductData } from "@/lib/products";
 import { getSettings, publicSettings } from "@/lib/settings";
 
-type Params = { params: Promise<{ slug: string }> };
+type Params = { params: Promise<{ slug: string; locale: string }> };
 
-async function load(slug: string) {
-  return db.product.findFirst({ where: { slug, active: true }, include: { sizes: true, category: true } });
+async function load(slug: string, locale: string) {
+  const p = await db.product.findFirst({ where: { slug, active: true }, include: { sizes: true, category: true } });
+  return p ? { ...localizeProduct(p, locale), category: localizeCategory(p.category, locale) } : null;
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const p = await load((await params).slug);
+  const { slug, locale } = await params;
+  const p = await load(slug, locale);
   return p ? { title: p.name, description: p.summary } : {};
 }
 
 export default async function ProductPage({ params }: Params) {
-  const p = await load((await params).slug);
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
+  const p = await load(slug, locale);
   if (!p) notFound();
+  const t = await getTranslations();
   const [colors, settings, related] = await Promise.all([
     db.ralColor.findMany({ orderBy: { sort: "asc" } }),
     getSettings(),
     db.product.findMany({ where: { categoryId: p.categoryId, active: true, NOT: { id: p.id } }, orderBy: { sort: "asc" }, take: 6 }),
-  ]);
+  ]).then(([c, s, r]) => [c, s, r.map((x) => localizeProduct(x, locale))] as const);
 
   return (
     <div className="py-6">
       <nav className="mb-4 text-sm text-muted">
         <Link href="/" className="hover:text-brand">
-          Каталог
+          {t("product.breadcrumb")}
         </Link>{" "}
         / <span>{p.category.name}</span>
       </nav>
@@ -47,7 +54,7 @@ export default async function ProductPage({ params }: Params) {
           <div className="mt-3 flex flex-wrap gap-1.5">
             {p.mounting.map((m) => (
               <span key={m} className="rounded-lg bg-brand-soft px-2 py-1 text-xs font-semibold text-brand">
-                {MOUNTING[m] ?? m}
+                {t.has(`mounting.${m}`) ? t(`mounting.${m}`) : m}
               </span>
             ))}
           </div>
@@ -64,7 +71,7 @@ export default async function ProductPage({ params }: Params) {
 
       {p.description && (
         <section className="card mt-8 p-5 sm:p-8">
-          <h2 className="mb-4 text-xl font-extrabold">Опис та виготовлення</h2>
+          <h2 className="mb-4 text-xl font-extrabold">{t("product.description")}</h2>
           <div className="max-w-3xl">
             <Markdown source={p.description} />
           </div>
@@ -73,7 +80,7 @@ export default async function ProductPage({ params }: Params) {
 
       {related.length > 0 && (
         <section className="mt-8">
-          <h2 className="mb-3 text-lg font-extrabold">Інші з категорії «{p.category.name}»</h2>
+          <h2 className="mb-3 text-lg font-extrabold">{t("product.related", { category: p.category.name })}</h2>
           <div className="flex gap-3 overflow-x-auto pb-2">
             {related.map((r) => (
               <Link key={r.id} href={`/d/${r.slug}`} className="card w-44 shrink-0 overflow-hidden hover:border-brand">
