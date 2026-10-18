@@ -1,10 +1,18 @@
 /**
- * Параметрична геометрія виробів (three.js). Одиниці — метри; лицьова площина — z = 0, фасад дивиться в +Z.
- * Пропорції деталей (рамки, ламелі, дифузорні конуси) — типові для серії; габарит — з обраного розміру.
+ * Параметрична геометрія виробів (three.js). Одиниці — метри.
+ *
+ * Система координат: площина стелі / стіни — z = 0, приміщення — z > 0 (фасад дивиться в +Z),
+ * повітровід і гільза — z < 0. Рамки й конуси будуються протягуванням поперечного перерізу
+ * (з радіусами й бортами) по прямокутнику з кутовим з'єднанням «на вус» або обертанням профілю.
+ *
+ * Габарит — з обраного розміру; дрібні пропорції (ширина рамки, крок ламелей, профіль конусів) — типові для серії.
+ * Коли будуть креслення / CAD виробника, уточнюються константи в цьому файлі.
  */
 import * as THREE from "three";
-import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { ModelSpec } from "./spec";
+
+export type Finish = "gloss" | "matt" | "metallic";
 
 export interface Materials {
   paint: THREE.MeshPhysicalMaterial;
@@ -14,22 +22,25 @@ export interface Materials {
 }
 
 /** Порошкова фарба: глянець / мат / металік (RAL 9006, 9007) */
-export function makeMaterials(hex: string, finish: "gloss" | "matt" | "metallic"): Materials {
-  const paint = new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color(hex),
-    roughness: finish === "matt" ? 0.68 : finish === "metallic" ? 0.38 : 0.3,
-    metalness: finish === "metallic" ? 0.75 : 0,
-    clearcoat: finish === "gloss" ? 0.5 : 0,
-    clearcoatRoughness: 0.25,
-    side: THREE.DoubleSide,
-  });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x15171a, roughness: 0.55, metalness: 0.1, side: THREE.DoubleSide });
-  const inner = new THREE.MeshStandardMaterial({ color: 0x0a0b0c, roughness: 0.9, side: THREE.DoubleSide });
-  const zinc = new THREE.MeshStandardMaterial({ color: 0xb9bec4, roughness: 0.42, metalness: 0.85, side: THREE.DoubleSide });
+export function applyFinish(m: THREE.MeshPhysicalMaterial, hex: string, finish: Finish) {
+  m.color.set(hex);
+  m.roughness = finish === "matt" ? 0.66 : finish === "metallic" ? 0.36 : 0.32;
+  m.metalness = finish === "metallic" ? 0.75 : 0;
+  m.clearcoat = finish === "gloss" ? 0.45 : 0;
+  m.clearcoatRoughness = 0.22;
+}
+
+export function makeMaterials(hex: string, finish: Finish): Materials {
+  const paint = new THREE.MeshPhysicalMaterial({ side: THREE.DoubleSide });
+  applyFinish(paint, hex, finish);
+  const dark = new THREE.MeshStandardMaterial({ color: 0x16181b, roughness: 0.5, metalness: 0.1, side: THREE.DoubleSide });
+  const inner = new THREE.MeshStandardMaterial({ color: 0x08090a, roughness: 0.95, side: THREE.DoubleSide });
+  const zinc = new THREE.MeshStandardMaterial({ color: 0xb9bec4, roughness: 0.4, metalness: 0.85, side: THREE.DoubleSide });
   return { paint, dark, inner, zinc };
 }
 
 const mm = (v: number) => v / 1000;
+type P = [number, number];
 
 function mesh(geo: THREE.BufferGeometry, mat: THREE.Material) {
   const m = new THREE.Mesh(geo, mat);
@@ -38,30 +49,108 @@ function mesh(geo: THREE.BufferGeometry, mat: THREE.Material) {
   return m;
 }
 
-/** Прямокутна рамка (кільце) з фаскою: зовнішні W×H, ширина полиці b, товщина t */
-function rectRing(W: number, H: number, b: number, t: number, bevel = 0.0012) {
-  const s = new THREE.Shape();
-  s.moveTo(-W / 2, -H / 2);
-  s.lineTo(W / 2, -H / 2);
-  s.lineTo(W / 2, H / 2);
-  s.lineTo(-W / 2, H / 2);
-  s.closePath();
-  const hole = new THREE.Path();
-  const w = W / 2 - b;
-  const h = H / 2 - b;
-  hole.moveTo(-w, -h);
-  hole.lineTo(-w, h);
-  hole.lineTo(w, h);
-  hole.lineTo(w, -h);
-  hole.closePath();
-  s.holes.push(hole);
-  const g = new THREE.ExtrudeGeometry(s, { depth: t, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 3, curveSegments: 4 });
-  g.translate(0, 0, -t);
+/** Дуга профілю: центр (cu, cz), радіус r, кути a0 → a1 (рад), n сегментів (без початкової точки) */
+function arc(cu: number, cz: number, r: number, a0: number, a1: number, n = 5): P[] {
+  const out: P[] = [];
+  for (let i = 1; i <= n; i++) {
+    const a = a0 + ((a1 - a0) * i) / n;
+    out.push([cu + r * Math.cos(a), cz + r * Math.sin(a)]);
+  }
+  return out;
+}
+
+/** Гострий кут профілю: точка дублюється, щоб нормалі не згладжувались через ребро */
+const sharp = (p: P): P[] => [p, [p[0], p[1]]];
+
+/**
+ * Протягування замкненого профілю [u, z] по прямокутнику з піврозмірами hw × hh.
+ * u — відступ від зовнішнього краю всередину, z — висота над площиною монтажу.
+ * Кути — «на вус» (як у зібраної алюмінієвої рамки), нормалі згладжені вздовж профілю.
+ */
+function rectSweep(profile: P[], hw: number, hh: number) {
+  const sides: [number, number, number, number][] = [
+    [-1, -1, 1, -1],
+    [1, -1, 1, 1],
+    [1, 1, -1, 1],
+    [-1, 1, -1, -1],
+  ];
+  const parts = sides.map(([sx, sy, ex, ey]) => {
+    const pos: number[] = [];
+    for (const [u, z] of profile) pos.push(sx * (hw - u), sy * (hh - u), z, ex * (hw - u), ey * (hh - u), z);
+    const idx: number[] = [];
+    const n = profile.length;
+    for (let i = 0; i < n; i++) {
+      const j = (i + 1) % n;
+      idx.push(2 * i, 2 * j, 2 * i + 1, 2 * i + 1, 2 * j, 2 * j + 1);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+    g.setIndex(idx);
+    g.computeVertexNormals();
+    return g;
+  });
+  return mergeGeometries(parts)!;
+}
+
+/** Тіло обертання навколо осі Z з замкненого профілю [r, z] */
+function lathe(profile: P[], segments = 112) {
+  const g = new THREE.LatheGeometry(
+    profile.map(([r, z]) => new THREE.Vector2(Math.max(0, r), z)),
+    segments,
+  );
+  g.rotateX(Math.PI / 2); // вісь обертання Y → Z
+  g.computeVertexNormals();
   return g;
 }
 
-/** Прямокутна гільза (стінки повітроводу) W×H, глибина d, від z0 назад */
-function sleeve(W: number, H: number, d: number, z0: number, mat: THREE.Material, wall = 0.0008) {
+/** Профіль [y, z], протягнутий уздовж осі X на довжину L (бруски щілинного профілю) */
+function barX(profile: P[], L: number) {
+  const s = new THREE.Shape(profile.map(([y, z]) => new THREE.Vector2(y, z)));
+  const g = new THREE.ExtrudeGeometry(s, { depth: L, bevelEnabled: false, curveSegments: 6 });
+  // (shapeX, shapeY, extrude) → (x = extrude, y = shapeX, z = shapeY)
+  g.applyMatrix4(new THREE.Matrix4().set(0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+  g.translate(-L / 2, 0, 0);
+  g.computeVertexNormals();
+  return g;
+}
+
+/** Переріз лицьової рамки: ширина полиці b, висота t, радіус зовнішнього краю r, внутрішній край — завальцований */
+function frameProfile(b: number, t: number, r = mm(2.5)): P[] {
+  const ri = Math.min(mm(1.6), t / 3);
+  return [
+    ...sharp([b - ri, 0]),
+    ...sharp([0, 0]),
+    [0, t - r],
+    ...arc(r, t - r, r, Math.PI, Math.PI / 2),
+    [b - ri * 2, t],
+    ...arc(b - ri * 2, t - ri, ri, Math.PI / 2, 0, 4),
+    [b, mm(1)],
+  ];
+}
+
+/**
+ * Переріз конуса «врівень з рамкою» (за кресленням PDK): нижній (зовнішній) край — у лицьовій площині zFace,
+ * смуга йде похило всередину й угору до внутрішнього краю на висоті zFace − rise. th — товщина металу.
+ */
+function flushConeProfile(w: number, zFace: number, rise: number, th = mm(1.2)): P[] {
+  return [...sharp([0, zFace]), ...sharp([w, zFace - rise]), ...sharp([w - th * 0.6, zFace - rise - th]), ...sharp([0, zFace - th * 1.6])];
+}
+
+/** Профіль ламелі (лінза) з хордою c і товщиною t, екструдований на довжину L уздовж X; хорда — уздовж Z */
+function blade(c: number, t: number, L: number) {
+  const s = new THREE.Shape();
+  s.moveTo(-c / 2, 0);
+  s.bezierCurveTo(-c / 4, t * 0.9, c / 4, t * 0.6, c / 2, 0);
+  s.bezierCurveTo(c / 4, -t * 0.5, -c / 4, -t * 0.6, -c / 2, 0);
+  const g = new THREE.ExtrudeGeometry(s, { depth: L, bevelEnabled: true, bevelThickness: mm(0.4), bevelSize: mm(0.3), bevelSegments: 2, curveSegments: 10 });
+  g.translate(0, 0, -L / 2);
+  g.rotateY(Math.PI / 2);
+  g.computeVertexNormals();
+  return g;
+}
+
+/** Прямокутна гільза (повітровід) W×H глибиною d, від z0 назад */
+function sleeve(W: number, H: number, d: number, mat: THREE.Material, z0 = 0, wall = mm(0.8)) {
   const g = new THREE.Group();
   const add = (w: number, h: number, x: number, y: number) => {
     const m = mesh(new THREE.BoxGeometry(w, h, d), mat);
@@ -75,57 +164,14 @@ function sleeve(W: number, H: number, d: number, z0: number, mat: THREE.Material
   return g;
 }
 
-/** Похиле квадратне кільце (конус дифузора): зовнішній піврозмір a на глибині za → внутрішній b на zb, товщина t */
-function squareCone(a: number, za: number, b: number, zb: number, t = 0.0012) {
-  const pos: number[] = [];
-  const corners = (r: number, z: number) => [
-    [-r, -r, z],
-    [r, -r, z],
-    [r, r, z],
-    [-r, r, z],
-  ];
-  const layers = [corners(a, za), corners(b, zb), corners(b, zb - t), corners(a, za - t)];
-  const quad = (p1: number[], p2: number[], p3: number[], p4: number[]) => pos.push(...p1, ...p2, ...p3, ...p1, ...p3, ...p4);
-  for (let i = 0; i < 4; i++) {
-    const j = (i + 1) % 4;
-    for (let l = 0; l < 4; l++) {
-      const L = layers[l];
-      const N = layers[(l + 1) % 4];
-      quad(L[i], L[j], N[j], N[i]);
-    }
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-  const m = mergeVertices(g, 1e-6);
-  m.computeVertexNormals();
-  // гострі ребра конуса — плоске затінення граней
-  return m.toNonIndexed();
-}
-
-/** Тіло обертання навколо осі Z з замкненого профілю [r, z] (м) */
-function lathe(profile: [number, number][], segments = 96) {
-  const pts = profile.map(([r, z]) => new THREE.Vector2(Math.max(0, r), z));
-  const g = new THREE.LatheGeometry(pts, segments);
-  g.rotateX(Math.PI / 2); // вісь обертання Y → Z
-  g.computeVertexNormals();
-  return g;
-}
-
-/** Профіль ламелі (лінза) з хордою c і товщиною t, екструдований на довжину L уздовж X */
-function blade(c: number, t: number, L: number) {
-  const s = new THREE.Shape();
-  s.moveTo(-c / 2, 0);
-  s.quadraticCurveTo(0, t, c / 2, 0);
-  s.quadraticCurveTo(0, -t, -c / 2, 0);
-  const g = new THREE.ExtrudeGeometry(s, { depth: L, bevelEnabled: false, curveSegments: 8 });
-  g.translate(0, 0, -L / 2);
-  g.rotateY(Math.PI / 2); // екструзія вздовж X; хорда — уздовж Z (глибина)
-  g.computeVertexNormals();
-  return g;
+function backPlate(W: number, H: number, z: number, mats: Materials, round = false) {
+  const m = mesh(round ? new THREE.CircleGeometry(W / 2, 64) : new THREE.PlaneGeometry(W, H), mats.inner);
+  m.position.z = z;
+  return m;
 }
 
 export interface Dims {
-  /** Габарит лицьової панелі, м */
+  /** Габарит лицьової частини, м */
   width: number;
   height: number;
   /** Номінальний (посадковий) розмір, який показують розмірні лінії, м */
@@ -135,123 +181,129 @@ export interface Dims {
   labelW: string;
   labelH?: string;
   round?: boolean;
+  /** Отвір у стелі / стіні під виріб, м (круглий — діаметр holeW) */
+  holeW: number;
+  holeH: number;
+  /** Логотип на лицьовій рамці: центр, площина, висота, м */
+  logo?: { x: number; y: number; z: number; h: number };
 }
 
 export function buildModel(spec: ModelSpec, mats: Materials): { group: THREE.Group; dims: Dims } {
   const g = new THREE.Group();
   switch (spec.kind) {
     case "square-ceiling": {
+      // за кресленням PDK-4: лицьова панель L+112, рамка 25 мм (отвір L+62) виступає зі стелі на 6 мм,
+      // нижні краї всіх конусів — у площині рамки, конуси йдуть похило вгору до горловини L+5 (25 мм у стелі), висота 48 мм
       const N = mm(spec.size);
-      const F = N + mm(70); // лицьова панель більша за посадковий розмір
+      const F = N + mm(112);
       const half = F / 2;
-      // широка пласка рамка на площині стелі (як на фото серії)
-      const rim = Math.max(mm(28), F * 0.12);
-      g.add(mesh(rectRing(F, F, rim, mm(8)), mats.paint));
-      // похилі конуси-жалюзі: широкі смуги під ~25°, кожна наступна сходинкою ближче до приміщення;
-      // між ними — тонкі щілини, з яких повітря виходить уздовж стелі
-      const a0 = half - rim + mm(2);
-      const c = Math.max(mm(16), N * 0.075);
-      const step = (a0 - c) / (spec.cones + 0.4);
-      const rise = step * 0.45; // виступ смуги від зовнішнього краю до внутрішнього
-      const shift = step * 0.28; // сходинка між сусідніми конусами
-      for (let i = 0; i < spec.cones; i++) {
+      const t = mm(6);
+      const band = mm(25);
+      g.add(mesh(rectSweep(frameProfile(band + mm(1), t, mm(2)), half, half), mats.paint));
+      const slope = Math.tan((31 * Math.PI) / 180);
+      const a0 = half - band;
+      const inner = Math.max(mm(10), N * 0.05); // центральна площадка
+      const n = spec.cones + 1; // конуси + центральний
+      const step = (a0 - inner) / n;
+      for (let i = 0; i < n; i++) {
         const a = a0 - i * step;
-        const b = a - step * 0.94;
-        const za = i * shift;
-        g.add(mesh(squareCone(a, za, b, za + rise), mats.paint));
-        // короткий вертикальний борт по зовнішньому краю — «сходинка», яку видно на фото
-        g.add(mesh(squareCone(a, za - mm(6), a, za), mats.paint));
+        // кожен наступний конус починається трохи всередині попереднього: з фасаду щілин не видно, повітря виходить між ними
+        const w = i === n - 1 ? step : step + mm(1.5);
+        g.add(mesh(rectSweep(flushConeProfile(w, t, w * slope), a, a), mats.paint));
       }
-      // центр — невелика піраміда вістрям у приміщення
-      const cb = a0 - spec.cones * step;
-      const zp = (spec.cones - 1) * shift + rise * 0.6;
-      g.add(mesh(squareCone(cb, zp, mm(0.5), zp + cb * 0.75), mats.paint));
+      // центральна площадка — у глибині, як на кресленні
+      const plate = mesh(new THREE.BoxGeometry(inner * 2, inner * 2, mm(1.2)), mats.paint);
+      plate.position.z = t - step * slope - mm(0.6);
+      g.add(plate);
       if (spec.adjustable) {
-        // регульований: поворотні пластини в отворі
-        const n = Math.max(4, Math.round((N * 0.8) / mm(32)));
-        for (let k = 0; k < n; k++) {
+        // регульований: поворотні пластини в горловині
+        const nb = Math.max(4, Math.round((N * 0.8) / mm(32)));
+        for (let k = 0; k < nb; k++) {
           const b = mesh(blade(mm(28), mm(2.4), N * 0.86), mats.paint);
           b.rotation.z = Math.PI / 2;
           b.rotation.y = 0.35;
-          b.position.set(-N * 0.4 + (k * N * 0.8) / (n - 1), 0, -mm(80));
+          b.position.set(-N * 0.4 + (k * N * 0.8) / (nb - 1), 0, -mm(30));
           g.add(b);
         }
       }
-      g.add(sleeve(N, N, mm(120), -mm(20), mats.zinc));
-      const back = mesh(new THREE.PlaneGeometry(N, N), mats.inner);
-      back.position.z = -mm(140);
-      g.add(back);
-      return { group: g, dims: { width: F, height: F, nomW: N, nomH: N, labelW: `${spec.size}`, labelH: `${spec.size}` } };
+      const neckBottom = t - mm(23);
+      g.add(sleeve(N + mm(5), N + mm(5), mm(25), mats.paint, neckBottom));
+      g.add(sleeve(N, N, mm(120), mats.zinc, neckBottom - mm(25)));
+      g.add(backPlate(N, N, neckBottom - mm(145), mats));
+      const lh = mm(9);
+      return {
+        group: g,
+        dims: { width: F, height: F, nomW: N, nomH: N, labelW: `${spec.size}`, labelH: `${spec.size}`, holeW: N + mm(62), holeH: N + mm(62), logo: { x: half - band / 2 - lh * 2.2, y: -half + band / 2, z: t, h: lh } },
+      };
     }
     case "round-ceiling": {
+      // як PDK: рамка-фланець виступає на 6 мм, конуси врівень з нею й ідуть угору до горловини
       const R = mm(spec.d) / 2;
-      const Rf = R + mm(45);
-      // зовнішній фланець і 4 концентричні конуси
-      g.add(mesh(lathe([[Rf, 0], [R + mm(4), -mm(3)], [R + mm(4), -mm(14)], [R + mm(2), -mm(14)], [R + mm(2), -mm(4)], [Rf - mm(1), mm(-1.2)]]), mats.paint));
-      // концентричні конуси: широкі похилі кільця сходинками вперед, у центрі — купол
-      const rings = 4;
-      const step = (R * 0.86) / (rings + 0.5);
-      const rise = step * 0.45;
-      const shift = step * 0.28;
-      for (let i = 0; i < rings; i++) {
-        const ro = R - i * step;
-        const ri = ro - step * 0.94;
-        const z = i * shift;
-        g.add(mesh(lathe([[ro, z - mm(6)], [ro, z], [ri, z + rise], [ri, z + rise - mm(1.4)], [ro - mm(1.4), z - mm(1)], [ro - mm(1.4), z - mm(6)]]), mats.paint));
+      const Rf = R + mm(56);
+      const t = mm(6);
+      const band = mm(25);
+      g.add(mesh(lathe(frameProfile(band + mm(1), t, mm(2)).map(([u, z]) => [Rf - u, z] as P)), mats.paint));
+      const slope = Math.tan((31 * Math.PI) / 180);
+      const r0 = Rf - band;
+      const inner = Math.max(mm(10), R * 0.1);
+      const n = 5;
+      const step = (r0 - inner) / n;
+      for (let i = 0; i < n; i++) {
+        const ro = r0 - i * step;
+        const w = i === n - 1 ? step : step + mm(1.5);
+        g.add(mesh(lathe(flushConeProfile(w, t, w * slope).map(([u, z]) => [ro - u, z] as P)), mats.paint));
       }
-      const rc = R - rings * step;
-      const zc = (rings - 1) * shift + rise * 0.6;
-      g.add(mesh(lathe([[rc, zc], [rc * 0.6, zc + rc * 0.35], [0, zc + rc * 0.45], [0, zc + rc * 0.4], [rc - mm(1.4), zc - mm(1)]]), mats.paint));
-      g.add(mesh(lathe([[R, -mm(10)], [R, -mm(110)], [R - mm(0.8), -mm(110)], [R - mm(0.8), -mm(10)]]), mats.zinc));
-      const back = mesh(new THREE.CircleGeometry(R, 64), mats.inner);
-      back.position.z = -mm(110);
-      g.add(back);
-      return { group: g, dims: { width: 2 * Rf, height: 2 * Rf, nomW: 2 * R, nomH: 2 * R, labelW: `Ø${spec.d}`, round: true } };
+      const zc = t - step * slope;
+      g.add(mesh(lathe([[inner, zc], [0, zc], [0, zc - mm(1.2)], [inner, zc - mm(1.2)]]), mats.paint));
+      g.add(mesh(lathe([[R, t - mm(23)], [R, -mm(130)], [R - mm(0.8), -mm(130)], [R - mm(0.8), t - mm(23)]]), mats.zinc));
+      g.add(backPlate(2 * R, 2 * R, -mm(130), mats, true));
+      return { group: g, dims: { width: 2 * Rf, height: 2 * Rf, nomW: 2 * R, nomH: 2 * R, labelW: `Ø${spec.d}`, round: true, holeW: 2 * (Rf - band), holeH: 0 } };
     }
     case "disc": {
       const R = mm(spec.d) / 2;
-      const Rf = R + mm(spec.d > 150 ? 32 : 24);
-      // фланець з плавним переходом у горловину
-      const flange: [number, number][] = [];
-      for (let i = 0; i <= 12; i++) {
-        const a = (i / 12) * (Math.PI / 2);
-        flange.push([R + (Rf - R) * (1 - Math.cos(a)) * 0.35 + (Rf - R) * (i / 12) * 0.65, -mm(16) * (1 - Math.sin(a))]);
+      const Rf = R + mm(spec.d > 150 ? 30 : 22);
+      // фланець з плавним переходом у горловину (верх) і товщиною металу (низ)
+      const top: P[] = [];
+      for (let i = 0; i <= 14; i++) {
+        const a = (i / 14) * (Math.PI / 2);
+        top.push([R + (Rf - R) * Math.sin(a), mm(2) + mm(5) * Math.cos(a)]);
       }
-      const outer: [number, number][] = [...flange, [Rf + mm(1), -mm(1)], [Rf, -mm(3)], ...flange.slice().reverse().map(([r, z]) => [r - mm(1.4), z - mm(2.2)] as [number, number])];
-      g.add(mesh(lathe(outer), mats.paint));
-      g.add(mesh(lathe([[R, -mm(16)], [R, -mm(60)], [R - mm(1), -mm(60)], [R - mm(1), -mm(16)]]), mats.paint));
-      // центральний диск (тарілка) на штоку, винесений перед фланцем
-      const Rd = R * (spec.exhaust ? 0.78 : 0.86);
-      const disc: [number, number][] = [[0, mm(spec.exhaust ? 6 : 10)]];
-      for (let i = 1; i <= 16; i++) {
-        const r = (Rd * i) / 16;
-        disc.push([r, mm(spec.exhaust ? 6 : 10) - (r / Rd) ** 2 * mm(spec.exhaust ? 3 : 8)]);
+      const prof: P[] = [[R - mm(1), -mm(55)], ...sharp([R, -mm(55)]), [R, mm(2)], ...top.slice(1), ...arc(Rf - mm(1.2), mm(2), mm(1.2), 0, -Math.PI / 2, 4), [Rf - mm(3), mm(0.8)], [R + mm(2), mm(1)], [R - mm(1), mm(0.5)]];
+      g.add(mesh(lathe(prof), mats.paint));
+      // центральна тарілка на штоку, винесена в приміщення
+      const Rd = R * (spec.exhaust ? 0.8 : 0.88);
+      const z0 = mm(spec.exhaust ? 10 : 15);
+      const bulge = mm(spec.exhaust ? 3 : 7);
+      const disc: P[] = [[0, z0 + bulge]];
+      for (let i = 1; i <= 18; i++) {
+        const r = (Rd * i) / 18;
+        disc.push([r, z0 + bulge * (1 - (r / Rd) ** 2)]);
       }
-      disc.push([Rd, disc[disc.length - 1][1] - mm(2)], [0, mm(spec.exhaust ? 3 : 5)]);
+      disc.push(...arc(Rd - mm(1.5), z0 - mm(0.2), mm(1.5), 0, -Math.PI / 2, 4), [Rd * 0.3, z0 - mm(4)], [0, z0 - mm(4)]);
       g.add(mesh(lathe(disc), mats.paint));
-      const stem = mesh(new THREE.CylinderGeometry(mm(3), mm(3), mm(40), 16), mats.zinc);
+      const stem = mesh(new THREE.CylinderGeometry(mm(3), mm(3), mm(60), 20), mats.zinc);
       stem.rotation.x = Math.PI / 2;
-      stem.position.z = -mm(15);
+      stem.position.z = -mm(18);
       g.add(stem);
-      const back = mesh(new THREE.CircleGeometry(R, 64), mats.inner);
-      back.position.z = -mm(60);
-      g.add(back);
-      return { group: g, dims: { width: 2 * Rf, height: 2 * Rf, nomW: 2 * R, nomH: 2 * R, labelW: `Ø${spec.d}`, round: true } };
+      g.add(backPlate(2 * R, 2 * R, -mm(55), mats, true));
+      return { group: g, dims: { width: 2 * Rf, height: 2 * Rf, nomW: 2 * R, nomH: 2 * R, labelW: `Ø${spec.d}`, round: true, holeW: 2 * R + mm(4), holeH: 0 } };
     }
     case "grille": {
       const W = mm(spec.w);
       const H = mm(spec.h);
-      const f = mm(spec.w > 600 || spec.h > 600 ? 30 : 22);
-      g.add(mesh(rectRing(W + 2 * f, H + 2 * f, f + mm(1), mm(8)), mats.paint));
-      g.add(sleeve(W, H, mm(60), -mm(1), mats.paint, mm(1)));
+      const f = mm(spec.w > 600 || spec.h > 600 ? 30 : 24);
+      const t = mm(9);
+      g.add(mesh(rectSweep(frameProfile(f + mm(2), t, mm(3)), W / 2 + f, H / 2 + f), mats.paint));
+      g.add(sleeve(W, H, mm(70), mats.paint, t - mm(1), mm(1)));
+      // ламелі врівень з лицьовою рамкою
+      const chord = mm(18);
       const p = mm(spec.pitch);
       const n = Math.max(2, Math.floor((H - mm(6)) / p));
       const y0 = -((n - 1) * p) / 2;
       for (let i = 0; i < n; i++) {
-        const b = mesh(blade(mm(18), mm(2.6), W - mm(2)), mats.paint);
+        const b = mesh(blade(chord, mm(2.6), W - mm(2)), mats.paint);
         b.rotation.x = -(spec.angle * Math.PI) / 180;
-        // ламелі врівень з лицьовою рамкою
-        b.position.set(0, y0 + i * p, -mm(9));
+        b.position.set(0, y0 + i * p, t - chord / 2 - mm(0.5));
         g.add(b);
       }
       if (spec.double) {
@@ -261,51 +313,57 @@ export function buildModel(spec: ModelSpec, mats: Materials): { group: THREE.Gro
         for (let i = 0; i < m; i++) {
           const b = mesh(blade(mm(16), mm(2.4), H - mm(2)), mats.paint);
           b.rotation.z = Math.PI / 2;
-          b.position.set(x0 + i * pv, 0, -mm(28));
+          b.position.set(x0 + i * pv, 0, t - chord - mm(12));
           g.add(b);
         }
       }
-      const back = mesh(new THREE.PlaneGeometry(W, H), mats.inner);
-      back.position.z = -mm(60);
-      g.add(back);
-      return { group: g, dims: { width: W + 2 * f, height: H + 2 * f, nomW: W, nomH: H, labelW: `${spec.w}`, labelH: `${spec.h}` } };
+      g.add(backPlate(W, H, t - mm(71), mats));
+      const lh = Math.min(mm(11), f * 0.42);
+      return {
+        group: g,
+        dims: { width: W + 2 * f, height: H + 2 * f, nomW: W, nomH: H, labelW: `${spec.w}`, labelH: `${spec.h}`, holeW: W + mm(6), holeH: H + mm(6), logo: { x: W / 2 + f / 2 - lh * 1.9, y: -H / 2 - f / 2, z: t, h: lh } },
+      };
     }
     case "slot": {
       const L = mm(spec.length);
       const sw = mm(spec.slotW);
       const div = mm(5);
-      const rail = mm(spec.hidden ? 40 : 12);
+      const rail = mm(spec.hidden ? 40 : 13);
       const Hs = spec.slots * sw + (spec.slots - 1) * div;
       const Ht = Hs + 2 * rail;
-      // бокові полиці й перегородки — алюмінієвий профіль уздовж довжини
-      const bar = (h: number, y: number, depth = mm(6)) => {
-        const m = mesh(new THREE.BoxGeometry(L, h, depth), mats.paint);
-        m.position.set(0, y, -depth / 2);
-        g.add(m);
+      const t = mm(spec.hidden ? 1.5 : 4);
+      // профіль полиці: лицьова поверхня із заокругленими кромками + стінка назад у повітровід
+      const railProfile = (y0: number, y1: number, back: number, wallAtY1: boolean): P[] => {
+        const r = Math.min(mm(1.5), t * 0.45);
+        const face: P[] = [[y0, t - r], [y0 + r, t], [y1 - r, t], [y1, t - r]];
+        const wt = mm(1.2);
+        return wallAtY1
+          ? [[y0, 0], ...face, [y1, -back], [y1 - wt, -back], [y1 - wt, 0]]
+          : [[y0, -back], ...face, [y1, 0], [y0 + wt, 0], [y0 + wt, -back]];
       };
-      bar(rail, Hs / 2 + rail / 2);
-      bar(rail, -Hs / 2 - rail / 2);
-      for (let i = 1; i < spec.slots; i++) bar(div, Hs / 2 - i * (sw + div) + div / 2, mm(30));
-      // дефлектори в кожній щілині (чорні, як у серійних SD)
+      g.add(mesh(barX(railProfile(Hs / 2, Hs / 2 + rail, mm(40), false), L), mats.paint));
+      g.add(mesh(barX(railProfile(-Hs / 2 - rail, -Hs / 2, mm(40), true), L), mats.paint));
+      for (let i = 1; i < spec.slots; i++) {
+        const y1 = Hs / 2 - i * (sw + div) + div;
+        g.add(mesh(barX(railProfile(y1 - div, y1, mm(35), true), L), mats.paint));
+      }
+      // дефлектори в кожній щілині (чорні, як у серійних SD) — одразу за лицьовою площиною
       for (let i = 0; i < spec.slots; i++) {
         const yc = Hs / 2 - sw / 2 - i * (sw + div);
-        const c = mesh(new THREE.CylinderGeometry(sw * 0.34, sw * 0.34, L - mm(4), 24, 1, false, Math.PI * 0.15, Math.PI * 1.1), mats.dark);
+        const c = mesh(new THREE.CylinderGeometry(sw * 0.34, sw * 0.34, L - mm(4), 28, 1, false, Math.PI * 0.15, Math.PI * 1.1), mats.dark);
         c.rotation.z = Math.PI / 2;
-        // дефлектор — одразу за лицьовою площиною, як у серійному профілі
-        c.position.set(0, yc, -mm(1) - sw * 0.34);
+        c.position.set(0, yc, -sw * 0.34 - mm(1));
         g.add(c);
       }
       // торцеві заглушки
       for (const x of [-L / 2, L / 2]) {
-        const e = mesh(new THREE.BoxGeometry(mm(3), Ht, mm(10)), mats.paint);
-        e.position.set(x, 0, -mm(5));
+        const e = mesh(new THREE.BoxGeometry(mm(3), Ht, t + mm(40)), mats.paint);
+        e.position.set(x, 0, t - (t + mm(40)) / 2);
         g.add(e);
       }
-      g.add(sleeve(L, Hs, mm(60), -mm(6), mats.zinc));
-      const back = mesh(new THREE.PlaneGeometry(L, Hs), mats.inner);
-      back.position.z = -mm(66);
-      g.add(back);
-      return { group: g, dims: { width: L, height: Ht, nomW: L, nomH: Ht, labelW: `L ${spec.length}` } };
+      g.add(sleeve(L, Hs, mm(80), mats.zinc, -mm(40)));
+      g.add(backPlate(L, Hs, -mm(120), mats));
+      return { group: g, dims: { width: L, height: Ht, nomW: L, nomH: Ht, labelW: `L ${spec.length}`, holeW: L - mm(2), holeH: Hs + mm(6) } };
     }
   }
 }

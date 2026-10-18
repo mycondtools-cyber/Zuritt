@@ -90,7 +90,9 @@
     "drag3d": "Przeciągnij — obrót, kółko — skala",
     "reset3d": "Resetuj widok",
     "dims3d": "Wymiary",
-    "loading3d": "Ładowanie 3D…"
+    "loading3d": "Ładowanie 3D…",
+    "mounted3d": "Zamontowany",
+    "alone3d": "Osobno"
   },
   "configurator": {
     "levelGood": "dobrze",

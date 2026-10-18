@@ -55,7 +55,8 @@ export function Gallery({ images, alt, recolor }: { images: string[]; alt: strin
             spec={model}
             hex={preview?.hex ?? "#f1f0ea"}
             finish={preview?.finish ?? "gloss"}
-            labels={{ mm: t("common.mm"), drag: t("product.drag3d"), reset: t("product.reset3d"), dims: t("product.dims3d") }}
+            surface={model.kind === "grille" ? "wall" : "ceiling"}
+            labels={{ mm: t("common.mm"), drag: t("product.drag3d"), reset: t("product.reset3d"), dims: t("product.dims3d"), mounted: t("product.mounted3d"), alone: t("product.alone3d") }}
           />
           <span className="pointer-events-none absolute left-3 top-3 rounded-lg bg-ink px-2 py-1 text-xs font-bold text-white">3D</span>
         </div>

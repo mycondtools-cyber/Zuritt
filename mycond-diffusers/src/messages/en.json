@@ -90,7 +90,9 @@
     "drag3d": "Drag to rotate, scroll to zoom",
     "reset3d": "Reset view",
     "dims3d": "Dimensions",
-    "loading3d": "Loading 3D…"
+    "loading3d": "Loading 3D…",
+    "mounted3d": "Mounted",
+    "alone3d": "Standalone"
   },
   "configurator": {
     "levelGood": "good",
