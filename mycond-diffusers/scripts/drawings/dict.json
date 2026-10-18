@@ -1,0 +1,606 @@
+{
+  "Гвинтове кріплення": {
+    "en": "",
+    "pl": "Mocowanie śrubowe"
+  },
+  "діаметр підключення": {
+    "en": "connection diameter",
+    "pl": "średnica przyłącza"
+  },
+  "вага без упаковки (НЕТТО)": {
+    "en": "weight without packaging (NET)",
+    "pl": "waga bez opakowania (NETTO)"
+  },
+  "КРУГЛИЙ ДИФУЗОР з ефектом КОАНДА": {
+    "en": "ROUND DIFFUSER with COANDA effect",
+    "pl": "OKRĄGŁY DYFUZOR z efektem COANDY"
+  },
+  "Фігурна": {
+    "en": "Decorative",
+    "pl": "Ozdobna"
+  },
+  "Центральне кріплення": {
+    "en": "",
+    "pl": "Mocowanie centralne"
+  },
+  "Гвинтове з'єднання": {
+    "en": "Screw connection",
+    "pl": "Połączenie śrubowe"
+  },
+  "Модель": {
+    "en": "Model",
+    "pl": "Model"
+  },
+  "ДИФУЗОР": {
+    "en": "DIFFUSER",
+    "pl": "DYFUZOR"
+  },
+  "Кількість рядів": {
+    "en": "Number of rows",
+    "pl": "Liczba rzędów"
+  },
+  "Кількість рядів.": {
+    "en": "Number of rows",
+    "pl": "Liczba rzędów"
+  },
+  "Кількість радів.": {
+    "en": "Number of rows",
+    "pl": "Liczba rzędów"
+  },
+  "gt Кількість рядів": {
+    "en": "Number of rows",
+    "pl": "Liczba rzędów"
+  },
+  "Витрата повітря,": {
+    "en": "Air flow,",
+    "pl": "Przepływ powietrza,"
+  },
+  "Витрата поаітрє,": {
+    "en": "Air flow,",
+    "pl": "Przepływ powietrza,"
+  },
+  "Витрата псатря,": {
+    "en": "Air flow,",
+    "pl": "Przepływ powietrza,"
+  },
+  "Витрата": {
+    "en": "Air flow",
+    "pl": "Przepływ"
+  },
+  "Витрати повітря, м'/год.": {
+    "en": "Air flow, m³/h",
+    "pl": "Przepływ powietrza, m³/h"
+  },
+  "Витрата повітря, м'/год": {
+    "en": "Air flow, m³/h",
+    "pl": "Przepływ powietrza, m³/h"
+  },
+  "Витрата повітря, м'/гоа": {
+    "en": "Air flow, m³/h",
+    "pl": "Przepływ powietrza, m³/h"
+  },
+  "Витрата гонітря, м'/год": {
+    "en": "Air flow, m³/h",
+    "pl": "Przepływ powietrza, m³/h"
+  },
+  "Витрата повітря 4, л/с /": {
+    "en": "",
+    "pl": "Przepływ powietrza q, l/s /"
+  },
+  "Перфорація/": {
+    "en": "",
+    "pl": "Perforacja /"
+  },
+  "М (длина с фланцами |": {
+    "en": "L (length with flanges)",
+    "pl": "L (długość z kołnierzami)"
+  },
+  "М (довжина з фланцями)": {
+    "en": "L (length with flanges)",
+    "pl": "L (długość z kołnierzami)"
+  },
+  "МЕТАЛЕВА РАМКА": {
+    "en": "METAL FRAME",
+    "pl": "RAMA METALOWA"
+  },
+  "Бокове кріплення": {
+    "en": "",
+    "pl": "Mocowanie boczne"
+  },
+  "Бічне кріплення": {
+    "en": "",
+    "pl": "Mocowanie boczne"
+  },
+  "ном(мм)": {
+    "en": "nom (mm)",
+    "pl": "nom (mm)"
+  },
+  "Перемичка при L чин» 500 мм": {
+    "en": "Crossbar for L > 500 mm",
+    "pl": "Poprzeczka przy L > 500 mm"
+  },
+  "Пряме підключення (ПП) AF-2R": {
+    "en": "Straight connection (SC) AF-2R",
+    "pl": "Podłączenie proste (PP) AF-2R"
+  },
+  "Верхнє підключення (ВП) AF-2R": {
+    "en": "Top connection (TC) AF-2R",
+    "pl": "Podłączenie górne (PG) AF-2R"
+  },
+  "Пряме підключення (ПП) АЕ-ТВ-У/": {
+    "en": "Straight connection (SC) AF-1R-W",
+    "pl": "Podłączenie proste (PP) AF-1R-W"
+  },
+  "Верхнє підключення (ВП) AF-1R-W": {
+    "en": "Top connection (TC) AF-1R-W",
+    "pl": "Podłączenie górne (PG) AF-1R-W"
+  },
+  "бокс АЕ-С-75": {
+    "en": "box AF-C-75",
+    "pl": "skrzynka AF-C-75"
+  },
+  "Пряме підключення (ПП) AF-2R-C": {
+    "en": "Straight connection (SC) AF-2R-C",
+    "pl": "Podłączenie proste (PP) AF-2R-C"
+  },
+  "Верхнє підключення (ВП) AF-2R-C": {
+    "en": "Top connection (TC) AF-2R-C",
+    "pl": "Podłączenie górne (PG) AF-2R-C"
+  },
+  "AF-L - кількість отворів з лівої сторони": {
+    "en": "AF-L - number of holes on the left",
+    "pl": "AF-L - liczba otworów po lewej stronie"
+  },
+  "AF-C отворів по центру | АЕ-В- кількість отворів з правої сторони": {
+    "en": "AF-C holes in the centre | AF-R - number of holes on the right",
+    "pl": "AF-C otwory na środku | AF-R - liczba otworów po prawej stronie"
+  },
+  "Пряме підключення (ПП) Fix-2R-C": {
+    "en": "Straight connection (SC) FLX-2R-C",
+    "pl": "Podłączenie proste (PP) FLX-2R-C"
+  },
+  "Верхнє підключення (ВП) Еїх-28-С": {
+    "en": "Top connection (TC) FLX-2R-C",
+    "pl": "Podłączenie górne (PG) FLX-2R-C"
+  },
+  "FIXx-L - кількість отворів з лівої сторони": {
+    "en": "FLX-L - number of holes on the left",
+    "pl": "FLX-L - liczba otworów po lewej stronie"
+  },
+  "- кількість отворів по центру | Еіх-В - кількість отворів з правої сторони": {
+    "en": "- number of holes in the centre | FLX-R - number of holes on the right",
+    "pl": "- liczba otworów na środku | FLX-R - liczba otworów po prawej stronie"
+  },
+  "Пряме підключення (MM) Flx-2R": {
+    "en": "Straight connection (SC) FLX-2R",
+    "pl": "Podłączenie proste (PP) FLX-2R"
+  },
+  "Верхнє підключення (ВП)": {
+    "en": "Top connection (TC)",
+    "pl": "Podłączenie górne (PG)"
+  },
+  "Пряме підключення (ПП) Еїх-1В-М/": {
+    "en": "Straight connection (SC) FLX-1R-W",
+    "pl": "Podłączenie proste (PP) FLX-1R-W"
+  },
+  "Верхнє підключення (ВП) Fix-IR-W": {
+    "en": "Top connection (TC) FLX-1R-W",
+    "pl": "Podłączenie górne (PG) FLX-1R-W"
+  },
+  "СОЕ ДИФУЗОР ЦИРКУЛЯЦІЙНИЙ": {
+    "en": "CDE CIRCULATION DIFFUSER",
+    "pl": "CDE DYFUZOR CYRKULACYJNY"
+  },
+  "РЕГУЛЬОВАНИЙ": {
+    "en": "ADJUSTABLE",
+    "pl": "REGULOWANY"
+  },
+  "КРУГЛИЙ ДИФУЗОР": {
+    "en": "ROUND DIFFUSER",
+    "pl": "OKRĄGŁY DYFUZOR"
+  },
+  "КВАДРАТНИЙ ДИФУЗОР": {
+    "en": "SQUARE DIFFUSER",
+    "pl": "KWADRATOWY DYFUZOR"
+  },
+  "Якщо": {
+    "en": "If",
+    "pl": "Jeśli"
+  },
+  "Якщо використовується": {
+    "en": "If used",
+    "pl": "Jeśli stosowane"
+  },
+  "Якшо використовується": {
+    "en": "If used",
+    "pl": "Jeśli stosowane"
+  },
+  "Якшо викориєтозується": {
+    "en": "If used",
+    "pl": "Jeśli stosowane"
+  },
+  "Rano використовується": {
+    "en": "If used",
+    "pl": "Jeśli stosowane"
+  },
+  "використовується": {
+    "en": "is used",
+    "pl": "stosowane"
+  },
+  "1 шар пгескартону /": {
+    "en": "1 layer of drywall /",
+    "pl": "1 warstwa płyty g-k /"
+  },
+  "1 шар гіпескартону": {
+    "en": "1 layer of drywall",
+    "pl": "1 warstwa płyty g-k"
+  },
+  "wap пілсокартону": {
+    "en": "layer of drywall",
+    "pl": "warstwa płyty g-k"
+  },
+  "2 шари": {
+    "en": "2 layers",
+    "pl": "2 warstwy"
+  },
+  "гіпсокартону": {
+    "en": "of drywall",
+    "pl": "płyty g-k"
+  },
+  "з комалекті": {
+    "en": "included",
+    "pl": "w zestawie"
+  },
+  "Шумоізоляція": {
+    "en": "",
+    "pl": "Izolacja akustyczna"
+  },
+  "Сервопривід/": {
+    "en": "",
+    "pl": "Siłownik /"
+  },
+  "Типорозмір /": {
+    "en": "",
+    "pl": "Typoszereg /"
+  },
+  "Типорозмір": {
+    "en": "Size",
+    "pl": "Typoszereg"
+  },
+  "Траверса/": {
+    "en": "",
+    "pl": "Trawers /"
+  },
+  "Розподіл повітря при охолодженні та обігріві": {
+    "en": "Air distribution in cooling and heating",
+    "pl": "Rozdział powietrza przy chłodzeniu i grzaniu"
+  },
+  "Режим обігріву": {
+    "en": "Heating mode",
+    "pl": "Tryb grzania"
+  },
+  "Режим охолодження": {
+    "en": "Cooling mode",
+    "pl": "Tryb chłodzenia"
+  },
+  "Кут установки лопаток": {
+    "en": "Blade setting angle",
+    "pl": "Kąt ustawienia łopatek"
+  },
+  "Охолодження": {
+    "en": "Cooling",
+    "pl": "Chłodzenie"
+  },
+  "Обігрів": {
+    "en": "Heating",
+    "pl": "Grzanie"
+  },
+  "Продуктивність": {
+    "en": "Performance",
+    "pl": "Wydajność"
+  },
+  "Графік показує загальні втрати тиску Pt (Па) та рівень шуму Ly (дБ(А))": {
+    "en": "The chart shows total pressure loss Pt (Pa) and sound power level Lw (dB(A))",
+    "pl": "Wykres pokazuje całkowitą stratę ciśnienia Pt (Pa) i poziom mocy akustycznej Lw (dB(A))"
+  },
+  "як функцію обемної витрати повітря q (л/с, мЗ/год).": {
+    "en": "as a function of air volume flow q (l/s, m³/h).",
+    "pl": "w funkcji objętościowego przepływu powietrza q (l/s, m³/h)."
+  },
+  "Рівень шуму у вільному просторі": {
+    "en": "Sound level in free space",
+    "pl": "Poziom hałasu w wolnej przestrzeni"
+  },
+  "На графіку наведено рівень шуму Ly.": {
+    "en": "The chart shows sound power level Lw.",
+    "pl": "Wykres pokazuje poziom mocy akustycznej Lw."
+  },
+  "Рівень шуму на відстані х (м):": {
+    "en": "Sound level at distance x (m):",
+    "pl": "Poziom hałasu w odległości x (m):"
+  },
+  "La =Lw-K, див. таблицю": {
+    "en": "Lp = Lw - K, see table",
+    "pl": "Lp = Lw - K, patrz tabela"
+  },
+  "Рівень звукової потужності Lw,": {
+    "en": "Sound power level Lw,",
+    "pl": "Poziom mocy akustycznej Lw,"
+  },
+  "Грівень звукового шуму |": {
+    "en": "Sound power level",
+    "pl": "Poziom mocy akustycznej"
+  },
+  "Зовнішні": {
+    "en": "External",
+    "pl": "Zewnętrzne"
+  },
+  "Габарити": {
+    "en": "Dimensions",
+    "pl": "Wymiary"
+  },
+  "Габарити отвору": {
+    "en": "Opening size",
+    "pl": "Wymiary otworu"
+  },
+  "габарити «А», dMM": {
+    "en": "dimensions «A», mm",
+    "pl": "wymiary «A», mm"
+  },
+  "підключення «В», dMM": {
+    "en": "connection «B», mm",
+    "pl": "przyłącze «B», mm"
+  },
+  "— ПРИТОК": {
+    "en": "— SUPPLY",
+    "pl": "— NAWIEW"
+  },
+  "Назва": {
+    "en": "Name",
+    "pl": "Nazwa"
+  },
+  "УПРАВЛІННЯ": {
+    "en": "AIRFLOW",
+    "pl": "STEROWANIE"
+  },
+  "ПОВІТРЯНИМ ПОТОКОМ": {
+    "en": "CONTROL",
+    "pl": "PRZEPŁYWEM POWIETRZA"
+  },
+  "e Регулюючи внутрішню планку можна змінювати": {
+    "en": "• Adjusting the inner blade changes",
+    "pl": "• Regulując wewnętrzną listwę można zmieniać"
+  },
+  "напрямок потоку без зміни обсягу повітря.": {
+    "en": "the flow direction without changing the air volume.",
+    "pl": "kierunek przepływu bez zmiany ilości powietrza."
+  },
+  "e Дифузори RSDM допускають зміну потоку на 60%": {
+    "en": "• RSDM diffusers allow 60% flow variation",
+    "pl": "• Dyfuzory RSDM pozwalają zmienić przepływ o 60%"
+  },
+  "зберігаючи стабільний потік повітря.": {
+    "en": "while keeping a stable air stream.",
+    "pl": "zachowując stabilny strumień powietrza."
+  },
+  "ЩІЛИННИЙ ДИФУЗОР": {
+    "en": "SLOT DIFFUSER",
+    "pl": "DYFUZOR SZCZELINOWY"
+  },
+  "-щІЛИННИЙ": {
+    "en": "-SLOT",
+    "pl": "-SZCZELINOWY"
+  },
+  "ПРИНЦИП": {
+    "en": "HOW IT",
+    "pl": "ZASADA"
+  },
+  "РОБОТИ": {
+    "en": "WORKS",
+    "pl": "DZIAŁANIA"
+  },
+  "Конструкція даної моделі складається": {
+    "en": "This model consists of",
+    "pl": "Konstrukcja tego modelu składa się"
+  },
+  "з високоякісного алюмінієвого корпусу з": {
+    "en": "a high-quality aluminium body with",
+    "pl": "z wysokiej jakości aluminiowej obudowy z"
+  },
+  "горизонтальними щілинними отворами,": {
+    "en": "horizontal slot openings,",
+    "pl": "poziomymi otworami szczelinowymi,"
+  },
+  "кількість яких, залежно від моделі,": {
+    "en": "the number of which, depending on the model,",
+    "pl": "których liczba, w zależności od modelu,"
+  },
+  "може змінюватись від 1 до": {
+    "en": "may vary from 1 to",
+    "pl": "może wynosić od 1 do"
+  },
+  "ВАРІАНТИ": {
+    "en": "VERSIONS",
+    "pl": "WARIANTY"
+  },
+  "ВИКОНАННЯ": {
+    "en": "AVAILABLE",
+    "pl": "WYKONANIA"
+  },
+  "e МІНІМАЛІСТИЧНИЙ ВИГЛЯД": {
+    "en": "• MINIMALIST LOOK",
+    "pl": "• MINIMALISTYCZNY WYGLĄD"
+  },
+  "e НЕПОМІТНА ІНТЕГРАЦІЯ": {
+    "en": "• SEAMLESS INTEGRATION",
+    "pl": "• NIEWIDOCZNA INTEGRACJA"
+  },
+  "е ПРЕМІАЛЬНИЙ ДИЗАЙН": {
+    "en": "• PREMIUM DESIGN",
+    "pl": "• DESIGN PREMIUM"
+  },
+  "ГАРАНТІЯ": {
+    "en": "WARRANTY",
+    "pl": "GWARANCJA"
+  },
+  "КОНТРОЛЬ": {
+    "en": "QUALITY",
+    "pl": "KONTROLA"
+  },
+  "ЯКОСТІ": {
+    "en": "CONTROL",
+    "pl": "JAKOŚCI"
+  },
+  "СЕРВІС": {
+    "en": "SERVICE",
+    "pl": "SERWIS"
+  },
+  "Пленум-слот PS": {
+    "en": "Plenum slot PS",
+    "pl": "Plenum-slot PS"
+  },
+  "Повітропровід": {
+    "en": "Air duct",
+    "pl": "Przewód powietrzny"
+  },
+  "Саморіз по металу": {
+    "en": "Self-tapping screw",
+    "pl": "Wkręt do metalu"
+  },
+  "Грунтовка": {
+    "en": "",
+    "pl": "Grunt"
+  },
+  "Армуюча": {
+    "en": "Reinforcing",
+    "pl": "Taśma"
+  },
+  "стрічка KNAUF": {
+    "en": "tape KNAUF",
+    "pl": "zbrojąca KNAUF"
+  },
+  "Стартовий шар": {
+    "en": "Base coat",
+    "pl": "Warstwa startowa"
+  },
+  "шпаклівки": {
+    "en": "of filler",
+    "pl": "szpachli"
+  },
+  "Фінішна шпаклівка |": {
+    "en": "Finishing filler",
+    "pl": "Gładź finiszowa"
+  },
+  "Декоративна": {
+    "en": "Decorative",
+    "pl": "Tynk"
+  },
+  "штукатурка": {
+    "en": "plaster",
+    "pl": "dekoracyjny"
+  },
+  "Полотно": {
+    "en": "Panel",
+    "pl": "Płyta"
+  },
+  "Кріплення на монтажних пружинах": {
+    "en": "",
+    "pl": "Mocowanie na sprężynach montażowych"
+  },
+  "Кріплення Ha монтажних пружинах": {
+    "en": "",
+    "pl": "Mocowanie na sprężynach montażowych"
+  },
+  "Жалюзі нерегульовані": {
+    "en": "",
+    "pl": "Żaluzje nieregulowane"
+  },
+  "Жалюзі регульовані": {
+    "en": "",
+    "pl": "Żaluzje regulowane"
+  },
+  "ПДКопанель 595x595": {
+    "en": "PDK panel 595x595",
+    "pl": "Panel PDK 595x595"
+  },
+  "(плен ум) і": {
+    "en": "(plenum)",
+    "pl": "(plenum)"
+  },
+  "СОЕ-В-250": {
+    "en": "CDE-R-250",
+    "pl": "CDE-R-250"
+  },
+  "Регульований": {
+    "en": "Adjustable",
+    "pl": "Regulowany"
+  },
+  "2 щілинний": {
+    "en": "2-slot",
+    "pl": "2-szczelinowy"
+  },
+  "ПЕРЕВАГИ": {
+    "en": "BENEFITS",
+    "pl": "ZALETY"
+  },
+  "Гіпсокартон (12mm) / Drywall (12 mm)": {
+    "en": "Drywall (12 mm)",
+    "pl": "Płyta g-k (12 mm) / Drywall (12 mm)"
+  },
+  "адаптер": {
+    "en": "adapter",
+    "pl": "adapter"
+  },
+  "Загальна втрата тиску (Рз)": {
+    "en": "Total pressure loss (Pa)",
+    "pl": "Całkowita strata ciśnienia (Pa)"
+  },
+  "Загальна штрата тиску (Pa)": {
+    "en": "Total pressure loss (Pa)",
+    "pl": "Całkowita strata ciśnienia (Pa)"
+  },
+  "Загальна отрата тиску (Ра)": {
+    "en": "Total pressure loss (Pa)",
+    "pl": "Całkowita strata ciśnienia (Pa)"
+  },
+  "Загалема страта тиску (Ра)": {
+    "en": "Total pressure loss (Pa)",
+    "pl": "Całkowita strata ciśnienia (Pa)"
+  },
+  "Загальна втрата тиску (Ра)": {
+    "en": "Total pressure loss (Pa)",
+    "pl": "Całkowita strata ciśnienia (Pa)"
+  },
+  "Загальна отрата (Pa)": {
+    "en": "Total pressure loss (Pa)",
+    "pl": "Całkowita strata ciśnienia (Pa)"
+  },
+  "Втрати тисху Prt, Па": {
+    "en": "Pressure loss Pt, Pa",
+    "pl": "Strata ciśnienia Pt, Pa"
+  },
+  "ріяюнь звухової потужності": {
+    "en": "Sound power level",
+    "pl": "Poziom mocy akustycznej"
+  },
+  "рівень звукової потужності": {
+    "en": "Sound power level",
+    "pl": "Poziom mocy akustycznej"
+  },
+  "заукової потужності": {
+    "en": "sound power",
+    "pl": "mocy akustycznej"
+  },
+  "рівень звукової потужності (ЧБА)": {
+    "en": "Sound power level (dBA)",
+    "pl": "Poziom mocy akustycznej (dBA)"
+  },
+  "Рівень звукової потужності (дод)": {
+    "en": "Sound power level (dBA)",
+    "pl": "Poziom mocy akustycznej (dBA)"
+  },
+  "Рівень звукової потужності (ЧБА)": {
+    "en": "Sound power level (dBA)",
+    "pl": "Poziom mocy akustycznej (dBA)"
+  }
+}

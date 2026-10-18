@@ -1,0 +1,3430 @@
+[
+{
+"slug": "pdk",
+"label": "150x150",
+"sel": {
+"options": {},
+"sizeLabel": "150x150"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0141,
+"velocity": 5.91,
+"velocityAtZone": 0.33,
+"pressureDrop": 31.44,
+"deltaT": 1.06
+},
+"code": "PDK-4 (RAL 9016) 150x150h"
+},
+{
+"slug": "pdk",
+"label": "225x225",
+"sel": {
+"options": {},
+"sizeLabel": "225x225"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0308,
+"velocity": 2.71,
+"velocityAtZone": 0.22,
+"pressureDrop": 6.59,
+"deltaT": 1.57
+},
+"code": "PDK-4 (RAL 9016) 225x225h"
+},
+{
+"slug": "pdk",
+"label": "300x300",
+"sel": {
+"options": {},
+"sizeLabel": "300x300"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0516,
+"velocity": 1.61,
+"velocityAtZone": 0.17,
+"pressureDrop": 2.35,
+"deltaT": 2.03
+},
+"code": "PDK-4 (RAL 9016) 300x300h"
+},
+{
+"slug": "pdk",
+"label": "350x350",
+"sel": {
+"options": {},
+"sizeLabel": "350x350"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0763,
+"velocity": 1.09,
+"velocityAtZone": 0.14,
+"pressureDrop": 1.07,
+"deltaT": 2.47
+},
+"code": "PDK-4 (RAL 9016) 350x350h"
+},
+{
+"slug": "pdk",
+"label": "400x400",
+"sel": {
+"options": {},
+"sizeLabel": "400x400"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0895,
+"velocity": 0.93,
+"velocityAtZone": 0.13,
+"pressureDrop": 0.78,
+"deltaT": 2.67
+},
+"code": "PDK-4 (RAL 9016) 400x400h"
+},
+{
+"slug": "pdk",
+"label": "450x450",
+"sel": {
+"options": {},
+"sizeLabel": "450x450"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1085,
+"velocity": 0.77,
+"velocityAtZone": 0.12,
+"pressureDrop": 0.53,
+"deltaT": 2.94
+},
+"code": "PDK-4 (RAL 9016) 450x450h"
+},
+{
+"slug": "pdk",
+"label": "485x485",
+"sel": {
+"options": {},
+"sizeLabel": "485x485"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1285,
+"velocity": 0.65,
+"velocityAtZone": 0.11,
+"pressureDrop": 0.38,
+"deltaT": 3.2
+},
+"code": "PDK-4 (RAL 9016) 485x485h"
+},
+{
+"slug": "pdk",
+"label": "550x550",
+"sel": {
+"options": {},
+"sizeLabel": "550x550"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1611,
+"velocity": 0.52,
+"velocityAtZone": 0.1,
+"pressureDrop": 0.24,
+"deltaT": 3.59
+},
+"code": "PDK-4 (RAL 9016) 550x550h"
+},
+{
+"slug": "pdk",
+"label": "600x600",
+"sel": {
+"options": {},
+"sizeLabel": "600x600"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1959,
+"velocity": 0.43,
+"velocityAtZone": 0.09,
+"pressureDrop": 0.16,
+"deltaT": 3.96
+},
+"code": "PDK-4 (RAL 9016) 600x600h"
+},
+{
+"slug": "pdk",
+"label": "700x700",
+"sel": {
+"options": {},
+"sizeLabel": "700x700"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.2532,
+"velocity": 0.33,
+"velocityAtZone": 0.08,
+"pressureDrop": 0.1,
+"deltaT": 4.5
+},
+"code": "PDK-4 (RAL 9016) 700x700h"
+},
+{
+"slug": "pdk",
+"label": "800x800",
+"sel": {
+"options": {},
+"sizeLabel": "800x800"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.3303,
+"velocity": 0.25,
+"velocityAtZone": 0.07,
+"pressureDrop": 0.06,
+"deltaT": 5.14
+},
+"code": "PDK-4 (RAL 9016) 800x800h"
+},
+{
+"slug": "pdk",
+"label": "q150",
+"sel": {
+"options": {},
+"sizeLabel": "150x150"
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.0141,
+"velocity": 2.96,
+"velocityAtZone": 0.17,
+"pressureDrop": 7.86,
+"deltaT": 1.06
+},
+"code": "PDK-4 (RAL 9016) 150x150h"
+},
+{
+"slug": "pdk",
+"label": "x4",
+"sel": {
+"options": {},
+"sizeLabel": "150x150"
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.0141,
+"velocity": 5.91,
+"velocityAtZone": 0.17,
+"pressureDrop": 31.44,
+"deltaT": 0.53
+},
+"code": "PDK-4 (RAL 9016) 150x150h"
+},
+{
+"slug": "pdk-r",
+"label": "150x150",
+"sel": {
+"options": {},
+"sizeLabel": "150x150"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0141,
+"velocity": 5.91,
+"velocityAtZone": 0.33,
+"pressureDrop": 31.44,
+"deltaT": 1.06
+},
+"code": "PDK-4+R (RAL 9016) 150x150h"
+},
+{
+"slug": "pdk-r",
+"label": "225x225",
+"sel": {
+"options": {},
+"sizeLabel": "225x225"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0308,
+"velocity": 2.71,
+"velocityAtZone": 0.22,
+"pressureDrop": 6.59,
+"deltaT": 1.57
+},
+"code": "PDK-4+R (RAL 9016) 225x225h"
+},
+{
+"slug": "pdk-r",
+"label": "300x300",
+"sel": {
+"options": {},
+"sizeLabel": "300x300"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0516,
+"velocity": 1.61,
+"velocityAtZone": 0.17,
+"pressureDrop": 2.35,
+"deltaT": 2.03
+},
+"code": "PDK-4+R (RAL 9016) 300x300h"
+},
+{
+"slug": "pdk-r",
+"label": "350x350",
+"sel": {
+"options": {},
+"sizeLabel": "350x350"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0763,
+"velocity": 1.09,
+"velocityAtZone": 0.14,
+"pressureDrop": 1.07,
+"deltaT": 2.47
+},
+"code": "PDK-4+R (RAL 9016) 350x350h"
+},
+{
+"slug": "pdk-r",
+"label": "400x400",
+"sel": {
+"options": {},
+"sizeLabel": "400x400"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0895,
+"velocity": 0.93,
+"velocityAtZone": 0.13,
+"pressureDrop": 0.78,
+"deltaT": 2.67
+},
+"code": "PDK-4+R (RAL 9016) 400x400h"
+},
+{
+"slug": "pdk-r",
+"label": "450x450",
+"sel": {
+"options": {},
+"sizeLabel": "450x450"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1085,
+"velocity": 0.77,
+"velocityAtZone": 0.12,
+"pressureDrop": 0.53,
+"deltaT": 2.94
+},
+"code": "PDK-4+R (RAL 9016) 450x450h"
+},
+{
+"slug": "pdk-r",
+"label": "485x485",
+"sel": {
+"options": {},
+"sizeLabel": "485x485"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1285,
+"velocity": 0.65,
+"velocityAtZone": 0.11,
+"pressureDrop": 0.38,
+"deltaT": 3.2
+},
+"code": "PDK-4+R (RAL 9016) 485x485h"
+},
+{
+"slug": "pdk-r",
+"label": "550x550",
+"sel": {
+"options": {},
+"sizeLabel": "550x550"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1611,
+"velocity": 0.52,
+"velocityAtZone": 0.1,
+"pressureDrop": 0.24,
+"deltaT": 3.59
+},
+"code": "PDK-4+R (RAL 9016) 550x550h"
+},
+{
+"slug": "pdk-r",
+"label": "600x600",
+"sel": {
+"options": {},
+"sizeLabel": "600x600"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1959,
+"velocity": 0.43,
+"velocityAtZone": 0.09,
+"pressureDrop": 0.16,
+"deltaT": 3.96
+},
+"code": "PDK-4+R (RAL 9016) 600x600h"
+},
+{
+"slug": "pdk-r",
+"label": "700x700",
+"sel": {
+"options": {},
+"sizeLabel": "700x700"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.2532,
+"velocity": 0.33,
+"velocityAtZone": 0.08,
+"pressureDrop": 0.1,
+"deltaT": 4.5
+},
+"code": "PDK-4+R (RAL 9016) 700x700h"
+},
+{
+"slug": "pdk-r",
+"label": "800x800",
+"sel": {
+"options": {},
+"sizeLabel": "800x800"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.3303,
+"velocity": 0.25,
+"velocityAtZone": 0.07,
+"pressureDrop": 0.06,
+"deltaT": 5.14
+},
+"code": "PDK-4+R (RAL 9016) 800x800h"
+},
+{
+"slug": "pdk-r",
+"label": "q150",
+"sel": {
+"options": {},
+"sizeLabel": "150x150"
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.0141,
+"velocity": 2.96,
+"velocityAtZone": 0.17,
+"pressureDrop": 7.86,
+"deltaT": 1.06
+},
+"code": "PDK-4+R (RAL 9016) 150x150h"
+},
+{
+"slug": "pdk-r",
+"label": "x4",
+"sel": {
+"options": {},
+"sizeLabel": "150x150"
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.0141,
+"velocity": 5.91,
+"velocityAtZone": 0.17,
+"pressureDrop": 31.44,
+"deltaT": 0.53
+},
+"code": "PDK-4+R (RAL 9016) 150x150h"
+},
+{
+"slug": "ncd",
+"label": "D150",
+"sel": {
+"options": {},
+"sizeLabel": "D150"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0101,
+"velocity": 8.25,
+"velocityAtZone": 0.3,
+"pressureDrop": 61.27,
+"deltaT": 0.34
+},
+"code": "NCD-150 (RAL 9016)"
+},
+{
+"slug": "ncd",
+"label": "D200",
+"sel": {
+"options": {},
+"sizeLabel": "D200"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0232,
+"velocity": 3.59,
+"velocityAtZone": 0.2,
+"pressureDrop": 11.61,
+"deltaT": 0.51
+},
+"code": "NCD-200 (RAL 9016)"
+},
+{
+"slug": "ncd",
+"label": "D250",
+"sel": {
+"options": {},
+"sizeLabel": "D250"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0358,
+"velocity": 2.33,
+"velocityAtZone": 0.16,
+"pressureDrop": 4.88,
+"deltaT": 0.64
+},
+"code": "NCD-250 (RAL 9016)"
+},
+{
+"slug": "ncd",
+"label": "D300",
+"sel": {
+"options": {},
+"sizeLabel": "D300"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.051,
+"velocity": 1.63,
+"velocityAtZone": 0.13,
+"pressureDrop": 2.4,
+"deltaT": 0.76
+},
+"code": "NCD-300 (RAL 9016)"
+},
+{
+"slug": "ncd",
+"label": "D350",
+"sel": {
+"options": {},
+"sizeLabel": "D350"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.063,
+"velocity": 1.32,
+"velocityAtZone": 0.12,
+"pressureDrop": 1.57,
+"deltaT": 0.85
+},
+"code": "NCD-350 (RAL 9016)"
+},
+{
+"slug": "ncd",
+"label": "q150",
+"sel": {
+"options": {},
+"sizeLabel": "D150"
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.0101,
+"velocity": 4.13,
+"velocityAtZone": 0.15,
+"pressureDrop": 15.32,
+"deltaT": 0.34
+},
+"code": "NCD-150 (RAL 9016)"
+},
+{
+"slug": "ncd",
+"label": "x4",
+"sel": {
+"options": {},
+"sizeLabel": "D150"
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.0101,
+"velocity": 8.25,
+"velocityAtZone": 0.15,
+"pressureDrop": 61.27,
+"deltaT": 0.17
+},
+"code": "NCD-150 (RAL 9016)"
+},
+{
+"slug": "dcc",
+"label": "300x300",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.01,
+"velocity": 8.3417,
+"velocityAtZone": 0.2597,
+"pressureDrop": 417.5013,
+"deltaT": 0.0897
+},
+"code": "DCc (RAL 9016) 300x300h"
+},
+{
+"slug": "dcc",
+"label": "500x500",
+"sel": {
+"options": {},
+"width": 500,
+"height": 500
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0278,
+"velocity": 3.003,
+"velocityAtZone": 0.1558,
+"pressureDrop": 54.1082,
+"deltaT": 0.1494
+},
+"code": "DCc (RAL 9016) 500x500h"
+},
+{
+"slug": "dcc",
+"label": "800x600",
+"sel": {
+"options": {},
+"width": 800,
+"height": 600
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0533,
+"velocity": 1.5641,
+"velocityAtZone": 0.1125,
+"pressureDrop": 14.6778,
+"deltaT": 0.207
+},
+"code": "DCc (RAL 9016) 800x600h"
+},
+{
+"slug": "dcc",
+"label": "q150",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.01,
+"velocity": 4.1708,
+"velocityAtZone": 0.1299,
+"pressureDrop": 104.3753,
+"deltaT": 0.0897
+},
+"code": "DCc (RAL 9016) 300x300h"
+},
+{
+"slug": "dcc",
+"label": "x4",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.01,
+"velocity": 8.3417,
+"velocityAtZone": 0.1299,
+"pressureDrop": 417.5013,
+"deltaT": 0.0448
+},
+"code": "DCc (RAL 9016) 300x300h"
+},
+{
+"slug": "dcs",
+"label": "300x300",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0127,
+"velocity": 6.5669,
+"velocityAtZone": 0.2304,
+"pressureDrop": 258.7412,
+"deltaT": 0.101
+},
+"code": "DCs (RAL 9016) 300x300h"
+},
+{
+"slug": "dcs",
+"label": "500x500",
+"sel": {
+"options": {},
+"width": 500,
+"height": 500
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0352,
+"velocity": 2.3641,
+"velocityAtZone": 0.1383,
+"pressureDrop": 33.5329,
+"deltaT": 0.1684
+},
+"code": "DCs (RAL 9016) 500x500h"
+},
+{
+"slug": "dcs",
+"label": "800x600",
+"sel": {
+"options": {},
+"width": 800,
+"height": 600
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0677,
+"velocity": 1.2313,
+"velocityAtZone": 0.0998,
+"pressureDrop": 9.0964,
+"deltaT": 0.2334
+},
+"code": "DCs (RAL 9016) 800x600h"
+},
+{
+"slug": "dcs",
+"label": "q150",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.0127,
+"velocity": 3.2834,
+"velocityAtZone": 0.1152,
+"pressureDrop": 64.6853,
+"deltaT": 0.101
+},
+"code": "DCs (RAL 9016) 300x300h"
+},
+{
+"slug": "dcs",
+"label": "x4",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.0127,
+"velocity": 6.5669,
+"velocityAtZone": 0.1152,
+"pressureDrop": 258.7412,
+"deltaT": 0.0505
+},
+"code": "DCs (RAL 9016) 300x300h"
+},
+{
+"slug": "dpf-1",
+"label": "250x250 p9",
+"sel": {
+"options": {},
+"sizeLabel": "250x250/9"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.012,
+"velocity": 6.9444,
+"velocityAtZone": 0.1426,
+"pressureDrop": 309.6065,
+"deltaT": 0.6132
+},
+"code": "DPF-1 (RAL 9016/9005) 250x250h/9"
+},
+{
+"slug": "dpf-1",
+"label": "300x300 p16",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/16"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.021,
+"velocity": 3.9683,
+"velocityAtZone": 0.1078,
+"pressureDrop": 101.096,
+"deltaT": 0.8112
+},
+"code": "DPF-1 (RAL 9016/9005) 300x300h/16"
+},
+{
+"slug": "dpf-1",
+"label": "350x350 p24",
+"sel": {
+"options": {},
+"sizeLabel": "350x350/24"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.031,
+"velocity": 2.6882,
+"velocityAtZone": 0.0887,
+"pressureDrop": 46.3926,
+"deltaT": 0.9856
+},
+"code": "DPF-1 (RAL 9016/9005) 350x350h/24"
+},
+{
+"slug": "dpf-1",
+"label": "400x400 p32",
+"sel": {
+"options": {},
+"sizeLabel": "400x400/32"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.042,
+"velocity": 1.9841,
+"velocityAtZone": 0.0762,
+"pressureDrop": 25.274,
+"deltaT": 1.1472
+},
+"code": "DPF-1 (RAL 9016/9005) 400x400h/32"
+},
+{
+"slug": "dpf-1",
+"label": "450x450 p36",
+"sel": {
+"options": {},
+"sizeLabel": "450x450/36"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.047,
+"velocity": 1.773,
+"velocityAtZone": 0.0721,
+"pressureDrop": 20.1826,
+"deltaT": 1.2136
+},
+"code": "DPF-1 (RAL 9016/9005) 450x450h/36"
+},
+{
+"slug": "dpf-1",
+"label": "500x500 p48",
+"sel": {
+"options": {},
+"sizeLabel": "500x500/48"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.063,
+"velocity": 1.3228,
+"velocityAtZone": 0.0623,
+"pressureDrop": 11.2329,
+"deltaT": 1.4051
+},
+"code": "DPF-1 (RAL 9016/9005) 500x500h/48"
+},
+{
+"slug": "dpf-1",
+"label": "550x550 p60",
+"sel": {
+"options": {},
+"sizeLabel": "550x550/60"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.078,
+"velocity": 1.0684,
+"velocityAtZone": 0.0559,
+"pressureDrop": 7.328,
+"deltaT": 1.5634
+},
+"code": "DPF-1 (RAL 9016/9005) 550x550h/60"
+},
+{
+"slug": "dpf-1",
+"label": "595x595 p60",
+"sel": {
+"options": {},
+"sizeLabel": "595x595/60"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.078,
+"velocity": 1.0684,
+"velocityAtZone": 0.0559,
+"pressureDrop": 7.328,
+"deltaT": 1.5634
+},
+"code": "DPF-1 (RAL 9016/9005) 595x595h/60"
+},
+{
+"slug": "dpf-1",
+"label": "600x600 p60",
+"sel": {
+"options": {},
+"sizeLabel": "600x600/60"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.078,
+"velocity": 1.0684,
+"velocityAtZone": 0.0559,
+"pressureDrop": 7.328,
+"deltaT": 1.5634
+},
+"code": "DPF-1 (RAL 9016/9005) 600x600h/60"
+},
+{
+"slug": "dpf-1",
+"label": "620x620 p64",
+"sel": {
+"options": {},
+"sizeLabel": "620x620/64"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.084,
+"velocity": 0.9921,
+"velocityAtZone": 0.0539,
+"pressureDrop": 6.3185,
+"deltaT": 1.6225
+},
+"code": "DPF-1 (RAL 9016/9005) 620x620h/64"
+},
+{
+"slug": "dpf-1",
+"label": "700x700 p80",
+"sel": {
+"options": {},
+"sizeLabel": "700x700/80"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.104,
+"velocity": 0.8013,
+"velocityAtZone": 0.0485,
+"pressureDrop": 4.122,
+"deltaT": 1.8053
+},
+"code": "DPF-1 (RAL 9016/9005) 700x700h/80"
+},
+{
+"slug": "dpf-1",
+"label": "800x800 p100",
+"sel": {
+"options": {},
+"sizeLabel": "800x800/100"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.131,
+"velocity": 0.6361,
+"velocityAtZone": 0.0432,
+"pressureDrop": 2.5979,
+"deltaT": 2.0261
+},
+"code": "DPF-1 (RAL 9016/9005) 800x800h/100"
+},
+{
+"slug": "dpf-1",
+"label": "q150",
+"sel": {
+"options": {},
+"sizeLabel": "250x250/9"
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.012,
+"velocity": 3.4722,
+"velocityAtZone": 0.0713,
+"pressureDrop": 77.4016,
+"deltaT": 0.6132
+},
+"code": "DPF-1 (RAL 9016/9005) 250x250h/9"
+},
+{
+"slug": "dpf-1",
+"label": "x4",
+"sel": {
+"options": {},
+"sizeLabel": "250x250/9"
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.012,
+"velocity": 6.9444,
+"velocityAtZone": 0.0713,
+"pressureDrop": 309.6065,
+"deltaT": 0.3066
+},
+"code": "DPF-1 (RAL 9016/9005) 250x250h/9"
+},
+{
+"slug": "dpf-3",
+"label": "250x250 p8",
+"sel": {
+"options": {},
+"sizeLabel": "250x250/8"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0107,
+"velocity": 7.7882,
+"velocityAtZone": 0.1511,
+"pressureDrop": 389.4081,
+"deltaT": 0.5791
+},
+"code": "DPF-3 (RAL 9016/9005) 250x250h/8"
+},
+{
+"slug": "dpf-3",
+"label": "300x300 p15",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/15"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0196,
+"velocity": 4.2517,
+"velocityAtZone": 0.1116,
+"pressureDrop": 116.0541,
+"deltaT": 0.7837
+},
+"code": "DPF-3 (RAL 9016/9005) 300x300h/15"
+},
+{
+"slug": "dpf-3",
+"label": "350x350 p16",
+"sel": {
+"options": {},
+"sizeLabel": "350x350/16"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0209,
+"velocity": 3.9872,
+"velocityAtZone": 0.1081,
+"pressureDrop": 102.0657,
+"deltaT": 0.8093
+},
+"code": "DPF-3 (RAL 9016/9005) 350x350h/16"
+},
+{
+"slug": "dpf-3",
+"label": "400x400 p18",
+"sel": {
+"options": {},
+"sizeLabel": "400x400/18"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0235,
+"velocity": 3.5461,
+"velocityAtZone": 0.1019,
+"pressureDrop": 80.7303,
+"deltaT": 0.8582
+},
+"code": "DPF-3 (RAL 9016/9005) 400x400h/18"
+},
+{
+"slug": "dpf-3",
+"label": "450x450 p24",
+"sel": {
+"options": {},
+"sizeLabel": "450x450/24"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0313,
+"velocity": 2.6624,
+"velocityAtZone": 0.0883,
+"pressureDrop": 45.5076,
+"deltaT": 0.9904
+},
+"code": "DPF-3 (RAL 9016/9005) 450x450h/24"
+},
+{
+"slug": "dpf-3",
+"label": "500x500 p38",
+"sel": {
+"options": {},
+"sizeLabel": "500x500/38"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0496,
+"velocity": 1.6801,
+"velocityAtZone": 0.0702,
+"pressureDrop": 18.1221,
+"deltaT": 1.2467
+},
+"code": "DPF-3 (RAL 9016/9005) 500x500h/38"
+},
+{
+"slug": "dpf-3",
+"label": "550x550 p41",
+"sel": {
+"options": {},
+"sizeLabel": "550x550/41"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0535,
+"velocity": 1.5576,
+"velocityAtZone": 0.0676,
+"pressureDrop": 15.5763,
+"deltaT": 1.2948
+},
+"code": "DPF-3 (RAL 9016/9005) 550x550h/41"
+},
+{
+"slug": "dpf-3",
+"label": "595x595 p46",
+"sel": {
+"options": {},
+"sizeLabel": "595x595/46"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0601,
+"velocity": 1.3866,
+"velocityAtZone": 0.0637,
+"pressureDrop": 12.3431,
+"deltaT": 1.3724
+},
+"code": "DPF-3 (RAL 9016/9005) 595x595h/46"
+},
+{
+"slug": "dpf-3",
+"label": "600x600 p46",
+"sel": {
+"options": {},
+"sizeLabel": "600x600/46"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0601,
+"velocity": 1.3866,
+"velocityAtZone": 0.0637,
+"pressureDrop": 12.3431,
+"deltaT": 1.3724
+},
+"code": "DPF-3 (RAL 9016/9005) 600x600h/46"
+},
+{
+"slug": "dpf-3",
+"label": "620x620 p49",
+"sel": {
+"options": {},
+"sizeLabel": "620x620/49"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.064,
+"velocity": 1.3021,
+"velocityAtZone": 0.0618,
+"pressureDrop": 10.8846,
+"deltaT": 1.4162
+},
+"code": "DPF-3 (RAL 9016/9005) 620x620h/49"
+},
+{
+"slug": "dpf-3",
+"label": "700x700 p64",
+"sel": {
+"options": {},
+"sizeLabel": "700x700/64"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.0836,
+"velocity": 0.9968,
+"velocityAtZone": 0.054,
+"pressureDrop": 6.3791,
+"deltaT": 1.6186
+},
+"code": "DPF-3 (RAL 9016/9005) 700x700h/64"
+},
+{
+"slug": "dpf-3",
+"label": "800x800 p82",
+"sel": {
+"options": {},
+"sizeLabel": "800x800/82"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1071,
+"velocity": 0.7781,
+"velocityAtZone": 0.0477,
+"pressureDrop": 3.8868,
+"deltaT": 1.832
+},
+"code": "DPF-3 (RAL 9016/9005) 800x800h/82"
+},
+{
+"slug": "dpf-3",
+"label": "q150",
+"sel": {
+"options": {},
+"sizeLabel": "250x250/8"
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.0107,
+"velocity": 3.8941,
+"velocityAtZone": 0.0755,
+"pressureDrop": 97.352,
+"deltaT": 0.5791
+},
+"code": "DPF-3 (RAL 9016/9005) 250x250h/8"
+},
+{
+"slug": "dpf-3",
+"label": "x4",
+"sel": {
+"options": {},
+"sizeLabel": "250x250/8"
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.0107,
+"velocity": 7.7882,
+"velocityAtZone": 0.0755,
+"pressureDrop": 389.4081,
+"deltaT": 0.2895
+},
+"code": "DPF-3 (RAL 9016/9005) 250x250h/8"
+},
+{
+"slug": "rd",
+"label": "300x300",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.063,
+"velocity": 1.3228,
+"velocityAtZone": 0.3141,
+"pressureDrop": 1.3647,
+"deltaT": 2.1031
+},
+"code": "RD (RAL 9016) 300x300h"
+},
+{
+"slug": "rd",
+"label": "500x500",
+"sel": {
+"options": {},
+"width": 500,
+"height": 500
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.175,
+"velocity": 0.4762,
+"velocityAtZone": 0.1884,
+"pressureDrop": 0.1769,
+"deltaT": 3.5052
+},
+"code": "RD (RAL 9016) 500x500h"
+},
+{
+"slug": "rd",
+"label": "800x600",
+"sel": {
+"options": {},
+"width": 800,
+"height": 600
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.336,
+"velocity": 0.248,
+"velocityAtZone": 0.136,
+"pressureDrop": 0.048,
+"deltaT": 4.8569
+},
+"code": "RD (RAL 9016) 800x600h"
+},
+{
+"slug": "rd",
+"label": "q150",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.063,
+"velocity": 0.6614,
+"velocityAtZone": 0.157,
+"pressureDrop": 0.3412,
+"deltaT": 2.1031
+},
+"code": "RD (RAL 9016) 300x300h"
+},
+{
+"slug": "rd",
+"label": "x4",
+"sel": {
+"options": {},
+"width": 300,
+"height": 300
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.063,
+"velocity": 1.3228,
+"velocityAtZone": 0.157,
+"pressureDrop": 1.3647,
+"deltaT": 1.0516
+},
+"code": "RD (RAL 9016) 300x300h"
+},
+{
+"slug": "rda-s",
+"label": "300x300 p8",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/8"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.016,
+"velocity": 5.2083,
+"velocityAtZone": 0.6917,
+"pressureDrop": 97.6562,
+"deltaT": 0.5502
+},
+"code": "RDA-S (RAL 9016/9005) 300x300h/8"
+},
+{
+"slug": "rda-s",
+"label": "400x400 p16",
+"sel": {
+"options": {},
+"sizeLabel": "400x400/16"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.032,
+"velocity": 2.6042,
+"velocityAtZone": 0.4891,
+"pressureDrop": 24.4141,
+"deltaT": 0.7782
+},
+"code": "RDA-S (RAL 9016/9005) 400x400h/16"
+},
+{
+"slug": "rda-s",
+"label": "500x500 p24",
+"sel": {
+"options": {},
+"sizeLabel": "500x500/24"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.048,
+"velocity": 1.7361,
+"velocityAtZone": 0.3994,
+"pressureDrop": 10.8507,
+"deltaT": 0.953
+},
+"code": "RDA-S (RAL 9016/9005) 500x500h/24"
+},
+{
+"slug": "rda-s",
+"label": "500x500 p32",
+"sel": {
+"options": {},
+"sizeLabel": "500x500/32"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.064,
+"velocity": 1.3021,
+"velocityAtZone": 0.3459,
+"pressureDrop": 6.1035,
+"deltaT": 1.1005
+},
+"code": "RDA-S (RAL 9016/9005) 500x500h/32"
+},
+{
+"slug": "rda-s",
+"label": "595x595 p24",
+"sel": {
+"options": {},
+"sizeLabel": "595x595/24"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.072,
+"velocity": 1.1574,
+"velocityAtZone": 0.3261,
+"pressureDrop": 4.8225,
+"deltaT": 1.1672
+},
+"code": "RDA-S (RAL 9016/9005) 595x595h/24"
+},
+{
+"slug": "rda-s",
+"label": "595x595 p48",
+"sel": {
+"options": {},
+"sizeLabel": "595x595/48"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.096,
+"velocity": 0.8681,
+"velocityAtZone": 0.2824,
+"pressureDrop": 2.7127,
+"deltaT": 1.3478
+},
+"code": "RDA-S (RAL 9016/9005) 595x595h/48"
+},
+{
+"slug": "rda-s",
+"label": "600x600 p24",
+"sel": {
+"options": {},
+"sizeLabel": "600x600/24"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.072,
+"velocity": 1.1574,
+"velocityAtZone": 0.3261,
+"pressureDrop": 4.8225,
+"deltaT": 1.1672
+},
+"code": "RDA-S (RAL 9016/9005) 600x600h/24"
+},
+{
+"slug": "rda-s",
+"label": "600x600 p48",
+"sel": {
+"options": {},
+"sizeLabel": "600x600/48"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.043,
+"velocity": 1.938,
+"velocityAtZone": 0.422,
+"pressureDrop": 13.5208,
+"deltaT": 0.902
+},
+"code": "RDA-S (RAL 9016/9005) 600x600h/48"
+},
+{
+"slug": "rda-s",
+"label": "620x620 p54",
+"sel": {
+"options": {},
+"sizeLabel": "620x620/54"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.108,
+"velocity": 0.7716,
+"velocityAtZone": 0.2663,
+"pressureDrop": 2.1433,
+"deltaT": 1.4296
+},
+"code": "RDA-S (RAL 9016/9005) 620x620h/54"
+},
+{
+"slug": "rda-s",
+"label": "q150",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/8"
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.016,
+"velocity": 2.6042,
+"velocityAtZone": 0.3459,
+"pressureDrop": 24.4141,
+"deltaT": 0.5502
+},
+"code": "RDA-S (RAL 9016/9005) 300x300h/8"
+},
+{
+"slug": "rda-s",
+"label": "x4",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/8"
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.016,
+"velocity": 5.2083,
+"velocityAtZone": 0.3459,
+"pressureDrop": 97.6562,
+"deltaT": 0.2751
+},
+"code": "RDA-S (RAL 9016/9005) 300x300h/8"
+},
+{
+"slug": "rdc-s",
+"label": "300x300 p8",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/8"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.016,
+"velocity": 5.2083,
+"velocityAtZone": 0.6917,
+"pressureDrop": 97.6562,
+"deltaT": 0.5502
+},
+"code": "RDC-S (RAL 9016/9005) 300x300h/8"
+},
+{
+"slug": "rdc-s",
+"label": "400x400 p16",
+"sel": {
+"options": {},
+"sizeLabel": "400x400/16"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.04,
+"velocity": 2.0833,
+"velocityAtZone": 0.4375,
+"pressureDrop": 15.625,
+"deltaT": 0.87
+},
+"code": "RDC-S (RAL 9016/9005) 400x400h/16"
+},
+{
+"slug": "rdc-s",
+"label": "500x500 p32",
+"sel": {
+"options": {},
+"sizeLabel": "500x500/32"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.072,
+"velocity": 1.1574,
+"velocityAtZone": 0.3261,
+"pressureDrop": 4.8225,
+"deltaT": 1.1672
+},
+"code": "RDC-S (RAL 9016/9005) 500x500h/32"
+},
+{
+"slug": "rdc-s",
+"label": "595x595 p48",
+"sel": {
+"options": {},
+"sizeLabel": "595x595/48"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.104,
+"velocity": 0.8013,
+"velocityAtZone": 0.2713,
+"pressureDrop": 2.3114,
+"deltaT": 1.4028
+},
+"code": "RDC-S (RAL 9016/9005) 595x595h/48"
+},
+{
+"slug": "rdc-s",
+"label": "600x600 p48",
+"sel": {
+"options": {},
+"sizeLabel": "600x600/48"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.104,
+"velocity": 0.8013,
+"velocityAtZone": 0.2713,
+"pressureDrop": 2.3114,
+"deltaT": 1.4028
+},
+"code": "RDC-S (RAL 9016/9005) 600x600h/48"
+},
+{
+"slug": "rdc-s",
+"label": "700x700 p60",
+"sel": {
+"options": {},
+"sizeLabel": "700x700/60"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.13,
+"velocity": 0.641,
+"velocityAtZone": 0.2427,
+"pressureDrop": 1.4793,
+"deltaT": 1.5684
+},
+"code": "RDC-S (RAL 9016/9005) 700x700h/60"
+},
+{
+"slug": "rdc-s",
+"label": "800x800 p72",
+"sel": {
+"options": {},
+"sizeLabel": "800x800/72"
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.16,
+"velocity": 0.5208,
+"velocityAtZone": 0.2188,
+"pressureDrop": 0.9766,
+"deltaT": 1.74
+},
+"code": "RDC-S (RAL 9016/9005) 800x800h/72"
+},
+{
+"slug": "rdc-s",
+"label": "q150",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/8"
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.016,
+"velocity": 2.6042,
+"velocityAtZone": 0.3459,
+"pressureDrop": 24.4141,
+"deltaT": 0.5502
+},
+"code": "RDC-S (RAL 9016/9005) 300x300h/8"
+},
+{
+"slug": "rdc-s",
+"label": "x4",
+"sel": {
+"options": {},
+"sizeLabel": "300x300/8"
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.016,
+"velocity": 5.2083,
+"velocityAtZone": 0.3459,
+"pressureDrop": 97.6562,
+"deltaT": 0.2751
+},
+"code": "RDC-S (RAL 9016/9005) 300x300h/8"
+},
+{
+"slug": "sd",
+"label": "n1 L1000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.8285,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd",
+"label": "n2 L1000",
+"sel": {
+"options": {
+"nslots": "2"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4372,
+"pressureDrop": 17.592592592592588,
+"deltaT": 2.03
+},
+"code": "SD-2-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd",
+"label": "n3 L1000",
+"sel": {
+"options": {
+"nslots": "3"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.045,
+"velocity": 1.85,
+"velocityAtZone": 0.3308,
+"pressureDrop": 3.4979423868312756,
+"deltaT": 1.31
+},
+"code": "SD-3-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd",
+"label": "n4 L1000",
+"sel": {
+"options": {
+"nslots": "4"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2543,
+"pressureDrop": 2.5462962962962963,
+"deltaT": 2.7
+},
+"code": "SD-4-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd",
+"label": "n5 L1000",
+"sel": {
+"options": {
+"nslots": "5"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.075,
+"velocity": 1.11,
+"velocityAtZone": 0.2018,
+"pressureDrop": 2.074074074074074,
+"deltaT": 2.47
+},
+"code": "SD-5-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd",
+"label": "n6 L1000",
+"sel": {
+"options": {
+"nslots": "6"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.09,
+"velocity": 0.93,
+"velocityAtZone": 0.1764,
+"pressureDrop": 0.823045267489712,
+"deltaT": 3.19
+},
+"code": "SD-6-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "sd",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.5858,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.17
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "n1 L1000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.8285,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "n2 L1000",
+"sel": {
+"options": {
+"nslots": "2"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4372,
+"pressureDrop": 17.592592592592588,
+"deltaT": 2.03
+},
+"code": "SD-2-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "n3 L1000",
+"sel": {
+"options": {
+"nslots": "3"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.045,
+"velocity": 1.85,
+"velocityAtZone": 0.3308,
+"pressureDrop": 3.4979423868312756,
+"deltaT": 1.31
+},
+"code": "SD-3-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "n4 L1000",
+"sel": {
+"options": {
+"nslots": "4"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2543,
+"pressureDrop": 2.5462962962962963,
+"deltaT": 2.7
+},
+"code": "SD-4-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "n5 L1000",
+"sel": {
+"options": {
+"nslots": "5"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.075,
+"velocity": 1.11,
+"velocityAtZone": 0.2018,
+"pressureDrop": 2.074074074074074,
+"deltaT": 2.47
+},
+"code": "SD-5-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "n6 L1000",
+"sel": {
+"options": {
+"nslots": "6"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.09,
+"velocity": 0.93,
+"velocityAtZone": 0.1764,
+"pressureDrop": 0.823045267489712,
+"deltaT": 3.19
+},
+"code": "SD-6-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "sd-d",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-d",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.5858,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.17
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "n1 L1000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.8285,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "n2 L1000",
+"sel": {
+"options": {
+"nslots": "2"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4372,
+"pressureDrop": 17.592592592592588,
+"deltaT": 2.03
+},
+"code": "SD-2-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "n3 L1000",
+"sel": {
+"options": {
+"nslots": "3"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.045,
+"velocity": 1.85,
+"velocityAtZone": 0.3308,
+"pressureDrop": 3.4979423868312756,
+"deltaT": 1.31
+},
+"code": "SD-3-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "n4 L1000",
+"sel": {
+"options": {
+"nslots": "4"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2543,
+"pressureDrop": 2.5462962962962963,
+"deltaT": 2.7
+},
+"code": "SD-4-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "n5 L1000",
+"sel": {
+"options": {
+"nslots": "5"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.075,
+"velocity": 1.11,
+"velocityAtZone": 0.2018,
+"pressureDrop": 2.074074074074074,
+"deltaT": 2.47
+},
+"code": "SD-5-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "n6 L1000",
+"sel": {
+"options": {
+"nslots": "6"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.09,
+"velocity": 0.93,
+"velocityAtZone": 0.1764,
+"pressureDrop": 0.823045267489712,
+"deltaT": 3.19
+},
+"code": "SD-6-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "sd-p",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sd-p",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.5858,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.17
+},
+"code": "SD-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "n1 L1000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.8285,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "n2 L1000",
+"sel": {
+"options": {
+"nslots": "2"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4372,
+"pressureDrop": 17.592592592592588,
+"deltaT": 2.03
+},
+"code": "SDH-2-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "n3 L1000",
+"sel": {
+"options": {
+"nslots": "3"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.045,
+"velocity": 1.85,
+"velocityAtZone": 0.3308,
+"pressureDrop": 3.4979423868312756,
+"deltaT": 1.31
+},
+"code": "SDH-3-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "n4 L1000",
+"sel": {
+"options": {
+"nslots": "4"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2543,
+"pressureDrop": 2.5462962962962963,
+"deltaT": 2.7
+},
+"code": "SDH-4-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "n5 L1000",
+"sel": {
+"options": {
+"nslots": "5"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.075,
+"velocity": 1.11,
+"velocityAtZone": 0.2018,
+"pressureDrop": 2.074074074074074,
+"deltaT": 2.47
+},
+"code": "SDH-5-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "n6 L1000",
+"sel": {
+"options": {
+"nslots": "6"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.09,
+"velocity": 0.93,
+"velocityAtZone": 0.1764,
+"pressureDrop": 0.823045267489712,
+"deltaT": 3.19
+},
+"code": "SDH-6-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "sdh",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.5858,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.17
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "n1 L1000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.8285,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "n2 L1000",
+"sel": {
+"options": {
+"nslots": "2"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4372,
+"pressureDrop": 17.592592592592588,
+"deltaT": 2.03
+},
+"code": "SDH-2-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "n3 L1000",
+"sel": {
+"options": {
+"nslots": "3"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.045,
+"velocity": 1.85,
+"velocityAtZone": 0.3308,
+"pressureDrop": 3.4979423868312756,
+"deltaT": 1.31
+},
+"code": "SDH-3-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "n4 L1000",
+"sel": {
+"options": {
+"nslots": "4"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2543,
+"pressureDrop": 2.5462962962962963,
+"deltaT": 2.7
+},
+"code": "SDH-4-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "n5 L1000",
+"sel": {
+"options": {
+"nslots": "5"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.075,
+"velocity": 1.11,
+"velocityAtZone": 0.2018,
+"pressureDrop": 2.074074074074074,
+"deltaT": 2.47
+},
+"code": "SDH-5-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "n6 L1000",
+"sel": {
+"options": {
+"nslots": "6"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.09,
+"velocity": 0.93,
+"velocityAtZone": 0.1764,
+"pressureDrop": 0.823045267489712,
+"deltaT": 3.19
+},
+"code": "SDH-6-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "sdh-d",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-d",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.5858,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.17
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "n1 L1000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.8285,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "n2 L1000",
+"sel": {
+"options": {
+"nslots": "2"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4372,
+"pressureDrop": 17.592592592592588,
+"deltaT": 2.03
+},
+"code": "SDH-2-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "n3 L1000",
+"sel": {
+"options": {
+"nslots": "3"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.045,
+"velocity": 1.85,
+"velocityAtZone": 0.3308,
+"pressureDrop": 3.4979423868312756,
+"deltaT": 1.31
+},
+"code": "SDH-3-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "n4 L1000",
+"sel": {
+"options": {
+"nslots": "4"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2543,
+"pressureDrop": 2.5462962962962963,
+"deltaT": 2.7
+},
+"code": "SDH-4-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "n5 L1000",
+"sel": {
+"options": {
+"nslots": "5"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.075,
+"velocity": 1.11,
+"velocityAtZone": 0.2018,
+"pressureDrop": 2.074074074074074,
+"deltaT": 2.47
+},
+"code": "SDH-5-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "n6 L1000",
+"sel": {
+"options": {
+"nslots": "6"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.09,
+"velocity": 0.93,
+"velocityAtZone": 0.1764,
+"pressureDrop": 0.823045267489712,
+"deltaT": 3.19
+},
+"code": "SDH-6-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "sdh-p",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.015,
+"velocity": 2.78,
+"velocityAtZone": 0.4142,
+"pressureDrop": 20.83333333333333,
+"deltaT": 1.65
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdh-p",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.015,
+"velocity": 5.56,
+"velocityAtZone": 0.5858,
+"pressureDrop": 83.33333333333331,
+"deltaT": 1.17
+},
+"code": "SDH-1-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdt",
+"label": "n1 w20 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.02,
+"velocity": 4.17,
+"velocityAtZone": 0.5408,
+"pressureDrop": 44.79166666666667,
+"deltaT": 1.41
+},
+"code": "SDT-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdt",
+"label": "n1 w30 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "30"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4382,
+"pressureDrop": 26.851851851851848,
+"deltaT": 1.9
+},
+"code": "SDT-30-2 (30) (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdt",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.04,
+"velocity": 2.08,
+"velocityAtZone": 0.2704,
+"pressureDrop": 11.197916666666668,
+"deltaT": 1.41
+},
+"code": "SDT-20-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "sdt",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.02,
+"velocity": 2.08,
+"velocityAtZone": 0.2704,
+"pressureDrop": 11.197916666666668,
+"deltaT": 1.41
+},
+"code": "SDT-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "sdt",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.02,
+"velocity": 4.17,
+"velocityAtZone": 0.3824,
+"pressureDrop": 44.79166666666667,
+"deltaT": 1
+},
+"code": "SDT-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "clt",
+"label": "n1 w50 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "50"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.025,
+"velocity": 3.33,
+"velocityAtZone": 0.4808,
+"pressureDrop": 38.666666666666664,
+"deltaT": 1.74
+},
+"code": "CLT-1-50-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "clt",
+"label": "n2 w50 L1000",
+"sel": {
+"options": {
+"nslots": "2",
+"nslotswidth": "50"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.05,
+"velocity": 1.67,
+"velocityAtZone": 0.3268,
+"pressureDrop": 18.666666666666668,
+"deltaT": 2.19
+},
+"code": "CLT-2-50-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "clt",
+"label": "n3 w50 L1000",
+"sel": {
+"options": {
+"nslots": "3",
+"nslotswidth": "50"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.075,
+"velocity": 1.11,
+"velocityAtZone": 0.2582,
+"pressureDrop": 10.666666666666664,
+"deltaT": 2.5
+},
+"code": "CLT-3-50-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "clt",
+"label": "n4 w50 L1000",
+"sel": {
+"options": {
+"nslots": "4",
+"nslotswidth": "50"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.1,
+"velocity": 0.83,
+"velocityAtZone": 0.3522,
+"pressureDrop": 6.166666666666667,
+"deltaT": 1.97
+},
+"code": "CLT-4-50-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "clt",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.05,
+"velocity": 1.67,
+"velocityAtZone": 0.2404,
+"pressureDrop": 9.666666666666666,
+"deltaT": 1.74
+},
+"code": "CLT-1-50-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "clt",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "50"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.025,
+"velocity": 1.67,
+"velocityAtZone": 0.2404,
+"pressureDrop": 9.666666666666666,
+"deltaT": 1.74
+},
+"code": "CLT-1-50-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "clt",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "50"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.025,
+"velocity": 3.33,
+"velocityAtZone": 0.3399,
+"pressureDrop": 38.666666666666664,
+"deltaT": 1.23
+},
+"code": "CLT-1-50-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsd",
+"label": "n1 w20 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.02,
+"velocity": 4.17,
+"velocityAtZone": 0.5704,
+"pressureDrop": 37.50000000000001,
+"deltaT": 2.04
+},
+"code": "RSD-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsd",
+"label": "n1 w30 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "30"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.3429,
+"pressureDrop": 14.814814814814813,
+"deltaT": 2.12
+},
+"code": "RSD-30-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsd",
+"label": "n1 w40 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "40"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.04,
+"velocity": 2.08,
+"velocityAtZone": 0.251,
+"pressureDrop": 7.031250000000001,
+"deltaT": 2.02
+},
+"code": "RSD-40-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsd",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.04,
+"velocity": 2.08,
+"velocityAtZone": 0.2852,
+"pressureDrop": 9.375000000000002,
+"deltaT": 2.04
+},
+"code": "RSD-20-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "rsd",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.02,
+"velocity": 2.08,
+"velocityAtZone": 0.2852,
+"pressureDrop": 9.375000000000002,
+"deltaT": 2.04
+},
+"code": "RSD-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsd",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.02,
+"velocity": 4.17,
+"velocityAtZone": 0.4033,
+"pressureDrop": 37.50000000000001,
+"deltaT": 1.44
+},
+"code": "RSD-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n1 w20 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.02,
+"velocity": 4.17,
+"velocityAtZone": 0.5408,
+"pressureDrop": 40.62500000000001,
+"deltaT": 1.41
+},
+"code": "RSDM-1-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n1 w30 L1000",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "30"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.03,
+"velocity": 2.78,
+"velocityAtZone": 0.4382,
+"pressureDrop": 24.074074074074073,
+"deltaT": 1.9
+},
+"code": "RSDM-1-30-2 (30) (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n2 w20 L1000",
+"sel": {
+"options": {
+"nslots": "2",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.04,
+"velocity": 2.08,
+"velocityAtZone": 0.3044,
+"pressureDrop": 16.927083333333336,
+"deltaT": 1.71
+},
+"code": "RSDM-2-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n2 w30 L1000",
+"sel": {
+"options": {
+"nslots": "2",
+"nslotswidth": "30"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2978,
+"pressureDrop": 11.574074074074073,
+"deltaT": 2.4
+},
+"code": "RSDM-2-30-2 (30) (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n3 w20 L1000",
+"sel": {
+"options": {
+"nslots": "3",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.06,
+"velocity": 1.39,
+"velocityAtZone": 0.2319,
+"pressureDrop": 9.259259259259258,
+"deltaT": 1.4
+},
+"code": "RSDM-3-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n3 w30 L1000",
+"sel": {
+"options": {
+"nslots": "3",
+"nslotswidth": "30"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.09,
+"velocity": 0.93,
+"velocityAtZone": 0.2361,
+"pressureDrop": 6.68724279835391,
+"deltaT": 2.74
+},
+"code": "RSDM-3-30-2 (30) (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n4 w20 L1000",
+"sel": {
+"options": {
+"nslots": "4",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.08,
+"velocity": 1.04,
+"velocityAtZone": 0.1548,
+"pressureDrop": 5.533854166666667,
+"deltaT": 1.72
+},
+"code": "RSDM-4-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n4 w30 L1000",
+"sel": {
+"options": {
+"nslots": "4",
+"nslotswidth": "30"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.12,
+"velocity": 0.69,
+"velocityAtZone": 0.322,
+"pressureDrop": 3.8483796296296293,
+"deltaT": 2.16
+},
+"code": "RSDM-4-30-2 (30) (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "n1 L2000",
+"sel": {
+"options": {
+"nslots": "1"
+},
+"length": 2000
+},
+"airflow": 300,
+"distance": 2,
+"expected": {
+"freeArea": 0.04,
+"velocity": 2.08,
+"velocityAtZone": 0.2704,
+"pressureDrop": 10.156250000000002,
+"deltaT": 1.41
+},
+"code": "RSDM-1-20-2 (RAL 9016/----) L=2000"
+},
+{
+"slug": "rsdm",
+"label": "q150",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 150,
+"distance": 2,
+"expected": {
+"freeArea": 0.02,
+"velocity": 2.08,
+"velocityAtZone": 0.2704,
+"pressureDrop": 10.156250000000002,
+"deltaT": 1.41
+},
+"code": "RSDM-1-20-2 (RAL 9016/----) L=1000"
+},
+{
+"slug": "rsdm",
+"label": "x4",
+"sel": {
+"options": {
+"nslots": "1",
+"nslotswidth": "20"
+},
+"length": 1000
+},
+"airflow": 300,
+"distance": 4,
+"expected": {
+"freeArea": 0.02,
+"velocity": 4.17,
+"velocityAtZone": 0.3824,
+"pressureDrop": 40.62500000000001,
+"deltaT": 1
+},
+"code": "RSDM-1-20-2 (RAL 9016/----) L=1000"
+}
+]

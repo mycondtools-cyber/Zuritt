@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/* Фірмовий шрифт і кольори Mycond (Brand Guideline 2024) */
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/ProximaNova-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/ProximaNova-Semibold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/ProximaNova-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/ProximaNova-Extrabld.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Proxima Nova", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #0c0c0c;
+  --color-ink-2: #465c70;
+  --color-muted: #6b7a88;
+  --color-line: #e3e6e8;
+  --color-paper: #f4f4f4;
+  --color-brand: #4faf4d;
+  --color-brand-2: #3e8a3c;
+  --color-brand-soft: #e9f5e8;
+  --color-good: #15803d;
+  --color-good-soft: #dcfce7;
+  --color-ok: #b45309;
+  --color-ok-soft: #fef3c7;
+  --color-bad: #b91c1c;
+  --color-bad-soft: #fee2e2;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: clip;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+@utility card {
+  @apply rounded-2xl border border-line bg-white;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-white hover:bg-brand-2;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-white text-ink hover:border-brand hover:text-brand;
+}
+
+@utility input {
+  @apply w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15;
+}
+
+@utility chip {
+  @apply rounded-xl border border-line bg-white px-3 py-2 text-sm font-medium transition hover:border-brand disabled:cursor-default disabled:hover:border-line;
+  &[aria-pressed="true"] {
+    @apply border-brand bg-brand-soft text-brand ring-1 ring-brand;
+  }
+}
+
+@utility label {
+  @apply mb-1.5 flex items-center gap-1.5 text-sm font-semibold text-ink;
+}
+
+.prose-md h2 {
+  @apply mt-6 mb-2 text-lg font-bold text-ink first:mt-0;
+}
+.prose-md p {
+  @apply my-2 leading-relaxed text-ink-2;
+}
+.prose-md ul {
+  @apply my-2 list-disc space-y-1 pl-5 text-ink-2;
+}
+.prose-md strong {
+  @apply font-semibold text-ink;
+}

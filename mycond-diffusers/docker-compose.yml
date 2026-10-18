@@ -1,0 +1,33 @@
+# Запуск на власному сервері: docker compose up -d --build
+# Змінні беруться з файлу .env поруч (див. .env.example)
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?задайте POSTGRES_PASSWORD у .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://airflow:${POSTGRES_PASSWORD}@db:5432/airflow
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?задайте ADMIN_PASSWORD у .env}
+      AUTH_SECRET: ${AUTH_SECRET:?задайте AUTH_SECRET у .env}
+    # лише локально: назовні сайт віддає nginx/панель сервера з SSL
+    ports:
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+
+volumes:
+  pgdata:

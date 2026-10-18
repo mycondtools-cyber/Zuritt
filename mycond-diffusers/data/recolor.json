@@ -1,0 +1,327 @@
+{
+ "1-nr-25-35": {
+  "image": "/products/1-nr-25-35/01.webp",
+  "mask": "/products/1-nr-25-35/recolor-mask.png",
+  "base": 105.0
+ },
+ "1-r-25-35": {
+  "image": "/products/1-r-25-35/01.webp",
+  "mask": "/products/1-r-25-35/recolor-mask.png",
+  "base": 142.0
+ },
+ "1-r-30-30-ots": {
+  "image": "/products/1-r-30-30-ots/01.webp",
+  "mask": "/products/1-r-30-30-ots/recolor-mask.png",
+  "base": 141.0
+ },
+ "1-r-35-45-d": {
+  "image": "/products/1-r-35-45-d/01.webp",
+  "mask": "/products/1-r-35-45-d/recolor-mask.png",
+  "base": 99.0
+ },
+ "1-rn15-30-30": {
+  "image": "/products/1-rn15-30-30/03.webp",
+  "mask": "/products/1-rn15-30-30/recolor-mask.png",
+  "base": 127.0
+ },
+ "1-rp-30-05": {
+  "image": "/products/1-rp-30-05/02.webp",
+  "mask": "/products/1-rp-30-05/recolor-mask.png",
+  "base": 155.0
+ },
+ "2-dr-25-65": {
+  "image": "/products/2-dr-25-65/01.webp",
+  "mask": "/products/2-dr-25-65/recolor-mask.png",
+  "base": 122.0
+ },
+ "2-nr-30-60": {
+  "image": "/products/2-nr-30-60/01.webp",
+  "mask": "/products/2-nr-30-60/recolor-mask.png",
+  "base": 105.0
+ },
+ "2-r-25-65": {
+  "image": "/products/2-r-25-65/01.webp",
+  "mask": "/products/2-r-25-65/recolor-mask.png",
+  "base": 123.0
+ },
+ "2-r-30-60": {
+  "image": "/products/2-r-30-60/01.webp",
+  "mask": "/products/2-r-30-60/recolor-mask.png",
+  "base": 78.0
+ },
+ "2-r-35-75": {
+  "image": "/products/2-r-35-75/01.webp",
+  "mask": "/products/2-r-35-75/recolor-mask.png",
+  "base": 70.0
+ },
+ "cde": {
+  "image": "/products/cde/03.webp",
+  "mask": "/products/cde/recolor-mask.png",
+  "base": 215.0
+ },
+ "d-30-30": {
+  "image": "/products/d-30-30/01.webp",
+  "mask": "/products/d-30-30/recolor-mask.png",
+  "base": 72.0
+ },
+ "dcc": {
+  "image": "/products/dcc/05.webp",
+  "mask": "/products/dcc/recolor-mask.png",
+  "base": 167.0
+ },
+ "dcs": {
+  "image": "/products/dcs/01.webp",
+  "mask": "/products/dcs/recolor-mask.png",
+  "base": 104.0
+ },
+ "dpf-1": {
+  "image": "/products/dpf-1/01.webp",
+  "mask": "/products/dpf-1/recolor-mask.png",
+  "base": 58.0
+ },
+ "dpf-3": {
+  "image": "/products/dpf-3/02.webp",
+  "mask": "/products/dpf-3/recolor-mask.png",
+  "base": 248.0
+ },
+ "drp": {
+  "image": "/products/drp/06.webp",
+  "mask": "/products/drp/recolor-mask.png",
+  "base": 254.0
+ },
+ "du-2-40-20": {
+  "image": "/products/du-2-40-20/01.webp",
+  "mask": "/products/du-2-40-20/recolor-mask.png",
+  "base": 240.0
+ },
+ "du-3-60-20": {
+  "image": "/products/du-3-60-20/03.webp",
+  "mask": "/products/du-3-60-20/recolor-mask.png",
+  "base": 149.0
+ },
+ "dva": {
+  "image": "/products/dva/01.webp",
+  "mask": "/products/dva/recolor-mask.png",
+  "base": 250.0
+ },
+ "elc": {
+  "image": "/products/elc/02.webp",
+  "mask": "/products/elc/recolor-mask.png",
+  "base": 250.0
+ },
+ "g-30-70": {
+  "image": "/products/g-30-70/01.webp",
+  "mask": "/products/g-30-70/recolor-mask.png",
+  "base": 105.0
+ },
+ "ge-30-50": {
+  "image": "/products/ge-30-50/01.webp",
+  "mask": "/products/ge-30-50/recolor-mask.png",
+  "base": 151.0
+ },
+ "gv-p-25-35": {
+  "image": "/products/gv-p-25-35/03.webp",
+  "mask": "/products/gv-p-25-35/recolor-mask.png",
+  "base": 140.0
+ },
+ "gv-p-35-45": {
+  "image": "/products/gv-p-35-45/01.webp",
+  "mask": "/products/gv-p-35-45/recolor-mask.png",
+  "base": 83.0
+ },
+ "kn": {
+  "image": "/products/kn/01.webp",
+  "mask": "/products/kn/recolor-mask.png",
+  "base": 238.0
+ },
+ "kpp": {
+  "image": "/products/kpp/02.webp",
+  "mask": "/products/kpp/recolor-mask.png",
+  "base": 221.0
+ },
+ "kw": {
+  "image": "/products/kw/01.webp",
+  "mask": "/products/kw/recolor-mask.png",
+  "base": 249.0
+ },
+ "l-25-35": {
+  "image": "/products/l-25-35/01.webp",
+  "mask": "/products/l-25-35/recolor-mask.png",
+  "base": 139.0
+ },
+ "l-30-30": {
+  "image": "/products/l-30-30/01.webp",
+  "mask": "/products/l-30-30/recolor-mask.png",
+  "base": 255.0
+ },
+ "l-35-45": {
+  "image": "/products/l-35-45/01.webp",
+  "mask": "/products/l-35-45/recolor-mask.png",
+  "base": 149.0
+ },
+ "l15-25-35": {
+  "image": "/products/l15-25-35/01.webp",
+  "mask": "/products/l15-25-35/recolor-mask.png",
+  "base": 139.0
+ },
+ "l15-35-45": {
+  "image": "/products/l15-35-45/01.webp",
+  "mask": "/products/l15-35-45/recolor-mask.png",
+  "base": 149.0
+ },
+ "lh-30-40": {
+  "image": "/products/lh-30-40/01.webp",
+  "mask": "/products/lh-30-40/recolor-mask.png",
+  "base": 242.0
+ },
+ "lr-30-60": {
+  "image": "/products/lr-30-60/01.webp",
+  "mask": "/products/lr-30-60/recolor-mask.png",
+  "base": 153.0
+ },
+ "lr-35-75": {
+  "image": "/products/lr-35-75/01.webp",
+  "mask": "/products/lr-35-75/recolor-mask.png",
+  "base": 163.0
+ },
+ "lr15-30-60": {
+  "image": "/products/lr15-30-60/01.webp",
+  "mask": "/products/lr15-30-60/recolor-mask.png",
+  "base": 105.0
+ },
+ "lr15-35-75": {
+  "image": "/products/lr15-35-75/01.webp",
+  "mask": "/products/lr15-35-75/recolor-mask.png",
+  "base": 163.0
+ },
+ "mvm": {
+  "image": "/products/mvm/01.webp",
+  "mask": "/products/mvm/recolor-mask.png",
+  "base": 197.0
+ },
+ "n-2r-35-75": {
+  "image": "/products/n-2r-35-75/03.webp",
+  "mask": "/products/n-2r-35-75/recolor-mask.png",
+  "base": 66.0
+ },
+ "n-35-45": {
+  "image": "/products/n-35-45/05.webp",
+  "mask": "/products/n-35-45/recolor-mask.png",
+  "base": 231.0
+ },
+ "nf-45-50": {
+  "image": "/products/nf-45-50/03.webp",
+  "mask": "/products/nf-45-50/recolor-mask.png",
+  "base": 153.0
+ },
+ "nr-ots": {
+  "image": "/products/nr-ots/02.webp",
+  "mask": "/products/nr-ots/recolor-mask.png",
+  "base": 82.0
+ },
+ "pdk": {
+  "image": "/products/pdk/04.webp",
+  "mask": "/products/pdk/recolor-mask.png",
+  "base": 234.0
+ },
+ "pdk-r": {
+  "image": "/products/pdk-r/07.webp",
+  "mask": "/products/pdk-r/recolor-mask.png",
+  "base": 229.0
+ },
+ "pf-30-05": {
+  "image": "/products/pf-30-05/01.webp",
+  "mask": "/products/pf-30-05/recolor-mask.png",
+  "base": 106.0
+ },
+ "pf-30-30": {
+  "image": "/products/pf-30-30/01.webp",
+  "mask": "/products/pf-30-30/recolor-mask.png",
+  "base": 119.0
+ },
+ "pf-30-60": {
+  "image": "/products/pf-30-60/01.webp",
+  "mask": "/products/pf-30-60/recolor-mask.png",
+  "base": 119.0
+ },
+ "r-30-20": {
+  "image": "/products/r-30-20/03.webp",
+  "mask": "/products/r-30-20/recolor-mask.png",
+  "base": 140.0
+ },
+ "rd": {
+  "image": "/products/rd/01.webp",
+  "mask": "/products/rd/recolor-mask.png",
+  "base": 128.0
+ },
+ "rda-s": {
+  "image": "/products/rda-s/01.webp",
+  "mask": "/products/rda-s/recolor-mask.png",
+  "base": 239.0
+ },
+ "rdc-s": {
+  "image": "/products/rdc-s/01.webp",
+  "mask": "/products/rdc-s/recolor-mask.png",
+  "base": 227.0
+ },
+ "rsd": {
+  "image": "/products/rsd/01.webp",
+  "mask": "/products/rsd/recolor-mask.png",
+  "base": 80.0
+ },
+ "rsdm": {
+  "image": "/products/rsdm/01.webp",
+  "mask": "/products/rsdm/recolor-mask.png",
+  "base": 121.0
+ },
+ "sd-d": {
+  "image": "/products/sd-d/01.webp",
+  "mask": "/products/sd-d/recolor-mask.png",
+  "base": 113.0
+ },
+ "sd-p": {
+  "image": "/products/sd-p/01.webp",
+  "mask": "/products/sd-p/recolor-mask.png",
+  "base": 248.0
+ },
+ "sda": {
+  "image": "/products/sda/02.webp",
+  "mask": "/products/sda/recolor-mask.png",
+  "base": 245.0
+ },
+ "sdh-d": {
+  "image": "/products/sdh-d/01.webp",
+  "mask": "/products/sdh-d/recolor-mask.png",
+  "base": 98.0
+ },
+ "sdh-p": {
+  "image": "/products/sdh-p/06.webp",
+  "mask": "/products/sdh-p/recolor-mask.png",
+  "base": 254.0
+ },
+ "sdha": {
+  "image": "/products/sdha/02.webp",
+  "mask": "/products/sdha/recolor-mask.png",
+  "base": 254.0
+ },
+ "sg": {
+  "image": "/products/sg/03.webp",
+  "mask": "/products/sg/recolor-mask.png",
+  "base": 181.0
+ },
+ "sge": {
+  "image": "/products/sge/02.webp",
+  "mask": "/products/sge/recolor-mask.png",
+  "base": 69.0
+ },
+ "vdl": {
+  "image": "/products/vdl/02.webp",
+  "mask": "/products/vdl/recolor-mask.png",
+  "base": 235.0
+ },
+ "vs": {
+  "image": "/products/vs/02.webp",
+  "mask": "/products/vs/recolor-mask.png",
+  "base": 189.0
+ }
+}
